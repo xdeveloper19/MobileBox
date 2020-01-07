@@ -336,12 +336,6 @@
     <AndroidResource Include="Resources\layout\activity_auth.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\activity_driver.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\activity_driver.axml" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\layout\activity_user_box.axml" />
   </ItemGroup>
   <ItemGroup>
@@ -377,6 +371,8 @@
     </AndroidResource>
     <AndroidResource Include="Resources\layout\activity_main.axml" />
     <AndroidResource Include="Resources\layout\activity_main.xml" />
+    <AndroidResource Include="Resources\layout\activity_driver.axml" />
+    <AndroidResource Include="Resources\layout\activity_driver.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>

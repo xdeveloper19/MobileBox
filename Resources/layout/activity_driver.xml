@@ -29,72 +29,7 @@
                 android:orientation="horizontal"
                 
                 >
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/driver_relat"
-                    android:background = "@drawable/activity_stili"                
-                    android:layout_centerHorizontal = "true"> 
-                    
-                    <TextView
-                    android:id="@+id/textUser"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="left|center_vertical"
-                    android:padding="10dp"
-                    android:text="Вы вошли как:"
-                    android:textSize="15sp" />
-
-                <EditText
-                    android:id="@+id/s_user"
-                    android:layout_width="83dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_toEndOf="@+id/textUser"
-                    android:layout_toRightOf="@+id/textUser"
-                    android:editable="false"
-                    android:gravity="center"
-                    android:inputType="text"
-                    android:padding="8dp"
-                    android:text="Водитель"
-                    android:textSize="9sp"
-                    android:background = "@drawable/edittext_stili"
-
-                    />
-
-
-                <Button
-                    android:id="@+id/btn_exit_"
-                    android:layout_width="wrap_content"
-                    android:layout_height="25dp"
-                    android:layout_above="@id/container_name"
-                    android:layout_marginLeft="20dp"                  
-                    
-                    android:layout_marginTop="8dp"
-                    android:layout_toEndOf="@+id/s_user"
-                    android:layout_toRightOf="@+id/s_user"
-                    android:text="Выйти"
-                    android:background="@drawable/button_stili"
-                    android:padding = "5dp"
-                    android:textSize="8sp"
-
-                    />
-
-                <Button
-                    android:id="@+id/btn_free_for_order"
-                    android:layout_width="wrap_content"
-                    android:layout_height="25dp"
-                    android:layout_marginLeft="20dp"                  
-                    android:layout_marginTop="8dp"
-                    android:layout_toEndOf="@+id/s_user"
-                    android:layout_toRightOf="@+id/s_user"
-                    android:text="Свободен для заказов"
-                    android:background="@drawable/button_stili"
-                    android:layout_below="@+id/btn_exit_"
-                    android:padding = "5dp"
-                    android:textSize="8sp"
-                    />
-                </RelativeLayout>
+               
                 
 
 
@@ -102,7 +37,6 @@
                     android:id="@+id/textIdContainer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/driver_relat"
                     android:gravity="left"
                     android:padding="10dp"
                     android:text="Имя контейнера:"
@@ -116,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:padding="8dp"
-                    android:layout_below="@+id/driver_relat"
+                    
                     android:layout_toEndOf="@+id/textIdContainer"
                     android:layout_toRightOf="@+id/textIdContainer"
                     android:inputType="text"
@@ -133,41 +67,18 @@
                     android:background="@drawable/button_stili"
                     android:padding = "5dp"
                     android:layout_marginTop="8dp"
-                    android:layout_below="@+id/driver_relat"
+                    
                     android:layout_toEndOf="@+id/container_name"
                     android:layout_toRightOf="@+id/container_name"
                     android:text="Поменять контейнер"
                     android:textSize="8sp" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:id="@+id/textState"
-                    android:layout_below="@+id/textIdContainer"
-                    android:padding="10dp"
-                    android:text="Статус:"
-                    android:textSize="15sp"
-                />
-                <EditText
-                    android:id="@+id/s_state"
-                    android:layout_width="250dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_below="@+id/container_name"
-                    android:layout_toEndOf="@+id/textState"
-                    android:layout_toRightOf="@+id/textState"
-                    android:background = "@drawable/edittext_stili"
-                    android:editable="false"
-                    android:gravity="center"
-                    android:inputType="text"
-                    android:padding="12dp"
-                    android:textSize="11sp"/>
+               
                 <TextView
                     android:id="@+id/textSituation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:layout_below="@+id/textState"
+                    android:layout_below="@+id/textIdContainer"
                     android:padding="10dp"
                     android:text="Положение:"
                     android:textSize="15sp" />
@@ -177,7 +88,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:layout_below="@+id/s_state"
+                    android:layout_below="@+id/container_name"
                     android:layout_toEndOf="@+id/textSituation"
                     android:layout_toRightOf="@+id/textSituation"
                     android:entries="@array/a_situation_loaded_container"
@@ -256,66 +167,46 @@
                     android:id="@+id/btn_lock_unlock_door"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:layout_above="@id/textPinCode"
                     android:layout_marginLeft="20dp"
                     android:layout_marginBottom="2dp"
+                    android:layout_marginTop = "13dp"
                     android:layout_toEndOf="@+id/s_lock_unlock_door"
                     android:layout_toRightOf="@+id/s_lock_unlock_door"
+                    android:layout_below="@+id/btn_open_close_container"
                     android:text="Разблокировать/Заблокировать"
                     android:background="@drawable/button_stili"
                     android:padding = "5dp"
                     android:textSize="8sp" />
 
-                <TextView
-                    android:id="@+id/textPinCode"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_below="@id/textLockUnlockDoor"
-                    android:gravity="left"
-                    android:padding="10dp"
-                    android:text="PIN-код доступа к контейнеру:"
-                    android:textSize="15sp" />
-
-                <EditText
-                    android:id="@+id/s_pin_access_code"
-                    android:layout_width="84.0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:background = "@drawable/edittext_stili"
-                    android:layout_below="@id/s_lock_unlock_door"
-                    android:gravity="center"
-                    android:layout_toEndOf="@+id/textPinCode"
-                    android:layout_toRightOf="@+id/textPinCode"                   
-                    android:inputType="number"
-                    android:maxLength="4"
-                    android:padding="12dp"
-                    android:textSize="11sp" />
-
                 <Button
-                    android:id="@+id/btn_change_pin_code"
+                    android:id="@+id/btn_free_for_order"
                     android:layout_width="wrap_content"
-                    android:layout_height="25dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop = "10dp"
-                    android:gravity="center"
-                    android:layout_below="@id/s_pin_access_code"
-                    android:text="Сменить PIN-код"
+                    android:layout_height="25dp"       
+                    android:layout_marginTop = "11dp"
+                    android:layout_below="@+id/s_lock_unlock_door"
+                    android:layout_toEndOf="@+id/textLockUnlockDoor"
+                    android:layout_toRightOf="@+id/textLockUnlockDoor"
+                    android:text="Свободен для заказов"
                     android:background="@drawable/button_stili"
                     android:padding = "5dp"
                     android:textSize="8sp" />
+
 
                 <Button
                     android:id="@+id/btn_transfer_access"
                     android:layout_width="wrap_content"
-                    android:layout_height="25dp"
-                    android:layout_toLeftOf="@+id/btn_change_pin_code"
-                    android:layout_alignTop="@+id/btn_change_pin_code"
-                    android:text="Передать доступ клиенту"
+                    android:layout_height="25dp"       
+                    android:layout_marginTop = "13dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_below="@+id/btn_lock_unlock_door"
+                    android:layout_toEndOf="@+id/s_lock_unlock_door"
+                    android:layout_toRightOf="@+id/s_lock_unlock_door"
+                    android:text="Передать доступ заказчику"
                     android:background="@drawable/button_stili"
                     android:padding = "5dp"
                     android:textSize="8sp" />
+
+     
             </RelativeLayout>
 
             <RelativeLayout
@@ -437,7 +328,7 @@
                     android:layout_below="@+id/s_weight"
                     android:layout_toEndOf="@+id/Text2"
                     android:layout_toRightOf="@+id/Text2"
-                    android:inputType="number"
+                    android:inputType="text"
                     android:gravity="center"
                     android:layout_marginTop="8dp"
                     android:padding="8dp"
@@ -691,6 +582,22 @@
                     android:layout_above="@+id/fragmentMainMenu"
                     class="com.google.android.gms.maps.MapFragment"
 	        />
+                
+                <Button
+                    android:id="@+id/btn_exit_"
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_below="@+id/fragmentMap"
+                    android:layout_above="@id/s_lock_unlock_door"
+                    android:layout_centerHorizontal = "true"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/button_stili"
+                    android:padding = "5dp"
+                    android:layout_toEndOf="@+id/s_open_close_container"
+                    android:layout_toRightOf="@+id/s_open_close_container"
+                    android:text="Выйти"
+                    android:textSize="8sp" />
+
             </RelativeLayout>
         </RelativeLayout>
     </ScrollView>
@@ -703,5 +610,3 @@
         android:id="@+id/preloader"
 	/>
 </RelativeLayout>
-
-

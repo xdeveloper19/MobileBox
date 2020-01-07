@@ -42,9 +42,7 @@ namespace GeoGeometry.Activity.Auth
 
         private EditText s_situation_loaded_container;
 
-        private Button btn_pass_delivery_service;
-
-        private EditText s_user;       
+        private Button btn_pass_delivery_service;       
 
         private EditText container_name;
 
@@ -87,7 +85,6 @@ namespace GeoGeometry.Activity.Auth
             btn_lock_unlock_door = FindViewById<Button>(Resource.Id.btn_lock_unlock_door);
             s_situation_loaded_container = FindViewById<EditText>(Resource.Id.s_situation_loaded_container);
             btn_pass_delivery_service = FindViewById<Button>(Resource.Id.btn_pass_delivery_service);
-            s_user = FindViewById<EditText>(Resource.Id.s_user);
             container_name = FindViewById<EditText>(Resource.Id.container_name);
             s_cost = FindViewById<EditText>(Resource.Id.s_cost);
             s_payment = FindViewById<EditText>(Resource.Id.s_payment);
@@ -105,8 +102,6 @@ namespace GeoGeometry.Activity.Auth
 
             container_name.Focusable = false;
             container_name.LongClickable = false;
-            s_user.Focusable = false;
-            s_user.LongClickable = false;
             s_latitude.Focusable = false;
             s_latitude.LongClickable = false;
             s_longitude.Focusable = false;
@@ -483,7 +478,6 @@ namespace GeoGeometry.Activity.Auth
 
         void ClearField()
         {
-            s_user.Text = "";
             container_name.Text = "";
             s_cost.Text = "";
             s_payment.Text = "";

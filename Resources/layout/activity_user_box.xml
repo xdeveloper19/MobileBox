@@ -13,8 +13,11 @@
     tools:context=".ui.login.LoginActivity">
 
     <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+       android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id = "@+id/scrollView1"
+        android:minHeight = "25px"
+        android:minWidth = "25px">
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -25,55 +28,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/textUser"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="left|center_vertical"
-                    android:padding="10dp"
-                    android:text="Вы вошли как:"
-                    android:textSize="15sp"
-                   
-                    />
-
-                <EditText
-                    android:id="@+id/s_user"
-                    android:layout_width="83dp"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/textUser"
-                    android:layout_toRightOf="@+id/textUser"
-                    android:inputType="text"
-                    android:layout_marginTop="8dp"
-                    android:padding="8dp"
-                    android:background = "@drawable/edittext_stili"
-                    android:text="Клиент"
-                    android:textSize="9sp"
-                    android:gravity="center"
-                    />
-
-
-                <Button
-                    android:id="@+id/btn_exit_"
-                    android:layout_width="wrap_content"
-                    android:layout_height="25dp"
-                    android:layout_marginStart="40dp"
-                    android:layout_marginLeft="40dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/button_stili"
-                    android:padding = "5dp"
-                    android:layout_toEndOf="@+id/s_user"
-                    android:layout_toRightOf="@+id/s_user"
-                    android:text="Выйти"                  
-                    android:textSize="8sp"
-                  />
-
+               
                 <TextView
                     android:id="@+id/text1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="left|center_vertical"
-                    android:layout_below="@+id/textUser"
                     android:layout_marginTop="0dp"
                     android:padding="10dp"
                     android:text="Номер заказа:"
@@ -84,12 +44,11 @@
                     android:id="@+id/container_name"
                     android:layout_width="83dp"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/s_user"
                     android:layout_toEndOf="@+id/text1"
                     android:layout_toRightOf="@+id/text1"
                     android:gravity="center"
                     android:inputType="text"
-                    android:layout_marginTop="11dp"
+                    android:layout_marginTop="9dp"
                     android:padding="8dp"
                     android:background = "@drawable/edittext_stili"
                     android:textSize="9sp" />
@@ -98,15 +57,14 @@
                     android:id="@+id/btn_change_order"
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
-                    android:layout_below="@+id/btn_exit_"
                     android:layout_marginStart="40dp"
                     android:layout_marginLeft="40dp"
-                    android:layout_marginTop="14dp"
+                    android:layout_marginTop="9dp"
                     android:background="@drawable/button_stili"
                     android:padding = "5dp"
                     android:layout_toEndOf="@+id/container_name"
-                    android:layout_toRightOf="@+id/container_name"                   
-                    android:text="Другой заказ"                  
+                    android:layout_toRightOf="@+id/container_name"
+                    android:text="Другой заказ"
                     android:textSize="8sp"
                     tools:ignore="SmallSp" />
                 <TextView
@@ -140,7 +98,7 @@
                     android:layout_height="28dp"
                     android:textSize="8sp"
                     android:id="@+id/btn_pass_delivery_service"
-                    android:layout_below = "@+id/s_situation_loaded_container"                   
+                    android:layout_below = "@+id/s_situation_loaded_container"
                     android:layout_alignParentRight = "true"
                     android:layout_marginTop = "5dp"
                     android:background="@drawable/button_stili"
@@ -274,8 +232,8 @@
                     android:background="@drawable/button_stili"
                     android:padding = "5dp"
                     android:layout_toEndOf="@+id/s_cost"
-                    android:layout_toRightOf="@+id/s_cost"                   
-                    android:text="Оплатить"                   
+                    android:layout_toRightOf="@+id/s_cost"
+                    android:text="Оплатить"
                     android:textSize="6sp" />
 
                 <TextView
@@ -365,12 +323,12 @@
                     android:layout_below="@+id/s_pin_access_code"
                     android:layout_marginStart="1dp"
                     android:layout_marginLeft="1dp"
-                   android:layout_marginTop="14dp"
+                    android:layout_marginTop="14dp"
                     android:background="@drawable/button_stili"
                     android:padding = "5dp"
                     android:layout_toEndOf="@+id/s_lock_unlock_door"
-                    android:layout_toRightOf="@+id/s_lock_unlock_door"                    
-                    android:text="Разблокировать/Заблокировать"                    
+                    android:layout_toRightOf="@+id/s_lock_unlock_door"
+                    android:text="Разблокировать/Заблокировать"
                     android:textSize="8sp" />
 
                 <TextView
@@ -541,7 +499,7 @@
                     android:gravity="left"
                     />
 
-                 <Button
+                <Button
                     android:id="@+id/btn_camera"
                     android:layout_width="wrap_content"
                     android:layout_height="28dp"
@@ -551,8 +509,22 @@
                     android:layout_marginTop="14dp"
                     android:background="@drawable/button_stili"
                     android:padding = "5dp"
-                    android:layout_centerHorizontal = "true"                   
-                    android:text="Открыть камеру"                    
+                    android:layout_centerHorizontal = "true"
+                    android:text="Открыть камеру"
+                    android:textSize="8sp" />
+                
+                <Button
+                    android:id="@+id/btn_exit_"
+                    android:layout_width="wrap_content"
+                    android:layout_height="28dp"
+                    android:layout_below="@+id/TEXT6"
+                    android:layout_marginStart="1dp"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginTop="14dp"
+                    android:background="@drawable/button_stili"
+                    android:padding = "5dp"
+                    android:layout_alignParentRight = "true"
+                    android:text="Выйти"
                     android:textSize="8sp" />
 
             </RelativeLayout>

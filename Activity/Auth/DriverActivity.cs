@@ -48,12 +48,6 @@ namespace GeoGeometry.Activity.Auth
 
         private Button btn_transfer_access;
 
-        private Button btn_change_pin_code;
-
-        private EditText s_user;
-
-        private EditText s_state;
-
         private EditText container_name;
 
         private Spinner s_situation;
@@ -61,8 +55,6 @@ namespace GeoGeometry.Activity.Auth
         private EditText s_open_close_container;
 
         private EditText s_lock_unlock_door;
-
-        private EditText s_pin_access_code;
 
         private EditText s_weight;
 
@@ -102,15 +94,11 @@ namespace GeoGeometry.Activity.Auth
             btn_lock_unlock_door = FindViewById<Button>(Resource.Id.btn_lock_unlock_door);
             btn_change_parameters = FindViewById<Button>(Resource.Id.btn_change_parameters);
             btn_transfer_access = FindViewById<Button>(Resource.Id.btn_transfer_access);
-            btn_change_pin_code = FindViewById<Button>(Resource.Id.btn_change_pin_code);
             btn_free_for_order = FindViewById<Button>(Resource.Id.btn_free_for_order);
-            s_user = FindViewById<EditText>(Resource.Id.s_user);
-            s_state = FindViewById<EditText>(Resource.Id.s_state);
             container_name = FindViewById<EditText>(Resource.Id.container_name);
             s_situation = FindViewById<Spinner>(Resource.Id.s_situation);
             s_open_close_container = FindViewById<EditText>(Resource.Id.s_open_close_container);
             s_lock_unlock_door = FindViewById<EditText>(Resource.Id.s_lock_unlock_door);
-            s_pin_access_code = FindViewById<EditText>(Resource.Id.s_pin_access_code);
             s_weight = FindViewById<EditText>(Resource.Id.s_weight);
             s_temperature = FindViewById<EditText>(Resource.Id.TemperatureEdit);
             s_light = FindViewById<EditText>(Resource.Id.s_light);
@@ -126,12 +114,8 @@ namespace GeoGeometry.Activity.Auth
             MapFragment mapFragment = (MapFragment)FragmentManager.FindFragmentById(Resource.Id.fragmentMap);
             mapFragment.GetMapAsync(this);
 
-            s_state.Focusable = false;
-            s_state.LongClickable = false;
             s_signal_strength.Focusable = false;
             s_signal_strength.LongClickable = false;
-            s_user.Focusable = false;
-            s_user.LongClickable = false;
             s_situation.Focusable = false;
             s_situation.LongClickable = false;
             s_open_close_container.Focusable = false;
@@ -258,17 +242,17 @@ namespace GeoGeometry.Activity.Auth
             };
 
             //изменение ПИН-кода, очистка полей
-            btn_change_pin_code.Click += async delegate
-            {
-                try
-                {
-                    s_pin_access_code.Text = "";
-                }
-                catch (Exception ex)
-                {
-                    Toast.MakeText(this, "" + ex.Message, ToastLength.Long).Show();
-                }
-            };
+            //btn_change_pin_code.Click += async delegate
+            //{
+            //    try
+            //    {
+            //        s_pin_access_code.Text = "";
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Toast.MakeText(this, "" + ex.Message, ToastLength.Long).Show();
+            //    }
+            //};
 
             //редактирование данных контейнера
             btn_change_parameters.Click += async delegate
@@ -287,7 +271,7 @@ namespace GeoGeometry.Activity.Auth
                         StaticBox.Weight = s_weight.Text;
                         StaticBox.Light = Convert.ToInt32(s_light.Text);
                         StaticBox.Wetness = s_humidity.Text;
-                        StaticBox.Code = s_pin_access_code.Text;
+                        //StaticBox.Code = s_pin_access_code.Text;
                         StaticBox.Name = container_name.Text;
                         StaticBox.IsOpenedBox = (s_open_close_container.Text == "раскрыт") ? true : false;
                         //Situation = s_situation.Text,
@@ -463,8 +447,15 @@ namespace GeoGeometry.Activity.Auth
                         }                       
 
                         s_temperature.Text = exported_data.Temperature.Replace(",", ".");
-                        s_light.Text = exported_data.Light.ToString();
-                        s_pin_access_code.Text = (exported_data.Code == null) ? "0000" : exported_data.Code;
+                        if(exported_data.Light <= 50)
+                        {
+                            s_light.Text = "Нет";
+                        }
+                        else if(exported_data.Light > 50)
+                        {
+                            s_light.Text = "Да";
+                        }
+                        //s_pin_access_code.Text = (exported_data.Code == null) ? "0000" : exported_data.Code;
                         s_humidity.Text = exported_data.Wetness.Replace(",", ".");
                         s_battery.Text = exported_data.BatteryPower.Replace(",", ".");
                         btn_lock_unlock_door.Text = "Заблокировать/Разблокировать";
@@ -642,12 +633,10 @@ namespace GeoGeometry.Activity.Auth
         //очистка всех полей
         void ClearField()
         {
-            s_user.Text = "";
             container_name.Text = "";
             //s_situation.Text = "";
             s_open_close_container.Text = "";
             s_lock_unlock_door.Text = "";
-            s_pin_access_code.Text = "";
             s_weight.Text = "";
             s_temperature.Text = "";
             s_light.Text = "";
