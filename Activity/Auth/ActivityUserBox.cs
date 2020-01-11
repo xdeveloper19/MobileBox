@@ -338,8 +338,8 @@ namespace GeoGeometry.Activity.Auth
                             s_temperature.Text = exported_data.Temperature;
                             s_light.Text = exported_data.Light.ToString();
                             s_humidity.Text = exported_data.Wetness;
-                            StaticBox.Longitude = exported_data.Longitude;
-                            StaticBox.Latitude = exported_data.Latitude;
+                            //StaticBox.Longitude = exported_data.Longitude;
+                            //StaticBox.Latitude = exported_data.Latitude;
                             s_longitude.Text = StaticBox.Longitude.ToString();
                             s_latitude.Text = StaticBox.Latitude.ToString();
                             //coordinates lat lon
@@ -359,19 +359,19 @@ namespace GeoGeometry.Activity.Auth
                             //var boxState = s_open_close_container.Text;
                             //var doorState = s_lock_unlock_door.Text;
 
-                            if (exported_data.BoxState == ContainerState.onBase)
+                            if (exported_data.BoxState == "1")
                             {
                                 s_situation_loaded_container.Text = "На складе";
                             }
-                            else if (exported_data.BoxState == ContainerState.onCar)
+                            else if (exported_data.BoxState == "2")
                             {
                                 s_situation_loaded_container.Text = "На автомобиле";
                             }
-                            else if (exported_data.BoxState == ContainerState.onConsignee)
+                            else if (exported_data.BoxState == "3")
                             {
                                 s_situation_loaded_container.Text = "Выгруженным у грузоотправителя";
                             }
-                            else if (exported_data.BoxState == ContainerState.onShipper)
+                            else if (exported_data.BoxState == "4")
                             {
                                 s_situation_loaded_container.Text = "После разгрузки у грузополучателя";
                             }

@@ -94,7 +94,7 @@ namespace GeoGeometry.Activity.Auth
             btn_lock_unlock_door = FindViewById<Button>(Resource.Id.btn_lock_unlock_door);
             btn_change_parameters = FindViewById<Button>(Resource.Id.btn_change_parameters);
             btn_transfer_access = FindViewById<Button>(Resource.Id.btn_transfer_access);
-            btn_free_for_order = FindViewById<Button>(Resource.Id.btn_free_for_order);
+            //btn_free_for_order = FindViewById<Button>(Resource.Id.btn_free_for_order);
             container_name = FindViewById<EditText>(Resource.Id.container_name);
             s_situation = FindViewById<Spinner>(Resource.Id.s_situation);
             s_open_close_container = FindViewById<EditText>(Resource.Id.s_open_close_container);
@@ -108,7 +108,7 @@ namespace GeoGeometry.Activity.Auth
             s_longitude = FindViewById<EditText>(Resource.Id.s_longitude);
             s_latitude = FindViewById<EditText>(Resource.Id.s_latitude);
             s_date_time = FindViewById<EditText>(Resource.Id.s_date_time);
-            s_payment = FindViewById<EditText>(Resource.Id.s_payment);
+            //s_payment = FindViewById<EditText>(Resource.Id.s_payment);
             preloader = FindViewById<ProgressBar>(Resource.Id.preloader);
             
             MapFragment mapFragment = (MapFragment)FragmentManager.FindFragmentById(Resource.Id.fragmentMap);
@@ -122,8 +122,7 @@ namespace GeoGeometry.Activity.Auth
             s_open_close_container.LongClickable = false;
             s_lock_unlock_door.Focusable = false;
             s_lock_unlock_door.LongClickable = false;           
-            s_payment.Focusable = false;
-            s_payment.LongClickable = false;
+            
             s_date_time.Focusable = false;
             s_date_time.LongClickable = false;
             s_latitude.Focusable = false;
@@ -182,10 +181,10 @@ namespace GeoGeometry.Activity.Auth
             }
 
 
-            btn_free_for_order.Click += async delegate
-            {
-                Toast.MakeText(this, "Ваш статус: «Свободен для закозов»", ToastLength.Long).Show();
-            };
+            //btn_free_for_order.Click += async delegate
+            //{
+            //    Toast.MakeText(this, "Ваш статус: «Свободен для закозов»", ToastLength.Long).Show();
+            //};
 
             //переход на форму выбора контейнера
             btn_change_container.Click += async delegate
@@ -205,8 +204,15 @@ namespace GeoGeometry.Activity.Auth
 
             btn_transfer_access.Click += async delegate
                 {
-                    Intent mapActivity = new Intent(this, typeof(Auth.DriverActivity));
-                    StartActivity(mapActivity);
+                    try
+                    {
+                        Intent ActivityC = new Intent(this, typeof(Auth.ActivityCamera));
+                        StartActivity(ActivityC);
+                    }
+                    catch (Exception ex)
+                    {
+                        Toast.MakeText(this, "" + ex.Message, ToastLength.Long).Show();
+                    }
                 };
 
             //изменение состояния контейнера
@@ -216,8 +222,9 @@ namespace GeoGeometry.Activity.Auth
                 {
                     if (s_open_close_container.Text == "закрыт")
                         s_open_close_container.Text = "раскрыт";
-                    else
+                    else 
                         s_open_close_container.Text = "закрыт";
+                    
                 }
                 catch(Exception ex)
                 {
@@ -230,10 +237,12 @@ namespace GeoGeometry.Activity.Auth
             {
                 try
                 {
-                    if (s_lock_unlock_door.Text == "заблокирована")
+                    if (s_lock_unlock_door.Text == "заблокирована" && s_open_close_container.Text != "закрыт")
                         s_lock_unlock_door.Text = "разблокирована";
-                    else
+                    else if (s_open_close_container.Text != "закрыт")
                         s_lock_unlock_door.Text = "заблокирована";
+                    else
+                        Toast.MakeText(this, "" + "Невозможно изменить состояния дверей.", ToastLength.Long).Show();
                 }
                 catch (Exception ex)
                 {
@@ -271,7 +280,7 @@ namespace GeoGeometry.Activity.Auth
                         StaticBox.Weight = s_weight.Text;
                         StaticBox.Light = Convert.ToInt32(s_light.Text);
                         StaticBox.Wetness = s_humidity.Text;
-                        //StaticBox.Code = s_pin_access_code.Text;
+                        StaticBox.Code = "1234";
                         StaticBox.Name = container_name.Text;
                         StaticBox.IsOpenedBox = (s_open_close_container.Text == "раскрыт") ? true : false;
                         //Situation = s_situation.Text,
@@ -280,19 +289,19 @@ namespace GeoGeometry.Activity.Auth
 
                         if (a_situation == "На складе")
                         {
-                            StaticBox.BoxState = ContainerState.onBase;
+                            StaticBox.BoxState = "1";
                         }
                         else if (a_situation == "На автомобиле")
                         {
-                            StaticBox.BoxState = ContainerState.onCar;
+                            StaticBox.BoxState = "2";
                         }
                         else if (a_situation == "Выгруженным у грузоотправителя")
                         {
-                            StaticBox.BoxState = ContainerState.onConsignee;
+                            StaticBox.BoxState = "3";
                         }
                         else if (a_situation == "После разгрузки у грузополучателя")
                         {
-                            StaticBox.BoxState = ContainerState.onShipper;
+                            StaticBox.BoxState = "4";
                         }
 
                        
@@ -410,7 +419,8 @@ namespace GeoGeometry.Activity.Auth
                     s_result = await responseContent.ReadAsStringAsync();
                 }
 
-                o_data = JsonConvert.DeserializeObject<AuthApiData<BoxDataResponse>>(s_result);// !!!!
+                o_data = JsonConvert.DeserializeObject<AuthApiData<BoxDataResponse>>(s_result);// вылетает после регистрации 
+                //контейнера
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
                     if (o_data.Status == "0")
@@ -429,32 +439,27 @@ namespace GeoGeometry.Activity.Auth
                         var boxState = s_open_close_container.Text;
                         var doorState = s_lock_unlock_door.Text;
 
-                        if (exported_data.BoxState == ContainerState.onBase)
+                        if (exported_data.BoxState == "1")
                         {
                             a_situation = "На складе";
                         }
-                        else if (exported_data.BoxState == ContainerState.onCar)
+                        else if (exported_data.BoxState == "2")
                         {                           
                             a_situation = "На автомобиле";
                         }
-                        else if (exported_data.BoxState == ContainerState.onConsignee)
+                        else if (exported_data.BoxState == "3")
                         {
                             a_situation = "Выгруженным у грузоотправителя";
                         }
-                        else if (exported_data.BoxState == ContainerState.onShipper)
+                        else if (exported_data.BoxState == "4")
                         {                         
                             a_situation = "После разгрузки у грузополучателя";
                         }                       
 
                         s_temperature.Text = exported_data.Temperature.Replace(",", ".");
-                        if(exported_data.Light <= 50)
-                        {
-                            s_light.Text = "Нет";
-                        }
-                        else if(exported_data.Light > 50)
-                        {
-                            s_light.Text = "Да";
-                        }
+                        
+                        s_light.Text = exported_data.Light.ToString();
+                        
                         //s_pin_access_code.Text = (exported_data.Code == null) ? "0000" : exported_data.Code;
                         s_humidity.Text = exported_data.Wetness.Replace(",", ".");
                         s_battery.Text = exported_data.BatteryPower.Replace(",", ".");

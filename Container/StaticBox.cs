@@ -61,7 +61,7 @@ namespace GeoGeometry.Container
         /// <summary>
         /// Состояние контейнера.
         /// </summary>
-        static public ContainerState BoxState { get; set; }
+        static public string BoxState { get; set; }
 
         /// <summary>
         /// Наименование контейнера.

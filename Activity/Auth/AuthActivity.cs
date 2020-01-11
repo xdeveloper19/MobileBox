@@ -204,19 +204,21 @@ namespace GeoGeometry.Activity.Auth {
                                 //Начинаю собирать информацию о клиенте
                                 preloader.Visibility = Android.Views.ViewStates.Invisible;
                                 // Переход на страницу водителя.
-                            if (o_data.ResponseData.Role == "driver")
-                            {
-                                Intent Driver = new Intent(this, typeof(Auth.DriverActivity));
-                                StartActivity(Driver);
-                                this.Finish();
-                            }
-                            else if (o_data.ResponseData.Role == "user")
-                            {
-                                Intent UserActivity = new Intent(this, typeof(Auth.ActivityUserBox));
-                                StartActivity(UserActivity);
-                                this.Finish();
-                            }
-
+                            //if (o_data.ResponseData.Role == "driver")
+                            //{
+                            //    Intent Driver = new Intent(this, typeof(Auth.DriverActivity));
+                            //    StartActivity(Driver);
+                            //    this.Finish();
+                            //}
+                            //else if (o_data.ResponseData.Role == "user")
+                            //{
+                            //    Intent UserActivity = new Intent(this, typeof(Auth.ActivityUserBox));
+                            //    StartActivity(UserActivity);
+                            //    this.Finish();
+                            //}
+                            Intent Driver = new Intent(this, typeof(Auth.DriverActivity));
+                            StartActivity(Driver);
+                            this.Finish();
                         }
                         else
                         {

@@ -27,13 +27,11 @@ namespace GeoGeometry.Model.Box
         public string Wetness { get; set; }
         public string BatteryPower { get; set; }
 
-        public string Payment { get; set; }
         
-        public string Cost { get; set; }
-        public double Longitude { get; set; }
-        public double Latitude { get; set; }
+        public double? Longitude { get; set; }
+        public double? Latitude { get; set; }
 
-        public ContainerState BoxState { get; set; }
+        public string BoxState { get; set; }
         //public ContainerState Situation { get; set; }
         //public enum ContainerState
         //{

@@ -50,8 +50,8 @@ namespace GeoGeometry.Activity
 
                 
 
-                string[] permissions = { Manifest.Permission.AccessFineLocation, Manifest.Permission.WriteExternalStorage };
-                ActivityCompat.RequestPermissions(this, new String[] { Manifest.Permission.Camera }, MY_PERMISSIONS_REQUEST_CAMERA);
+                string[] permissions = { Manifest.Permission.AccessFineLocation, Manifest.Permission.WriteExternalStorage, Manifest.Permission.Camera };
+                //ActivityCompat.RequestPermissions(this, new String[] { Manifest.Permission.Camera }, MY_PERMISSIONS_REQUEST_CAMERA);
                 Dexter.WithActivity(this).WithPermissions(permissions).WithListener(new CompositeMultiplePermissionsListener(new SamplePermissionListener(this))).Check();
 
 
@@ -64,7 +64,6 @@ namespace GeoGeometry.Activity
                 };
 
                 // Переход к форме авторизация
-
                 btn_auth_form.Click += (s, e) =>
                 {
                     Intent authActivity = new Intent(this, typeof(Auth.AuthActivity));

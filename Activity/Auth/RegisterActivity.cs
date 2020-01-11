@@ -199,18 +199,10 @@ namespace GeoGeometry.Activity.Auth
                             file.Write(array, 0, array.Length);
                         }
 
-                        if(register.RoleName == "driver")
-                        {
-                                Intent Driver = new Intent(this, typeof(Auth.DriverActivity));
-                                StartActivity(Driver);
-                                this.Finish();
-                        }
-                        else if (register.RoleName == "user")
-                        {
-                            Intent UserActivity = new Intent(this, typeof(Auth.ActivityUserBox));
-                            StartActivity(UserActivity);
+                        
+                            Intent Driver = new Intent(this, typeof(Auth.DriverActivity));
+                            StartActivity(Driver);
                             this.Finish();
-                        }
 
                             preloader.Visibility = Android.Views.ViewStates.Invisible;
                         // Переход на страницу выбора контейнера.

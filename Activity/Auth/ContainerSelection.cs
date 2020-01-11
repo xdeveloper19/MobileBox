@@ -110,14 +110,14 @@ namespace GeoGeometry.Activity.Auth
             var role = StaticUser.UserRole;
             //AuthResponseData user = JsonConvert.DeserializeObject<AuthResponseData>(file_data_remember);
 
-            if (role == "user")
-            {
-                btn_box_registr.Visibility = ViewStates.Invisible;
-            }
-            else if(role == "driver")
-            {
-                btn_box_registr.Visibility = ViewStates.Visible;
-            }
+            //if (role == "user")
+            //{
+            //    btn_box_registr.Visibility = ViewStates.Invisible;
+            //}
+            //else if(role == "driver")
+            //{
+            //    btn_box_registr.Visibility = ViewStates.Visible;
+            //}
 
             //string array used for displayling AutoComplete Suggestion   
             /*var names = new string[] { "Anoop", "Arjit", "Akshay", "Ankit", "Rakesh" };
@@ -283,18 +283,19 @@ namespace GeoGeometry.Activity.Auth
                 //    await System.Text.Json.JsonSerializer.SerializeAsync<ContainerResponse>(ddd, box);
 
                 //}
-                if (role == "driver")
-                {
-                    Intent Driver = new Intent(this, typeof(Auth.DriverActivity));
-                    Driver.PutExtra("idAction", "2");// через объект идёт обращение к . 
-                    StartActivity(Driver);
-                }
-                else
-                {
-                    Intent UserBox = new Intent(this, typeof(Auth.ActivityUserBox));
-                    UserBox.PutExtra("idMethod", "2");// через объект идёт обращение к . 
-                    StartActivity(UserBox);
-                }
+                //if (role == "driver")
+                //{
+                    
+                //}
+                //else
+                //{
+                //    Intent UserBox = new Intent(this, typeof(Auth.ActivityUserBox));
+                //    UserBox.PutExtra("idMethod", "2");// через объект идёт обращение к . 
+                //    StartActivity(UserBox);
+                //}
+                Intent Driver = new Intent(this, typeof(Auth.DriverActivity));
+                Driver.PutExtra("idAction", "2");// через объект идёт обращение к . 
+                StartActivity(Driver);
 
                 //var box_name = box_name1.Text;
                 //var uri = "http://iot.tmc-centert.ru/api/container/getbox?id=" + id;
@@ -310,9 +311,9 @@ namespace GeoGeometry.Activity.Auth
 
             btn_back_a.Click += async delegate
             {
-                Intent ContainerRegisterActivity = new Intent(this, typeof(Auth.RegisterBoxActivity));
-                StartActivity(ContainerRegisterActivity);
-                this.Finish();
+                Intent Driver = new Intent(this, typeof(Auth.DriverActivity));
+                Driver.PutExtra("idAction", "2");// через объект идёт обращение к . 
+                StartActivity(Driver);
             };
 
 

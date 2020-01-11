@@ -27,7 +27,7 @@ namespace GeoGeometry.Model.Box
         public string Id { get; set; }
         public string Name { get; set; }
         public bool IsOpenedBox { get; set; }
-        public ContainerState BoxState { get; set; }
+        public string BoxState { get; set; }
         public bool IsOpenedDoor { get; set; }
 
 

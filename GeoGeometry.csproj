@@ -364,6 +364,7 @@
     <AndroidResource Include="Resources\drawable\activityRR.jpg" />
     <AndroidResource Include="Resources\drawable\button_stili2.xml" />
     <AndroidResource Include="Resources\drawable\top6.jpg" />
+    <AndroidResource Include="Resources\drawable\banner.jpg" />
     <Content Include="Resources\layout\1aaa.axml" />
     <AndroidResource Include="Resources\layout\activity_lol.axml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>

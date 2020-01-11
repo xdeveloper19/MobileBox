@@ -178,18 +178,7 @@
                     android:padding = "5dp"
                     android:textSize="8sp" />
 
-                <Button
-                    android:id="@+id/btn_free_for_order"
-                    android:layout_width="wrap_content"
-                    android:layout_height="25dp"       
-                    android:layout_marginTop = "11dp"
-                    android:layout_below="@+id/s_lock_unlock_door"
-                    android:layout_toEndOf="@+id/textLockUnlockDoor"
-                    android:layout_toRightOf="@+id/textLockUnlockDoor"
-                    android:text="Свободен для заказов"
-                    android:background="@drawable/button_stili"
-                    android:padding = "5dp"
-                    android:textSize="8sp" />
+                
 
 
                 <Button
@@ -199,9 +188,8 @@
                     android:layout_marginTop = "13dp"
                     android:layout_marginLeft="20dp"
                     android:layout_below="@+id/btn_lock_unlock_door"
-                    android:layout_toEndOf="@+id/s_lock_unlock_door"
-                    android:layout_toRightOf="@+id/s_lock_unlock_door"
-                    android:text="Передать доступ заказчику"
+                    android:layout_alignParentRight="true"
+                    android:text="Открыть камеру"
                     android:background="@drawable/button_stili"
                     android:padding = "5dp"
                     android:textSize="8sp" />
@@ -448,39 +436,15 @@
                     android:layout_toRightOf="@+id/Text4"
                     />
 
-                <TextView
-                    android:id="@+id/Text5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/Text4"
-                    android:padding="10dp"
-                    android:gravity="left"
-                    android:text="Состояние оплаты:"
-                    android:textSize="15sp"
-                    />
-                <EditText
-                    android:id="@+id/s_payment"
-                    android:layout_width="90dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/s_signal_strength"
-                    android:gravity="center"
-                    android:editable="false"
-                    android:layout_marginTop="8dp"
-                    android:padding="8dp"
-                    android:background = "@drawable/edittext_stili"
-                    android:textSize="11sp"
-                    android:maxLength = "12"
-                    android:layout_toEndOf="@+id/Text5"
-                    android:layout_toRightOf="@+id/Text5"
-                    android:inputType="text"
-                    android:text = "Не оплачено"/>
+                
+                
 
                 <Button
                     android:id="@+id/btn_change_parameters"
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"                    
                     android:layout_alignParentRight = "true"
-                    android:layout_below="@+id/s_payment"
+                    android:layout_below="@id/s_signal_strength"
                     android:text="Изменить параметры"
                     android:textSize="8sp"
                     android:background="@drawable/button_stili"
