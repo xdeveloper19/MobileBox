@@ -78,6 +78,7 @@
     <Compile Include="Activity\Cameraa\CameraPictureCallBack.cs" />
     <Compile Include="Activity\Cameraa\CameraPreview.cs" />
     <Compile Include="Activity\Home\HomeActivity.cs" />
+    <Compile Include="Activity\Menu\BoxMenuFragment.cs" />
     <Compile Include="Activity\Menu\MainMenuFragment.cs" />
     <Compile Include="Activity\Menu\StaticMenu.cs" />
     <Compile Include="Activity\Squad\SquadActivity.cs" />
@@ -368,6 +369,10 @@
     <AndroidResource Include="Resources\drawable\banner.jpg" />
     <AndroidResource Include="Resources\drawable\openedBox.png" />
     <AndroidResource Include="Resources\drawable\closedBox.png" />
+    <AndroidResource Include="Resources\drawable\exit.png" />
+    <AndroidResource Include="Resources\drawable\foto.png" />
+    <AndroidResource Include="Resources\drawable\order.png" />
+    <AndroidResource Include="Resources\drawable\truck.png" />
     <Content Include="Resources\layout\1aaa.axml" />
     <AndroidResource Include="Resources\layout\activity_lol.axml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
@@ -380,6 +385,10 @@
     <AndroidResource Include="Resources\layout\activity_sensors.xml" />
     <AndroidResource Include="Resources\layout\activity_box.xml">
       <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\fragment_menu_box.xml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
     </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

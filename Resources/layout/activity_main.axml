@@ -24,12 +24,16 @@
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
 		android:orientation="vertical">
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="375.5dp"
-                android:scaleType="centerCrop"
-                android:src = "@drawable/banner"
-                android:id="@+id/img_bg"/> 
+            <TextView
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent"
+			     android:id = "@+id/TextCenter"
+				 android:textSize = "30sp"
+			     android:padding = "10dp"
+				 android:gravity="center"
+				android:layout_marginTop = "200dp"
+				 android:textColor = "#20B2AA"
+				 android:text = "SmartBox"/>
 	
 			<RelativeLayout
       
@@ -37,8 +41,9 @@
 				android:layout_height="fill_parent"
 				android:orientation="vertical"
 				android:padding="32dp"
+				android:layout_marginTop = "100dp"
 				android:background = "@drawable/activity_stili"
-				android:layout_below="@+id/img_bg"
+				android:layout_below="@+id/TextCenter"
 				android:id="@+id/main_form"
 				>
 
