@@ -18,8 +18,7 @@
     <item>Отсутствует</item>
     <item>На складе</item>
     <item>На автомобиле</item>
-    <item>Выгруженным у грузоотправителя</item>
-    <item>После разгрузки у грузополучателя</item>
+    <item>У заказчика</item>
   </string-array>
 
   <string-array name="array_cargo_characteristic">

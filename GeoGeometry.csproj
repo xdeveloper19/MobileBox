@@ -72,6 +72,7 @@
     <Compile Include="Activity\Auth\RegisterActivity.cs" />
     <Compile Include="Activity\Auth\RegisterBoxActivity.cs" />
     <Compile Include="Activity\Auth\DriverActivity.cs" />
+    <Compile Include="Activity\Auth\SensorsDataActivity.cs" />
     <Compile Include="Activity\Cameraa\CameraActivity.cs" />
     <Compile Include="Activity\Cameraa\CameraFragment.cs" />
     <Compile Include="Activity\Cameraa\CameraPictureCallBack.cs" />
@@ -365,6 +366,8 @@
     <AndroidResource Include="Resources\drawable\button_stili2.xml" />
     <AndroidResource Include="Resources\drawable\top6.jpg" />
     <AndroidResource Include="Resources\drawable\banner.jpg" />
+    <AndroidResource Include="Resources\drawable\openedBox.png" />
+    <AndroidResource Include="Resources\drawable\closedBox.png" />
     <Content Include="Resources\layout\1aaa.axml" />
     <AndroidResource Include="Resources\layout\activity_lol.axml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
@@ -374,6 +377,10 @@
     <AndroidResource Include="Resources\layout\activity_main.xml" />
     <AndroidResource Include="Resources\layout\activity_driver.axml" />
     <AndroidResource Include="Resources\layout\activity_driver.xml" />
+    <AndroidResource Include="Resources\layout\activity_sensors.xml" />
+    <AndroidResource Include="Resources\layout\activity_box.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>

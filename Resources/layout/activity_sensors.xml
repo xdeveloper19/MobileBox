@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingTop="16dp"
+    android:id="@+id/sensors_data"
+    android:paddingRight="16dp"
+    android:paddingBottom="16dp"
+    android:background = "@drawable/activity_stili"
+    android:stretchColumns="1">
+
+    <TableRow>
+        <ImageButton
+		    android:src="@drawable/btnBack"
+		    android:layout_width="50dp" 
+            android:layout_height="50dp" 
+		    android:layout_marginTop="10dp"
+		    android:layout_marginBottom="10dp"
+		    android:layout_marginLeft="20dp"
+		    android:background="@android:color/transparent"
+		    android:id="@+id/btn_back_a1" />
+        <TextView
+            android:minWidth="30px"
+            android:minHeight="30px"
+            
+            android:id="@+id/textView1" />
+        <TextView
+            android:minWidth="30px"
+            android:minHeight="30px"
+            
+            android:id="@+id/textView2" />
+    </TableRow>
+    
+        
+    <TextView
+		android:text="Фотофиксация"
+		android:textAppearance="?android:attr/textAppearanceLarge"
+		android:layout_width="fill_parent"
+		android:gravity="center"
+		android:layout_height="30dp"
+		android:layout_marginBottom="20dp"
+		android:layout_below="@+id/btn_back_a1"
+		android:id="@+id/textfixed"/>
+        
+	
+
+    <TableRow android:background="#AFEEEE">
+
+        <TextView
+            android:text="№ п/п"
+            android:padding="3dip"
+            
+            android:id="@+id/number"/>
+        
+        <TextView
+            android:text="Время фотофиксации"
+            android:gravity="center"
+            android:id="@+id/timeChange"
+            android:padding="3dip" />
+        <TextView
+            android:text="Датчик"
+            
+            android:gravity="right"
+            android:id="@+id/sensor_name"
+            android:padding="3dip" />
+    </TableRow>
+    <View
+        android:layout_height="2dip"
+        android:background="#FF909090" />
+
+   <TableRow>
+        <TextView
+            android:text="1"
+            android:padding="3dip" />
+        
+        <TextView
+            android:text="07.12.2020 13:00"
+            android:gravity="center"
+            android:padding="3dip" />
+        <TextView
+            android:text="Вес груза"
+            android:gravity="right"
+            android:padding="3dip" />
+    </TableRow>
+
+<TableRow>
+        <TextView
+            android:text="2"
+            android:padding="3dip" />
+        
+        <TextView
+            android:text="09.12.2020 23:00"
+            android:gravity="center"
+            android:padding="3dip" />
+        <TextView
+            android:text="Темп."
+            android:gravity="right"
+            android:padding="3dip" />
+    </TableRow>
+
+<TableRow>
+        <TextView
+            android:text="3"
+            android:padding="3dip" />
+        
+        <TextView
+            android:text="09.12.2020 23:00"
+            android:gravity="center"
+            android:padding="3dip" />
+        <TextView
+            android:text="Влаж."
+            android:gravity="right"
+            android:padding="3dip" />
+    </TableRow>
+
+<TableRow>
+        <TextView
+            android:text="4"
+            android:padding="3dip" />
+        
+        <TextView
+            android:text="09.12.2020 23:50"
+            android:gravity="center"
+            android:padding="3dip" />
+        <TextView
+            android:text="Свет"
+            android:gravity="right"
+            android:padding="3dip" />
+    </TableRow>
+</TableLayout>
