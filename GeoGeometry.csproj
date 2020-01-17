@@ -66,6 +66,8 @@
   <ItemGroup>
     <Compile Include="Activity\Auth\ActivityApplication.cs" />
     <Compile Include="Activity\Auth\ActivityCamera.cs" />
+    <Compile Include="Activity\Auth\ActivityContainerCondition.cs" />
+    <Compile Include="Activity\Auth\ActivityGPSBox.cs" />
     <Compile Include="Activity\Auth\ActivityUserBox.cs" />
     <Compile Include="Activity\Auth\AuthActivity.cs" />
     <Compile Include="Activity\Auth\ContainerSelection.cs" />
@@ -73,10 +75,12 @@
     <Compile Include="Activity\Auth\RegisterBoxActivity.cs" />
     <Compile Include="Activity\Auth\DriverActivity.cs" />
     <Compile Include="Activity\Auth\SensorsDataActivity.cs" />
+    <Compile Include="Activity\Auth\TakePhoto.cs" />
     <Compile Include="Activity\Cameraa\CameraActivity.cs" />
     <Compile Include="Activity\Cameraa\CameraFragment.cs" />
     <Compile Include="Activity\Cameraa\CameraPictureCallBack.cs" />
     <Compile Include="Activity\Cameraa\CameraPreview.cs" />
+    <Compile Include="Activity\Cameraa\PermissionUtil.cs" />
     <Compile Include="Activity\Home\HomeActivity.cs" />
     <Compile Include="Activity\Menu\BoxMenuFragment.cs" />
     <Compile Include="Activity\Menu\MainMenuFragment.cs" />
@@ -98,6 +102,8 @@
     <Compile Include="Model\Auth\AuthResponseData.cs" />
     <Compile Include="Model\Box\BoxDataResponse.cs" />
     <Compile Include="Model\Box\BoxNames.cs" />
+    <Compile Include="Model\Box\EditSensorsViewModel.cs" />
+    <Compile Include="Model\Box\GetBoxIdResponse.cs" />
     <Compile Include="Model\Box\RegisterBoxModel.cs" />
     <Compile Include="Model\Box\SmartBox.cs" />
     <Compile Include="Model\GPSLocation\BoxLocation.cs" />
@@ -367,12 +373,17 @@
     <AndroidResource Include="Resources\drawable\button_stili2.xml" />
     <AndroidResource Include="Resources\drawable\top6.jpg" />
     <AndroidResource Include="Resources\drawable\banner.jpg" />
-    <AndroidResource Include="Resources\drawable\openedBox.png" />
     <AndroidResource Include="Resources\drawable\closedBox.png" />
     <AndroidResource Include="Resources\drawable\exit.png" />
     <AndroidResource Include="Resources\drawable\foto.png" />
     <AndroidResource Include="Resources\drawable\order.png" />
     <AndroidResource Include="Resources\drawable\truck.png" />
+    <AndroidResource Include="Resources\drawable\box_folded.png" />
+    <AndroidResource Include="Resources\drawable\close_door.jpg">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\open_door.jpg" />
+    <AndroidResource Include="Resources\drawable\close_box.jpg" />
     <Content Include="Resources\layout\1aaa.axml" />
     <AndroidResource Include="Resources\layout\activity_lol.axml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
@@ -390,6 +401,8 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\activity_GPS.xml" />
+    <AndroidResource Include="Resources\layout\activity_container_condition.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>

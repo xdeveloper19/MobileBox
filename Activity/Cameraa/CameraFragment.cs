@@ -33,8 +33,9 @@ namespace GeoGeometry.Activity.Cameraa
         {
             var ignor = base.OnCreateView(inflater, container, savedInstanceState);
             var view = inflater.Inflate(Resource.Layout.CameraFragmentLayout, container, false);
-
-            var snapButton = view.FindViewById<Button>(Resource.Id.snapButton);
+            
+       
+        var snapButton = view.FindViewById<Button>(Resource.Id.snapButton);
             snapButton.BringToFront();
             snapButton.Click += SnapButtonClick;
 
@@ -55,7 +56,7 @@ namespace GeoGeometry.Activity.Cameraa
             try
             {
                 _camera.StartPreview();//https://habr.com/ru/post/112272/             
-                _camera.TakePicture(null, null, new CameraPictureCallBack(Activity));//&&&
+                //_camera.TakePicture(null, null, CameraPictureCallBack(Activity));//&&&
             }
             catch (Exception ex)
             {

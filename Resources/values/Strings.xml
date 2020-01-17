@@ -15,7 +15,6 @@
     <item>Пользователь</item>
   </string-array>
   <string-array name="a_situation_loaded_container">
-    <item>Отсутствует</item>
     <item>На складе</item>
     <item>На автомобиле</item>
     <item>У заказчика</item>

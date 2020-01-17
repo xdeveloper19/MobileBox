@@ -16,22 +16,28 @@ namespace GeoGeometry.Model.Box
 {
     public class BoxDataResponse: BaseResponseObject
     {
-        public string Name { get; set; }
-        public string Id { get; set; }
-        public bool IsOpenedBox { get; set; }
-        public bool IsOpenedDoor { get; set; }
-        public string Weight { get; set; }
-        public int Light { get; set; }
-        public string Code { get; set; }
-        public string Temperature { get; set; }
-        public string Wetness { get; set; }
-        public string BatteryPower { get; set; }
 
-        
-        public double? Longitude { get; set; }
-        public double? Latitude { get; set; }
+        public string SensoreName { get; set; }
 
-        public string BoxState { get; set; }
+        public string Value { get; set; }
+
+        public string CreatedAt { get; set; }
+        //public string Name { get; set; }
+        //public string Id { get; set; }
+        //public bool IsOpenedBox { get; set; }
+        //public bool IsOpenedDoor { get; set; }
+        //public string Weight { get; set; }
+        //public int Light { get; set; }
+        //public string Code { get; set; }
+        //public string Temperature { get; set; }
+        //public string Wetness { get; set; }
+        //public string BatteryPower { get; set; }
+
+
+        //public double? Longitude { get; set; }
+        //public double? Latitude { get; set; }
+
+        //public string BoxState { get; set; }
         //public ContainerState Situation { get; set; }
         //public enum ContainerState
         //{

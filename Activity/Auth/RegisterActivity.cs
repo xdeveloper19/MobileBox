@@ -49,16 +49,6 @@ namespace GeoGeometry.Activity.Auth
         /// </summary>
         private Button btn_register;
 
-        private Button btn_i;
-
-        private Button btn_e;
-
-        private Button btn_ri;
-
-        private Button btn_re;
-
-        private Spinner s_role_name;
-
         /// <summary>
         /// Конпка назад.
         /// </summary>
@@ -74,16 +64,11 @@ namespace GeoGeometry.Activity.Auth
             SetContentView(Resource.Layout.activity_register);
 
             btn_register = FindViewById<Button>(Resource.Id.btn_register);
-            btn_e = FindViewById<Button>(Resource.Id.btn_e);
-            btn_i = FindViewById<Button>(Resource.Id.btn_i);
-            btn_re = FindViewById<Button>(Resource.Id.btn_re);
-            btn_ri = FindViewById<Button>(Resource.Id.btn_ri);
             s_first_name = FindViewById<EditText>(Resource.Id.s_first_name);
             s_last_name = FindViewById<EditText>(Resource.Id.s_last_name);
             s_pass = FindViewById<EditText>(Resource.Id.s_pass);
             s_pass_check = FindViewById<EditText>(Resource.Id.s_pass_check);
             s_email = FindViewById<EditText>(Resource.Id.s_email);
-            s_role_name = FindViewById<Spinner>(Resource.Id.s_role_name);
 
             preloader = FindViewById<ProgressBar>(Resource.Id.loader);
 
@@ -94,41 +79,33 @@ namespace GeoGeometry.Activity.Auth
                 Finish();
             };
 
-            btn_i.Click += (s, e) =>
-            {
-                //Intent I = new Intent(this, typeof(Reg.RegisterIndividual));
-                //StartActivity(I);
-                //this.Finish();
-            };
+            //btn_i.Click += (s, e) =>
+            //{
+            //    //Intent I = new Intent(this, typeof(Reg.RegisterIndividual));
+            //    //StartActivity(I);
+            //    //this.Finish();
+            //};
 
-            btn_e.Click += (s, e) =>
-            {
-                //Intent E = new Intent(this, typeof(Reg.RegisterEntity));
-                //StartActivity(E);
-                //this.Finish();
-            };
+            //btn_e.Click += (s, e) =>
+            //{
+            //    //Intent E = new Intent(this, typeof(Reg.RegisterEntity));
+            //    //StartActivity(E);
+            //    //this.Finish();
+            //};
 
-            btn_ri.Click += (s, e) =>
-            {
-                //Intent I = new Intent(this, typeof(Reg.CustomerRecipientIndividual));
-                //StartActivity(I);
-                //this.Finish();
-            };
+            //btn_ri.Click += (s, e) =>
+            //{
+            //    //Intent I = new Intent(this, typeof(Reg.CustomerRecipientIndividual));
+            //    //StartActivity(I);
+            //    //this.Finish();
+            //};
 
-            btn_re.Click += (s, e) =>
-            {
-                //Intent E = new Intent(this, typeof(Reg.CustomerRecipientEntity));
-                //StartActivity(E);
-                //this.Finish();
-            };
-
-            s_role_name.Prompt = "Выбор роли";
-            s_role_name.ItemSelected += new EventHandler<AdapterView.ItemSelectedEventArgs>(Spinner_ItemSelected);
-            var adapter = ArrayAdapter.CreateFromResource(this, Resource.Array.a_role, Android.Resource.Layout.SimpleSpinnerItem);
-
-            adapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
-            s_role_name.Adapter = adapter;
-
+            //btn_re.Click += (s, e) =>
+            //{
+            //    //Intent E = new Intent(this, typeof(Reg.CustomerRecipientEntity));
+            //    //StartActivity(E);
+            //    //this.Finish();
+            //};
 
             string dir_path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
 
@@ -145,15 +122,9 @@ namespace GeoGeometry.Activity.Auth
                         Email = s_email.Text,
                         Password = s_pass.Text,
                         PasswordConfirm = s_pass_check.Text,
-                      
+                        RoleName = "user",
                     };
-                    if (s_section_role == "Водитель")
-                    {
-                        register.RoleName = "driver";
-                    }
-                    else if (s_section_role == "Пользователь") {
-                        register.RoleName = "user";
-                    }
+                    
                     var myHttpClient = new HttpClient();
                     var uri = new Uri(" http://iot-tmc-cen.1gb.ru/api/auth/register?email=" + register.Email + "&firstname=" + register.FirstName + "&lastname=" + register.LastName + "&password=" + register.Password + "&passwordconfirm=" + register.PasswordConfirm + "&rolename=" + register.RoleName);
                     //var uri = "../register?email="+register.Email+"&firstname="+register.FirstName+"&lastname="+register.LastName+"&password="+register.Password+"&passwordconfirm=" + register.PasswordConfirm +"&rolename=" + register.RoleName;
@@ -223,11 +194,6 @@ namespace GeoGeometry.Activity.Auth
             };
 
         }  
-        private void Spinner_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
-        {
-            var spinner = sender as Spinner;
-            s_section_role = spinner.GetItemAtPosition(e.Position).ToString();
-        }
         /// <summary>
         /// Метод очистки полей.
         /// </summary>

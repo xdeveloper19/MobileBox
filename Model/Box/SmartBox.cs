@@ -25,23 +25,22 @@ namespace GeoGeometry.Model.Box
         }
 
         public string Id { get; set; }
-        public string Name { get; set; }
-        public bool IsOpenedBox { get; set; }
-        public string BoxState { get; set; }
-        public bool IsOpenedDoor { get; set; }
 
 
-        public string Weight { get; set; }
+        //public string Weight { get; set; }
 
 
-        public int Light { get; set; }
-        public string Code { get; set; }
+        //public string Light { get; set; }
 
 
-        public string Temperature { get; set; }
+        //public string Temperature { get; set; }
 
 
-        public string Wetness { get; set; }
-        public string BatteryPower { get; set; }
+        //public string Wetness { get; set; }
+        //public string BatteryPower { get; set; }
+        //public string SignalLevel { get; set; }
+        public DateTime Date { get; set; }
+
+        public Dictionary<string,string> Sensors { get; set; }
     }
 }

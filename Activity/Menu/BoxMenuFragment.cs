@@ -65,7 +65,8 @@ namespace GeoGeometry.Activity.Menu
                 btn_map32 = main_menu.FindViewById<AppCompatImageButton>(Resource.Id.btn_map32);
                 btn_map32.Click += (s, e) =>
                 {
-
+                    Intent squadActivity = new Intent(Activity, typeof(Auth.ActivityGPSBox));
+                    StartActivity(squadActivity);
                 };
             }
 
@@ -76,9 +77,9 @@ namespace GeoGeometry.Activity.Menu
                 btn_box_state = main_menu.FindViewById<AppCompatImageButton>(Resource.Id.btn_box_state);
                 btn_box_state.Click += (s, e) =>
                 {
-
-
-                };
+                    Intent userActivity = new Intent(Activity, typeof(Auth.ActivityContainerCondition));
+                    StartActivity(userActivity);
+                }; 
 
                 if (StaticMenu.id_page != 4)
                 {

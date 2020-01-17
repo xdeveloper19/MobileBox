@@ -42,25 +42,12 @@
 		android:layout_height="20dp"
 		android:layout_below="@+id/textlogin"
 		android:id="@+id/textlogin_desc"/>
-    <Spinner
-        android:spinnerMode="dialog"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:layout_below="@+id/textlogin_desc"
-        android:id="@+id/s_role_name"
-		android:background = "@drawable/edittext_stili"
-        android:entries="@array/a_role"
-		android:layout_marginRight = "19dp"
-        android:layout_marginLeft = "19dp"
-        android:layout_marginStart = "19dp"
-     />
 
     <RelativeLayout
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content" 
 		android:padding="20dip"
-		android:layout_below="@+id/s_role_name"
+		android:layout_below="@+id/textlogin_desc"
 		android:id="@+id/containerRegister">
 
     
@@ -159,41 +146,6 @@
 			android:layout_below="@+id/s_pass_check"
 			android:id="@+id/btn_register" />
 
-		<Button
-			android:text="Физ. лицо"
-			android:layout_width="fill_parent"
-			android:layout_height="40dp"
-		    android:layout_marginTop="20dp"
-			android:background="@drawable/button_stili"
-			android:layout_below="@+id/btn_register"
-			android:id="@+id/btn_i" />
-
-		<Button
-			android:text="Юр. лицо"
-			android:layout_width="fill_parent"
-			android:layout_height="40dp"
-			android:layout_marginTop="20dp"
-			android:background="@drawable/button_stili"
-			android:layout_below="@+id/btn_i"
-			android:id="@+id/btn_e" />
-
-				<Button
-			android:text="Физ. лицо(Заказчик и Получатель)"
-			android:layout_width="fill_parent"
-			android:layout_height="40dp"
-			android:layout_marginTop="20dp"
-			android:background="@drawable/button_stili"
-			android:layout_below="@+id/btn_e"
-			android:id="@+id/btn_ri" />
-
-				<Button
-			android:text="Юр. лицо(Заказчик и Получатель)"
-			android:layout_width="fill_parent"
-			android:layout_height="40dp"
-			android:layout_marginTop="20dp"
-			android:background="@drawable/button_stili"
-			android:layout_below="@+id/btn_ri"
-			android:id="@+id/btn_re" />
         
 	</RelativeLayout>  
 	</RelativeLayout>

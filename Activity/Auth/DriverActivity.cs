@@ -27,6 +27,7 @@ using static GeoGeometry.Model.Box.SmartBox;
 using Android.Gms.Maps.Model;
 using System.Globalization;
 using GeoGeometry.Activity.Menu;
+using Plugin.Settings;
 
 namespace GeoGeometry.Activity.Auth
 {
@@ -60,18 +61,6 @@ namespace GeoGeometry.Activity.Auth
 
         //private EditText s_lock_unlock_door;
 
-        //private SeekBar s_weight;
-
-        //private SeekBar s_temperature;
-
-        //private SeekBar s_light;
-
-        //private SeekBar s_humidity; 
-
-        //private SeekBar s_battery;
-
-        //private static SeekBar s_signal_strength;
-
         //private static EditText s_longitude;
 
         //private static EditText s_latitude;
@@ -84,6 +73,30 @@ namespace GeoGeometry.Activity.Auth
 
         //private ProgressBar preloader;
         private RelativeLayout box_container;
+
+        private TextView SmullWeight;
+
+        private TextView SmullTemperature;
+
+        private TextView SmullLight;
+
+        private TextView SmullHumidity;
+
+        private TextView SmullBattery;
+
+        private TextView SmullNetworkSignal;
+
+        private SeekBar s_weight;
+
+        private SeekBar s_temperature;
+
+        private SeekBar s_light;
+
+        private SeekBar s_humidity;
+
+        private SeekBar s_battery;
+
+        private static SeekBar s_signal_strength_1;
 
         private Button btn_save_parameters;
 
@@ -99,6 +112,63 @@ namespace GeoGeometry.Activity.Auth
 
             box_container = FindViewById<RelativeLayout>(Resource.Id.box_container);
             btn_save_parameters = FindViewById<Button>(Resource.Id.btn_save_parameters);
+            SmullWeight = FindViewById<TextView>(Resource.Id.SmullWeight);
+            SmullTemperature = FindViewById<TextView>(Resource.Id.SmullTemperature);
+            SmullLight = FindViewById<TextView>(Resource.Id.SmullLight);
+            SmullHumidity = FindViewById<TextView>(Resource.Id.SmullHumidity);
+            SmullBattery = FindViewById<TextView>(Resource.Id.SmullBattery);
+            SmullNetworkSignal = FindViewById<TextView>(Resource.Id.SmullNetworkSignal);
+            s_weight = FindViewById<SeekBar>(Resource.Id.s_weight);
+            s_temperature = FindViewById<SeekBar>(Resource.Id.TemperatureEdit);
+            s_light = FindViewById<SeekBar>(Resource.Id.s_light);
+            s_humidity = FindViewById<SeekBar>(Resource.Id.s_humidity);
+            s_battery = FindViewById<SeekBar>(Resource.Id.s_battery);
+            s_signal_strength_1 = FindViewById<SeekBar>(Resource.Id.s_signal_strength_1);
+
+            s_weight.ProgressChanged += (object sender, SeekBar.ProgressChangedEventArgs e) =>
+            {
+                if (e.FromUser)
+                {
+                    SmullWeight.Text = string.Format("{0}", e.Progress);
+                }
+            };
+            s_temperature.ProgressChanged += (object sender, SeekBar.ProgressChangedEventArgs e) =>
+            {
+                if (e.FromUser)
+                {
+                    SmullTemperature.Text = string.Format("{0}", e.Progress);
+                }
+            };
+            s_light.ProgressChanged += (object sender, SeekBar.ProgressChangedEventArgs e) =>
+            {
+                if (e.FromUser)
+                {
+                    SmullLight.Text = string.Format("{0}", e.Progress);
+                }
+            };
+            s_humidity.ProgressChanged += (object sender, SeekBar.ProgressChangedEventArgs e) =>
+            {
+                if (e.FromUser)
+                {
+                    SmullHumidity.Text = string.Format("{0}", e.Progress);
+                }
+            };
+            s_battery.ProgressChanged += (object sender, SeekBar.ProgressChangedEventArgs e) =>
+            {
+                if (e.FromUser)
+                {
+                    SmullBattery.Text = string.Format("{0}", e.Progress);
+                }
+            };
+            s_signal_strength_1.ProgressChanged += (object sender, SeekBar.ProgressChangedEventArgs e) =>
+            {
+                if (e.FromUser)
+                {
+                    SmullNetworkSignal.Text = string.Format("{0}", e.Progress);
+                }
+            };
+
+
             //btn_exit_ = FindViewById<Button>(Resource.Id.btn_exit_);
             //btn_open_close_container = FindViewById<Button>(Resource.Id.btn_open_close_container);
             //btn_lock_unlock_door = FindViewById<Button>(Resource.Id.btn_lock_unlock_door);
@@ -110,12 +180,6 @@ namespace GeoGeometry.Activity.Auth
             //s_situation = FindViewById<Spinner>(Resource.Id.s_situation);
             //s_open_close_container = FindViewById<EditText>(Resource.Id.s_open_close_container);
             //s_lock_unlock_door = FindViewById<EditText>(Resource.Id.s_lock_unlock_door);
-            //s_weight = FindViewById<SeekBar>(Resource.Id.s_weight);
-            //s_temperature = FindViewById<SeekBar>(Resource.Id.TemperatureEdit);
-            //s_light = FindViewById<SeekBar>(Resource.Id.s_light);
-            //s_humidity = FindViewById<SeekBar>(Resource.Id.s_humidity);
-            //s_battery = FindViewById<SeekBar>(Resource.Id.s_battery);
-            //s_signal_strength = FindViewById<SeekBar>(Resource.Id.s_signal_strength);
             //s_longitude = FindViewById<EditText>(Resource.Id.s_longitude);
             //s_latitude = FindViewById<EditText>(Resource.Id.s_latitude);
             //s_date_time = FindViewById<EditText>(Resource.Id.s_date_time);
@@ -148,17 +212,17 @@ namespace GeoGeometry.Activity.Auth
             //s_situation.Adapter = adapter;
 
             string dir_path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+            GetInfoAboutBox(dir_path);
+            //if (File.Exists(@"" + dir_path + "box_data.txt"))
+            //{
+            //    string[] strok = File.ReadAllLines(dir_path + "box_data.txt");
 
-            if (File.Exists(@"" + dir_path + "box_data.txt"))
-            {
-                string[] strok = File.ReadAllLines(dir_path + "box_data.txt");
+            //    if (strok.Length != 0)
+            //    {
+            //        GetInfoAboutBox(dir_path);
+            //    }
 
-                if (strok.Length != 0)
-                {
-                    GetInfoAboutBox(dir_path);
-                }
-                
-            }
+            //}
             //BuildLocationRequest();
             //BuildLocationCallBack();
 
@@ -182,7 +246,7 @@ namespace GeoGeometry.Activity.Auth
             //        break;
             //    case "3": 
             //        {
-                        
+
             //        }
             //        break;
             //}
@@ -194,7 +258,7 @@ namespace GeoGeometry.Activity.Auth
             //};
 
             //переход на форму выбора контейнера
-            
+
 
             //btn_transfer_access.Click += async delegate
             //    {
@@ -224,7 +288,7 @@ namespace GeoGeometry.Activity.Auth
             //            s_open_close_container.Text = "разложен";
             //        else 
             //            s_open_close_container.Text = "сложен";
-                    
+
             //    }
             //    catch(Exception ex)
             //    {
@@ -266,109 +330,157 @@ namespace GeoGeometry.Activity.Auth
             //редактирование данных контейнера
             btn_save_parameters.Click += async delegate
             {
-                //try
-                //{
-                //    if(a_situation == "Отсутствует")
-                //    {
-                //        Toast.MakeText(this, "Выберите состояние контейнера",ToastLength.Long).Show();
-                //    }
-                //    else
-                //    {
-                //        preloader.Visibility = Android.Views.ViewStates.Visible;
-                        
-                //        StaticBox.Temperature = s_temperature.Progress.ToString();
-                //        StaticBox.Weight = s_weight.Progress.ToString();
-                //        StaticBox.Light = Convert.ToInt32(s_light.Progress.ToString());
-                //        StaticBox.Wetness = s_humidity.Progress.ToString();
-                //        StaticBox.Code = "1234";
-                //        StaticBox.Name = container_name.Text;
-                //        StaticBox.IsOpenedBox = (s_open_close_container.Text == "разложен") ? true : false;
-                //        //Situation = s_situation.Text,
-                //        StaticBox.IsOpenedDoor = (s_lock_unlock_door.Text == "открыта") ? true : false;
-                //        StaticBox.BatteryPower = s_battery.Progress.ToString();
-
-                //        if (a_situation == "На складе")
-                //        {
-                //            StaticBox.BoxState = "1";
-                //        }
-                //        else if (a_situation == "На автомобиле")
-                //        {
-                //            StaticBox.BoxState = "2";
-                //        }
-                //        else if (a_situation == "У заказчика")
-                //        {
-                //            StaticBox.BoxState = "3";
-                //        }
-
-                //        SmartBox container = new SmartBox
-                //        {
-                //            Id = StaticBox.SmartBoxId,
-                //            Temperature = StaticBox.Temperature,
-                //            Name = StaticBox.Name,
-                //            // Weight = StaticBox.Weight,
-                //            Weight = StaticBox.Weight,
-                //            Light = StaticBox.Light,
-                //            Wetness = StaticBox.Wetness,
-                //            Code = StaticBox.Code,
-                //            IsOpenedBox = StaticBox.IsOpenedBox,
-                //            BoxState = StaticBox.BoxState,
-                //            IsOpenedDoor = StaticBox.IsOpenedDoor,
-                //            BatteryPower = StaticBox.BatteryPower
-                //        };
-
-                       
-
-                //        var myHttpClient = new HttpClient();
-
-                //        var uri = ("http://iot-tmc-cen.1gb.ru/api/container/editbox?id=" + container.Id + "&IsOpenedBox=" + container.IsOpenedBox + "&Name=" + container.Name + "&IsOpenedDoor=" + container.IsOpenedDoor + "&Weight=" + container.Weight + "&Light=" + container.Light + "&Code=" + container.Code + "&Temperature=" + container.Temperature + "&Wetness=" + container.Wetness + "&BatteryPower=" + container.BatteryPower + "&BoxState=" + container.BoxState);
-                //        var uri2 = ("http://81.177.136.11:8003/sensor?id=" + container.Id + "&IsOpenedBox=" + container.IsOpenedBox + "&Name=" + container.Name + "&IsOpenedDoor=" + container.IsOpenedDoor + "&Weight=" + container.Weight + "&Light=" + container.Light + "&Code=" + container.Code + "&Temperature=" + container.Temperature + "&Wetness=" + container.Wetness + "&BatteryPower=" + container.BatteryPower + "&BoxState=" + container.BoxState);
+                try
+                {
 
 
-                //        HttpResponseMessage response = await myHttpClient.PutAsync(uri.ToString(), new StringContent(JsonConvert.SerializeObject(container), Encoding.UTF8, "application/json"));
-                //        HttpResponseMessage responseFromAnotherServer = await myHttpClient.PutAsync(uri2.ToString(), new StringContent(JsonConvert.SerializeObject(container), Encoding.UTF8, "application/json"));
+                    //StaticBox.key = new Dictionary<string, string>(6);
+                    //StaticBox.key.Add("Вес груза", s_weight.Progress.ToString());
+                    //StaticBox.key["Вес груза"] = s_weight.Progress.ToString();
+                    //запись в file
+                    //StaticBox.Temperature = 1;
+                    //StaticBox.Weight = SmullWeight.Text;
+                    //StaticBox.Light = Convert.ToInt32(SmullWeight.Text);
+                    //StaticBox.Wetness = SmullWeight.Text;
+                    //StaticBox.Name = SmullWeight.Text;
+                    //StaticBox.IsOpenedBox = (SmullWeight.Text == "разложен") ? true : false;
+                    //StaticBox.IsOpenedDoor = (SmullWeight.Text == "открыта") ? true : false;
+                    //StaticBox.BatteryPower = SmullWeight.Text;
 
-                //        AuthApiData<BaseResponseObject> o_data = new AuthApiData<BaseResponseObject>();
+                    //using (FileStream fs = new FileStream(dir_path + "box_list.txt", FileMode.OpenOrCreate))
+                    //{ 
+                    //    await System.Text.Json.JsonSerializer.SerializeAsync<ListResponse<ContainerResponse>>(fs, o_boxes_data, options);
+                    //}
+                    //чтение данных с файла
+                    //using (FileStream fs = new FileStream(dir_path + "box_list.txt", FileMode.OpenOrCreate))
+                    //{
+                    //    ListResponse<ContainerResponse> containers = await System.Text.Json.JsonSerializer.DeserializeAsync<ListResponse<ContainerResponse>>(fs);
 
-                //        string s_result;
-                //        using (HttpContent responseContent = response.Content)
-                //        {
-                //            s_result = await responseContent.ReadAsStringAsync();
-                //        }
+                    //    var name = containers.Objects[0].Name;
+                    //}
 
-                //        string s_result_from_server;
-                //        using (HttpContent responseContent = responseFromAnotherServer.Content)
-                //        {
-                //            s_result_from_server = await responseContent.ReadAsStringAsync();
-                //        }
 
-                //        o_data = JsonConvert.DeserializeObject<AuthApiData<BaseResponseObject>>(s_result);
 
-                //        if (response.StatusCode == HttpStatusCode.OK)
-                //        {
-                //            Toast.MakeText(this, o_data.Message, ToastLength.Long).Show();
-                //        }
-                //        Intent.PutExtra("idAction", "2");
-                //        //перезапуск страницы
+                    ////preloader.Visibility = Android.Views.ViewStates.Visible;
+                    //SmullWeight = FindViewById<TextView>(Resource.Id.SmullWeight);
+                    //SmullTemperature = FindViewById<TextView>(Resource.Id.SmullTemperature);
+                    //SmullLight = FindViewById<TextView>(Resource.Id.SmullLight);
+                    //SmullHumidity = FindViewById<TextView>(Resource.Id.SmullHumidity);
+                    //SmullBattery = FindViewById<TextView>(Resource.Id.SmullBattery);
+                    //SmullNetworkSignal = FindViewById<TextView>(Resource.Id.SmullNetworkSignal);
+                    //StaticBox.Temperature = SmullWeight.Text;
+                    //StaticBox.Weight = SmullWeight.Text;
+                    //StaticBox.Light = Convert.ToInt32(SmullWeight.Text);
+                    //StaticBox.Wetness = SmullWeight.Text;
+                    //StaticBox.Name = SmullWeight.Text;
+                    //StaticBox.IsOpenedBox = (SmullWeight.Text == "разложен") ? true : false;
+                    ////Situation = s_situation.Text,
+                    //StaticBox.IsOpenedDoor = (SmullWeight.Text == "открыта") ? true : false;
+                    //StaticBox.BatteryPower = SmullWeight.Text;
 
-                //        Recreate();
-                //    }                   
-                //}
-                //catch (Exception ex)
-                //{
-                //    Toast.MakeText(this, "" + ex.Message, ToastLength.Long).Show();
-                //}
+                    //if (a_situation == "На складе")
+                    //{
+                    //    StaticBox.BoxState = "1";
+                    //}
+                    //else if (a_situation == "На автомобиле")
+                    //{
+                    //    StaticBox.BoxState = "2";
+                    //}
+                    //else if (a_situation == "У заказчика")
+                    //{
+                    //    StaticBox.BoxState = "3";
+                    //}
+
+
+
+
+
+                    var myHttpClient = new HttpClient();
+                    http://localhost:54274/Home/GetData?items[germany]=berlin&items[france]=paris&items[spain]=madrid
+                    var uri = ("http://iot-tmc-cen.1gb.ru/api/container/editbox?id=" + CrossSettings.Current.GetValueOrDefault("id", "") + "&Date=" + DateTime.Now + "&sensors[Вес груза]=" + StaticBox.Sensors["Вес груза"]
+                    + "&sensors[Температура]=" + StaticBox.Sensors["Температура"] + "&sensors[Влажность]=" + StaticBox.Sensors["Влажность"] + "&sensors[Освещенность]=" + StaticBox.Sensors["Освещенность"]
+                    + "&sensors[Уровень заряда аккумулятора]=" + StaticBox.Sensors["Уровень заряда аккумулятора"] + "&sensors[Уровень сигнала]=" + StaticBox.Sensors["Уровень сигнала"] + "&sensors[Состояние дверей]=" + StaticBox.Sensors["Состояние дверей"]
+                    + "&sensors[Сосотояние контейнера]=" + StaticBox.Sensors["Сосотояние контейнера"] + "&sensors[Местоположение контейнера]=" + StaticBox.Sensors["Местоположение контейнера"]);
+                    //var uri2 = ("http://81.177.136.11:8003/sensor?id=" + container.Id + "&IsOpenedBox=" + container.IsOpenedBox + "&Name=" + container.Name + "&IsOpenedDoor=" + container.IsOpenedDoor + "&Weight=" + container.Weight + "&Light=" + container.Light + "&Code=" + container.Code + "&Temperature=" + container.Temperature + "&Wetness=" + container.Wetness + "&BatteryPower=" + container.BatteryPower + "&BoxState=" + container.BoxState);
+
+
+                    HttpResponseMessage response = await myHttpClient.PostAsync(uri.ToString(), new StringContent(JsonConvert.SerializeObject(StaticBox.Sensors), Encoding.UTF8, "application/json"));
+                    //HttpResponseMessage responseFromAnotherServer = await myHttpClient.PutAsync(uri2.ToString(), new StringContent(JsonConvert.SerializeObject(container), Encoding.UTF8, "application/json"));
+
+                    AuthApiData<BaseResponseObject> o_data = new AuthApiData<BaseResponseObject>();
+
+                    string s_result;
+                    using (HttpContent responseContent = response.Content)
+                    {
+                        s_result = await responseContent.ReadAsStringAsync();
+                    }
+
+                    //string s_result_from_server;
+                    //using (HttpContent responseContent = responseFromAnotherServer.Content)
+                    //{
+                    //    s_result_from_server = await responseContent.ReadAsStringAsync();
+                    //}
+
+                    o_data = JsonConvert.DeserializeObject<AuthApiData<BaseResponseObject>>(s_result);
+
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        Toast.MakeText(this, o_data.Message, ToastLength.Long).Show();
+                    }
+                    Intent.PutExtra("idAction", "2");
+                    //перезапуск страницы
+
+                    Recreate();
+
+                    Intent authActivity = new Intent(this, typeof(Auth.TakePhoto));
+                    StartActivity(authActivity);
+
+                }
+                catch (Exception ex)
+                {
+                    Toast.MakeText(this, "" + ex.Message, ToastLength.Long).Show();
+                }
             };
 
-            
-
-        }
-
+        }   
         /// <summary>
         /// сбор информации о контейнере
         /// </summary>
         /// <param name="dir_path"></param>
         private async void GetInfoAboutBox(string dir_path)
         {
+            var myHttpClient = new HttpClient();
+
+
+            var uri = new Uri("http://iot.tmc-centert.ru/api/container/getbox?name=" + CrossSettings.Current.GetValueOrDefault("id", ""));
+
+
+            HttpResponseMessage response = await myHttpClient.GetAsync(uri);
+
+            AuthApiData<ListResponse<BoxDataResponse>> o_data = new AuthApiData<ListResponse<BoxDataResponse>>();
+
+            string s_result;
+            using (HttpContent responseContent = response.Content)
+            {
+                s_result = await responseContent.ReadAsStringAsync();
+            }
+
+            o_data.ResponseData = new ListResponse<BoxDataResponse>();
+            o_data = JsonConvert.DeserializeObject<AuthApiData<ListResponse<BoxDataResponse>>>(s_result);
+            ListResponse<BoxDataResponse> o_boxes_data = new ListResponse<BoxDataResponse>();
+            o_boxes_data.Objects = o_data.ResponseData.Objects;// !!!
+
+            //StaticBox.AddInfoObjects(o_boxes_data);
+            //В статик бокс закомментируй 9 свойств
+            StaticBox.Sensors["Температура"] = o_data.ResponseData.Objects.Where(f => f.SensoreName == "Температура").Select(s => s.Value).FirstOrDefault();
+            StaticBox.Sensors["Влажность"] = o_data.ResponseData.Objects.Where(f => f.SensoreName == "Влажность").Select(s => s.Value).FirstOrDefault();
+            StaticBox.Sensors["Освещенность"] = o_data.ResponseData.Objects.Where(f => f.SensoreName == "Освещенность").Select(s => s.Value).FirstOrDefault();
+            StaticBox.Sensors["Вес груза"] = o_data.ResponseData.Objects.Where(f => f.SensoreName == "Вес груза").Select(s => s.Value).FirstOrDefault();
+            StaticBox.Sensors["Уровень заряда аккумулятора"] = o_data.ResponseData.Objects.Where(f => f.SensoreName == "Уровень заряда аккумулятора").Select(s => s.Value).FirstOrDefault();
+            StaticBox.Sensors["Уровень сигнала"] = o_data.ResponseData.Objects.Where(f => f.SensoreName == "Уровень сигнала").Select(s => s.Value).FirstOrDefault();
+            StaticBox.Sensors["Состояние дверей"] = o_data.ResponseData.Objects.Where(f => f.SensoreName == "Состояние дверей").Select(s => s.Value).FirstOrDefault();
+            StaticBox.Sensors["Сосотояние контейнера"] = o_data.ResponseData.Objects.Where(f => f.SensoreName == "Сосотояние контейнера").Select(s => s.Value).FirstOrDefault();
+            StaticBox.Sensors["Местоположение контейнера"] = o_data.ResponseData.Objects.Where(f => f.SensoreName == "Местоположение контейнера").Select(s => s.Value).FirstOrDefault();
             //try
             //{
             //    ContainerResponse container = new ContainerResponse();
@@ -395,7 +507,7 @@ namespace GeoGeometry.Activity.Auth
             //    container = JsonConvert.DeserializeObject<ContainerResponse>(file_data_remember);
 
             //    var myHttpClient = new HttpClient();
-                
+
             //    var uri = new Uri("http://iot.tmc-centert.ru/api/container/getbox?id=" + container.SmartBoxId);
             //    HttpResponseMessage response = await myHttpClient.GetAsync(uri);
 
@@ -495,7 +607,7 @@ namespace GeoGeometry.Activity.Auth
         //    googleMap.UiSettings.CompassEnabled = true;
         //    googleMap.MoveCamera(cameraUpdate);
 
-            
+
         //}
         //private void BuildLocationCallBack()
         //{
@@ -587,10 +699,10 @@ namespace GeoGeometry.Activity.Auth
         //        }
         //        catch (Exception ex)
         //        {
-                    
+
         //            throw;
         //        }
-                
+
 
         //    }
         //}
@@ -601,27 +713,27 @@ namespace GeoGeometry.Activity.Auth
         //    a_situation = spinner.GetItemAtPosition(e.Position).ToString();
         //}
 
-    //    spinner.setOnItemSelectedListener(new OnItemSelectedListener()
-    //    {
+        //    spinner.setOnItemSelectedListener(new OnItemSelectedListener()
+        //    {
 
-          
 
-    //public void onItemSelected(AdapterView<?> parent, View view, int pos,
-    //        long id)
-    //        {
-    //            // TODO Auto-generated method stub
-    //            ((TextView)parent.getChildAt(0)).setTextColor(Color.MAGENTA);
-    //            ((TextView)parent.getChildAt(0)).setTextSize(12);
-    //        }
 
-           
+        //public void onItemSelected(AdapterView<?> parent, View view, int pos,
+        //        long id)
+        //        {
+        //            // TODO Auto-generated method stub
+        //            ((TextView)parent.getChildAt(0)).setTextColor(Color.MAGENTA);
+        //            ((TextView)parent.getChildAt(0)).setTextSize(12);
+        //        }
 
-    //public void onNothingSelected(AdapterView<?> arg0)
-    //        {
-    //            // TODO Auto-generated method stub
 
-    //        }
-    //    });
+
+        //public void onNothingSelected(AdapterView<?> arg0)
+        //        {
+        //            // TODO Auto-generated method stub
+
+        //        }
+        //    });
 
         //очистка всех полей
         //void ClearField()
@@ -641,7 +753,7 @@ namespace GeoGeometry.Activity.Auth
         //    s_date_time.Text = "";
         //}
 
-        
+
 
         //void DisplaySignalStrength(object sender, EventArgs e)
         //{
@@ -661,5 +773,6 @@ namespace GeoGeometry.Activity.Auth
         //}
     }
 }
+            
 
 

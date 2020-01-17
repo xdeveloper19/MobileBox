@@ -1,8 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingTop="16dp"
+    android:paddingRight="16dp"
+    android:paddingBottom="16dp"
     android:id="@+id/box_container">
 
     <ScrollView
@@ -26,16 +30,29 @@
                 android:textColor = "#20B2AA"
                 android:layout_centerHorizontal = "true"
                 android:text="Параметры контейнера"
-                android:textSize="18sp"
+                android:textSize="25sp"
                   />
+            <TextView
+                android:id="@+id/TextNameBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below = "@+id/TextDesignationCenter"
+                android:padding="10dp"
+                android:layout_marginTop="-15dp"
+                android:textColor = "#6A5ACD"
+                android:layout_centerHorizontal = "true"
+                android:text="(box12)"
+                android:textSize="15sp"
+                  />
+
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:id = "@+id/fio1"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/activity_stili"
-                android:layout_below = "@+id/TextDesignationCenter">
+                android:layout_below = "@+id/TextNameBox">
 
             
 
@@ -46,15 +63,17 @@
                                 android:padding="10dp"
                                 android:gravity="left"
                                 android:text="Вес груза:"
-                                android:textSize="18sp"
+                                android:textSize="16sp"
+                    android:layout_marginTop="8dp"
                   />
             <RelativeLayout
-                android:layout_width="205.0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id = "@+id/RelativeWeight"
                 android:layout_toEndOf="@+id/TextWeight"
                 android:layout_toRightOf="@+id/TextWeight"
-                android:layout_marginLeft="31dp">
+                android:layout_marginLeft="31dp"
+                android:layout_marginRight = "45dp">
                 <SeekBar
                     android:id="@+id/s_weight"
                     android:layout_below = "@+id/SmullWeight"
@@ -91,9 +110,9 @@
                     android:layout_height="wrap_content"
                     android:id = "@+id/TextWeightMin"
                     android:layout_below="@+id/s_weight"
-                    android:layout_marginTop="-19dp"
-                    android:padding="10dp"
+                    android:layout_marginTop="-23dp"
                     android:textSize="12sp"
+                    android:padding="10dp"                    
                     android:text="0"/>
             </RelativeLayout>
 
@@ -104,9 +123,9 @@
                     android:layout_height="wrap_content"
                     android:id = "@+id/kg"
                     android:gravity="center"
-                    android:layout_marginLeft="-7dp"
+                    android:layout_marginLeft="-60dp"
                     android:padding="10dp"
-                    android:textSize="15sp"
+                    android:textSize="12sp"
                     android:maxLength = "6"
                     android:layout_toEndOf="@+id/RelativeWeight"
                     android:layout_toRightOf="@+id/RelativeWeight"
@@ -121,20 +140,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:layout_marginTop="6dp"
                     android:inputType="numberDecimal"
                     android:padding="10dp"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:text="Температура:"
                     android:layout_below="@+id/TextWeight"
                     
                     />
             <RelativeLayout
-                 android:layout_width="205dp"
+                 android:layout_width="match_parent"
                  android:layout_height="wrap_content"
                  android:id = "@+id/RelativeTemperature"
                  android:layout_toEndOf="@+id/Temperature"
                  android:layout_toRightOf="@+id/Temperature"
-                android:layout_below="@+id/TextWeight">
+                android:layout_below="@+id/TextWeight"
+                    android:layout_marginRight = "45dp">
                  
             <SeekBar
                 android:id="@+id/TemperatureEdit"
@@ -171,7 +192,7 @@
                     android:layout_height="wrap_content"
                     android:id = "@+id/TextTemperatureMin"
                     android:layout_below="@+id/TemperatureEdit"
-                    android:layout_marginTop="-19dp"
+                    android:layout_marginTop="-23dp"
                     android:padding="10dp"
                     android:textSize="12sp"
                     android:text="-40"/>
@@ -182,10 +203,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id = "@+id/grad"
-                    android:layout_marginLeft="-7dp"
+                    android:layout_marginLeft="-60dp"
                     android:layout_marginTop="8dp"
                     android:padding="10dp"
-                    android:textSize="15sp"
+                    android:textSize="12sp"
                     android:layout_below="@+id/TextWeight"
                     android:layout_toEndOf="@+id/RelativeTemperature"
                     android:layout_toRightOf="@+id/RelativeTemperature"
@@ -198,18 +219,20 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/Temperature"
                     android:padding="10dp"
+                    android:layout_marginTop="8dp"
                     android:gravity="left"
                     android:text="Датчик света:"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     />
             <RelativeLayout
-                 android:layout_width="205dp"
+                 android:layout_width="match_parent"
                  android:layout_height="wrap_content"
                  android:id = "@+id/RelativeLight"
                  android:layout_toEndOf="@+id/TextLight"
                  android:layout_toRightOf="@+id/TextLight"
                  android:layout_below="@+id/Temperature"
-                 android:layout_marginLeft="-5dp">
+                 android:layout_marginLeft="-5dp"
+                     android:layout_marginRight = "45dp">
                  
             <SeekBar
                 android:id="@+id/s_light"
@@ -218,8 +241,8 @@
                 android:layout_width="204.5dp"
                 android:layout_height="wrap_content"
                 android:min="0"
-                android:max = "1023"
-                android:progress = "2500"
+                android:max = "1000"
+                android:progress = "1000"
                 android:padding="8dp"
                  />
             <TextView
@@ -229,7 +252,7 @@
                 android:layout_centerHorizontal = "true"
                 android:padding="10dp"
                 android:textSize="15sp"
-                android:text="1023"/>
+                android:text="1000"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -239,13 +262,13 @@
                     android:layout_marginTop="-19dp"
                     android:padding="10dp"
                     android:textSize="12sp"
-                    android:text="1023"/>
+                    android:text="1000"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id = "@+id/TextLightMin"
                     android:layout_below="@+id/s_light"
-                    android:layout_marginTop="-19dp"
+                    android:layout_marginTop="-23dp"
                     android:padding="10dp"
                     android:textSize="12sp"
                     android:text="0"/>
@@ -254,10 +277,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id = "@+id/lumen"
-                    android:layout_marginLeft="-7dp"
+                    android:layout_marginLeft="-60dp"
                     android:layout_marginTop="8dp"
                     android:padding="10dp"
-                    android:textSize="15sp"
+                    android:textSize="12sp"
                     android:layout_below="@+id/Temperature"
                     android:layout_toEndOf="@+id/RelativeLight"
                     android:layout_toRightOf="@+id/RelativeLight"
@@ -270,17 +293,19 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/TextLight"
                     android:padding="10dp"
+                    android:layout_marginTop="6dp"
                     android:text="Влажность:"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     />
             <RelativeLayout
-                 android:layout_width="205dp"
+                 android:layout_width="match_parent"
                  android:layout_height="wrap_content"
                  android:id = "@+id/RelativeHumidity"
                  android:layout_toEndOf="@+id/Vlazhnost"
                  android:layout_toRightOf="@+id/Vlazhnost"
                  android:layout_below="@+id/TextLight"
-                 android:layout_marginLeft="17dp">
+                 android:layout_marginLeft="15dp"
+                    android:layout_marginRight = "45dp">
                  
             <SeekBar
                 android:id="@+id/s_humidity"
@@ -316,7 +341,7 @@
                     android:layout_height="wrap_content"
                     android:id = "@+id/TextHumidityMin"
                     android:layout_below="@+id/s_humidity"
-                    android:layout_marginTop="-19dp"
+                    android:layout_marginTop="-23dp"
                     android:padding="10dp"
                     android:textSize="12sp"
                     android:text="0"/>
@@ -328,7 +353,7 @@
                     android:layout_height="wrap_content"
                     android:id = "@+id/prozW"
                     android:layout_below="@+id/TextLight"
-                    android:layout_marginLeft="-7dp"
+                    android:layout_marginLeft="-60dp"
                     android:padding="12dp"
                     android:textSize="12sp"
                     android:layout_toEndOf="@+id/RelativeHumidity"
@@ -343,18 +368,20 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/Vlazhnost"
                     android:padding="10dp"
+                    android:layout_marginTop="8dp"
                     android:gravity="left"
                     android:text="Уровень батареи:"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     />
             <RelativeLayout
-                android:layout_width="172.0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id = "@+id/RelativeBattery"
                 android:layout_toEndOf="@+id/TextBattery"
                 android:layout_toRightOf="@+id/TextBattery"
                 android:layout_below="@+id/Vlazhnost"
-                android:layout_marginLeft="-1.5dp">
+                android:layout_marginLeft="5dp"
+                    android:layout_marginRight = "45dp">
 
                 <SeekBar
                     android:id="@+id/s_battery"
@@ -390,7 +417,7 @@
                     android:layout_height="wrap_content"
                     android:id = "@+id/TextBatteryMin"
                     android:layout_below="@+id/s_battery"
-                    android:layout_marginTop="-19dp"
+                    android:layout_marginTop="-23dp"
                     android:padding="10dp"
                     android:textSize="12sp"
                     android:text="0"/>
@@ -401,9 +428,9 @@
                     android:layout_height="wrap_content"
                     android:id = "@+id/prozA"
                     android:layout_below="@+id/Vlazhnost"
-                    android:layout_marginLeft="-7dp"
+                    android:layout_marginLeft="-60dp"
                     android:padding="10dp"
-                    android:textSize="15sp"
+                    android:textSize="12sp"
                     android:layout_toEndOf="@+id/RelativeBattery"
                     android:layout_toRightOf="@+id/RelativeBattery"
                     android:text="В"
@@ -416,30 +443,34 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/TextBattery"
                     android:padding="10dp"
+                    android:layout_marginTop="8dp"
                     android:gravity="left"
                     android:text="Уровень сигнала сети:"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     />
             <RelativeLayout
-                 android:layout_width="127dp"
+                 android:layout_width="match_parent"
                  android:layout_height="wrap_content"
                  android:id = "@+id/RelativeNetworkSignal"
                  android:layout_toEndOf="@+id/TextNetworkSignal"
                  android:layout_toRightOf="@+id/TextNetworkSignal"
                  android:layout_below="@+id/TextBattery"
-                 android:layout_marginLeft="1dp">
+                 android:layout_marginLeft="1dp"
+                 android:layout_marginRight = "45dp">
                  
-            <SeekBar
-                android:id="@+id/s_signal_strength_1"
-                android:layout_below = "@+id/SmullNetworkSignal"
-                android:layout_marginTop="-25dp"
-                android:layout_width="125.5dp"
-                android:layout_height="wrap_content"
-                android:min="-110"
-                android:max = "0"
-                android:progress = "0"
-                android:padding="8dp"
+            
+                <SeekBar
+                    android:id="@+id/s_signal_strength_1"
+                    android:layout_below = "@+id/SmullNetworkSignal"
+                    android:layout_marginTop="-25dp"
+                    android:layout_width="171.0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:min="-110"
+                    android:max = "1"
+                    android:progress = "100"
                  />
+                 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -463,7 +494,7 @@
                     android:layout_height="wrap_content"
                     android:id = "@+id/TextNetworkSignalMin"
                     android:layout_below="@+id/s_signal_strength_1"
-                    android:layout_marginTop="-19dp"
+                    android:layout_marginTop="-23dp"
                     android:padding="10dp"
                     android:textSize="12sp"
                     android:text="-110"/>

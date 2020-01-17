@@ -28,8 +28,6 @@ namespace GeoGeometry.Model.GPSLocation
         /// </summary>
         public double lat1 { get; set; }
 
-        public double signal { get; set; }
-
         public DateTime date { get; set; }
     }
 }

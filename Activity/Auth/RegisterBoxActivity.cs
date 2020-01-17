@@ -103,7 +103,7 @@ namespace GeoGeometry.Activity.Auth
                             ContainerResponse o_box_data = new ContainerResponse();
                             o_box_data = o_data.ResponseData;
                             
-                            StaticBox.AddInfoAuth(o_box_data);
+                            //StaticBox.AddInfoAuth(o_box_data);
                             
 
                             //using (FileStream file = new FileStream(dir_path + "box_data.txt", FileMode.OpenOrCreate))

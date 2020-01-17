@@ -15,13 +15,22 @@ using Com.Karumi.Dexter.Listener.Multi;
 using System.Collections.Generic;
 using System;
 using Android.Support.V4.App;
+using Plugin.Settings;
+using System.Net;
+using System.Net.Http;
+using GeoGeometry.Model.User;
+using GeoGeometry.Model.Box;
+using GeoGeometry.Container;
+using System.Threading.Tasks;
 
 namespace GeoGeometry.Activity
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : AppCompatActivity
     {
+        
         RelativeLayout main_form;
+
 
         /// <summary>
         /// Конпка прехода на форму авторизации.
@@ -42,19 +51,23 @@ namespace GeoGeometry.Activity
                 base.OnCreate(savedInstanceState);
                 // Set our view from the "main" layout resource
                 SetContentView(Resource.Layout.activity_main);
-                string dir_path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+               
                 string file_data_remember;
 
                 btn_auth_form = FindViewById<Button>(Resource.Id.btn_auth_form);
                 btn_reg_form = FindViewById<Button>(Resource.Id.btn_reg_form);
 
-                
-
                 string[] permissions = { Manifest.Permission.AccessFineLocation, Manifest.Permission.WriteExternalStorage, Manifest.Permission.Camera };
                 //ActivityCompat.RequestPermissions(this, new String[] { Manifest.Permission.Camera }, MY_PERMISSIONS_REQUEST_CAMERA);
                 Dexter.WithActivity(this).WithPermissions(permissions).WithListener(new CompositeMultiplePermissionsListener(new SamplePermissionListener(this))).Check();
 
+                string c = CrossSettings.Current.GetValueOrDefault("id", "");
 
+                if (CrossSettings.Current.GetValueOrDefault("id", "") == "")
+                {
+                    var box = GetRandomBox();
+                    CrossSettings.Current.AddOrUpdateValue("id", box.Result.BoxId);
+                }
 
                 // Переход к форме регистрации.
                 btn_reg_form.Click += (s, e) =>
@@ -75,6 +88,43 @@ namespace GeoGeometry.Activity
             {
                 Toast.MakeText(this, "" + ex.Message, ToastLength.Long).Show();
             }
+        }
+
+        private async Task<GetBoxIdResponse> GetRandomBox()
+        {
+           
+                string dir_path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+                var myHttpClient = new HttpClient();
+
+                var uri = new Uri("http://iot.tmc-centert.ru/api/container/getrandombox");
+
+                HttpResponseMessage response = await myHttpClient.GetAsync(uri.ToString()
+                    );// !!!
+
+                string s_result;
+                using (HttpContent responseContent = response.Content)
+                {
+                    s_result = await responseContent.ReadAsStringAsync();
+                }
+
+                AuthApiData<GetBoxIdResponse> o_data = JsonConvert.DeserializeObject<AuthApiData<GetBoxIdResponse>>(s_result);
+
+
+                //ClearField();
+
+
+                if (o_data.Status == "0")
+                {
+                    return o_data.ResponseData;
+                }
+                else
+                {
+                    Toast.MakeText(this, "" + o_data.Message, ToastLength.Long).Show();
+                    return o_data.ResponseData;
+                }
+          
+            
+           
         }
 
         private class SamplePermissionListener : Java.Lang.Object, IMultiplePermissionsListener

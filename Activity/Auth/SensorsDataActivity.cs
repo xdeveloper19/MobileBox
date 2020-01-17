@@ -16,10 +16,9 @@ namespace GeoGeometry.Activity.Auth
     [Activity(Label = "SensorsDataActivity")]
     public class SensorsDataActivity: AppCompatActivity
     {
-        TableLayout tablelayout;
+        private TableLayout tablelayout;
         //public List<Box> mItems;
-        TextView productname, price;
-        private ImageButton btn_back_a1;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -27,15 +26,9 @@ namespace GeoGeometry.Activity.Auth
 
             //List<UserCartModel> mItems = await GetData();
             tablelayout = FindViewById<TableLayout>(Resource.Id.sensors_data);
-            btn_back_a1 = FindViewById<ImageButton>(Resource.Id.btn_back_a1);
             //BindData();
 
-            btn_back_a1.Click += (s, e) =>
-            {
-                Intent Driver = new Intent(this, typeof(Auth.DriverActivity));
-                Driver.PutExtra("idAction", "2");// через объект идёт обращение к . 
-                StartActivity(Driver);
-            };
+           
         }
 
 
