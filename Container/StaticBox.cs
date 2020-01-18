@@ -90,7 +90,7 @@ namespace GeoGeometry.Container
                 {"Уровень заряда аккумулятора","" },
                 {"Уровень сигнала","" },
                 {"Состояние дверей","" },
-                {"Сосотояние контейнера","" },
+                {"Состояние контейнера","" },
                 {"Местоположение контейнера","" }
             };
         }
@@ -107,14 +107,14 @@ namespace GeoGeometry.Container
         //    Name = o_auth.Name;
         //}
 
-        public static void AddInfoObjects(ListResponse<ContainerResponse> boxes)
-        {
-            Objects = new List<ContainerResponse>();
-            foreach (var box in boxes.Objects)
-            {
-                Objects.Add(box);
-            }
-        }
+        //public static void AddInfoObjects(ListResponse<ContainerResponse> boxes)
+        //{
+        //    Objects = new List<ContainerResponse>();
+        //    foreach (var box in boxes.Objects)
+        //    {
+        //        Objects.Add(box);
+        //    }
+        //}
 
         //крч здесь заполнишь все значения сам
         //public static void AddInfoBox(BoxDataResponse boxData)

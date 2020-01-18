@@ -17,7 +17,7 @@ namespace GeoGeometry.Model.Box
     public class BoxDataResponse: BaseResponseObject
     {
 
-        public string SensoreName { get; set; }
+        public string SensorName { get; set; }
 
         public string Value { get; set; }
 

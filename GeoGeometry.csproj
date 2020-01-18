@@ -91,6 +91,7 @@
     <Compile Include="Activity\Squad\SquadSettingsActivity.cs" />
     <Compile Include="Activity\User\UserActivity.cs" />
     <Compile Include="Activity\User\UserSettingsActivity.cs" />
+    <Compile Include="Container\ContainerService.cs" />
     <Compile Include="Container\SignalStrength.cs" />
     <Compile Include="Container\StaticBox.cs" />
     <Compile Include="MainActivity.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="Model\Auth\AuthResponseData.cs" />
     <Compile Include="Model\Box\BoxDataResponse.cs" />
     <Compile Include="Model\Box\BoxNames.cs" />
+    <Compile Include="Model\Box\EditBoxViewModel.cs" />
     <Compile Include="Model\Box\EditSensorsViewModel.cs" />
     <Compile Include="Model\Box\GetBoxIdResponse.cs" />
     <Compile Include="Model\Box\RegisterBoxModel.cs" />

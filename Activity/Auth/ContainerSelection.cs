@@ -169,7 +169,7 @@ namespace GeoGeometry.Activity.Auth
                     o_boxes_data.Objects = o_data.ResponseData.Objects;
 
                     //StaticBox.AddInfoObjects(o_boxes_data);
-                    StaticBox.AddInfoObjects(o_boxes_data);
+                    //StaticBox.AddInfoObjects(o_boxes_data);
                     //запись в file
                     
 

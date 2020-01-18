@@ -65,8 +65,18 @@ namespace GeoGeometry.Activity
 
                 if (CrossSettings.Current.GetValueOrDefault("id", "") == "")
                 {
-                    var box = GetRandomBox();
-                    CrossSettings.Current.AddOrUpdateValue("id", box.Result.BoxId);
+                    try
+                    {
+                        var box = GetRandomBox();
+                        if (box.Result.Status == "0")
+                            CrossSettings.Current.AddOrUpdateValue("id", box.Result.ResponseData.BoxId);
+                        else
+                            Toast.MakeText(this, "" + box.Result.Message, ToastLength.Long).Show();
+                    }
+                    catch(Exception ex)
+                    {
+                        Toast.MakeText(this, "" + ex.Message, ToastLength.Long).Show();
+                    }
                 }
 
                 // Переход к форме регистрации.
@@ -90,7 +100,7 @@ namespace GeoGeometry.Activity
             }
         }
 
-        private async Task<GetBoxIdResponse> GetRandomBox()
+        private async Task<AuthApiData<GetBoxIdResponse>> GetRandomBox()
         {
            
                 string dir_path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
@@ -98,8 +108,7 @@ namespace GeoGeometry.Activity
 
                 var uri = new Uri("http://iot.tmc-centert.ru/api/container/getrandombox");
 
-                HttpResponseMessage response = await myHttpClient.GetAsync(uri.ToString()
-                    );// !!!
+                HttpResponseMessage response = await myHttpClient.GetAsync(uri.ToString());// !!!
 
                 string s_result;
                 using (HttpContent responseContent = response.Content)
@@ -108,23 +117,9 @@ namespace GeoGeometry.Activity
                 }
 
                 AuthApiData<GetBoxIdResponse> o_data = JsonConvert.DeserializeObject<AuthApiData<GetBoxIdResponse>>(s_result);
+            //ClearField();
 
-
-                //ClearField();
-
-
-                if (o_data.Status == "0")
-                {
-                    return o_data.ResponseData;
-                }
-                else
-                {
-                    Toast.MakeText(this, "" + o_data.Message, ToastLength.Long).Show();
-                    return o_data.ResponseData;
-                }
-          
-            
-           
+            return o_data;
         }
 
         private class SamplePermissionListener : Java.Lang.Object, IMultiplePermissionsListener

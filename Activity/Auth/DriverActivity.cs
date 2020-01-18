@@ -212,7 +212,7 @@ namespace GeoGeometry.Activity.Auth
             //s_situation.Adapter = adapter;
 
             string dir_path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
-            GetInfoAboutBox(dir_path);
+            GetInfoAboutBox();
             //if (File.Exists(@"" + dir_path + "box_data.txt"))
             //{
             //    string[] strok = File.ReadAllLines(dir_path + "box_data.txt");
@@ -333,108 +333,25 @@ namespace GeoGeometry.Activity.Auth
                 try
                 {
 
+                    StaticBox.Sensors["Вес груза"] = s_weight.Progress.ToString();
+                    StaticBox.Sensors["Температура"] = s_temperature.Progress.ToString();
+                    StaticBox.Sensors["Влажность"] = s_humidity.Progress.ToString();
+                    StaticBox.Sensors["Освещенность"] = s_light.Progress.ToString();
+                    StaticBox.Sensors["Уровень сигнала"] = s_signal_strength_1.Progress.ToString();
+                    StaticBox.Sensors["Уровень заряда аккумулятора"] = s_battery.Progress.ToString();
+                    
+                    var o_data = await ContainerService.EditBox();
 
-                    //StaticBox.key = new Dictionary<string, string>(6);
-                    //StaticBox.key.Add("Вес груза", s_weight.Progress.ToString());
-                    //StaticBox.key["Вес груза"] = s_weight.Progress.ToString();
-                    //запись в file
-                    //StaticBox.Temperature = 1;
-                    //StaticBox.Weight = SmullWeight.Text;
-                    //StaticBox.Light = Convert.ToInt32(SmullWeight.Text);
-                    //StaticBox.Wetness = SmullWeight.Text;
-                    //StaticBox.Name = SmullWeight.Text;
-                    //StaticBox.IsOpenedBox = (SmullWeight.Text == "разложен") ? true : false;
-                    //StaticBox.IsOpenedDoor = (SmullWeight.Text == "открыта") ? true : false;
-                    //StaticBox.BatteryPower = SmullWeight.Text;
-
-                    //using (FileStream fs = new FileStream(dir_path + "box_list.txt", FileMode.OpenOrCreate))
-                    //{ 
-                    //    await System.Text.Json.JsonSerializer.SerializeAsync<ListResponse<ContainerResponse>>(fs, o_boxes_data, options);
-                    //}
-                    //чтение данных с файла
-                    //using (FileStream fs = new FileStream(dir_path + "box_list.txt", FileMode.OpenOrCreate))
-                    //{
-                    //    ListResponse<ContainerResponse> containers = await System.Text.Json.JsonSerializer.DeserializeAsync<ListResponse<ContainerResponse>>(fs);
-
-                    //    var name = containers.Objects[0].Name;
-                    //}
-
-
-
-                    ////preloader.Visibility = Android.Views.ViewStates.Visible;
-                    //SmullWeight = FindViewById<TextView>(Resource.Id.SmullWeight);
-                    //SmullTemperature = FindViewById<TextView>(Resource.Id.SmullTemperature);
-                    //SmullLight = FindViewById<TextView>(Resource.Id.SmullLight);
-                    //SmullHumidity = FindViewById<TextView>(Resource.Id.SmullHumidity);
-                    //SmullBattery = FindViewById<TextView>(Resource.Id.SmullBattery);
-                    //SmullNetworkSignal = FindViewById<TextView>(Resource.Id.SmullNetworkSignal);
-                    //StaticBox.Temperature = SmullWeight.Text;
-                    //StaticBox.Weight = SmullWeight.Text;
-                    //StaticBox.Light = Convert.ToInt32(SmullWeight.Text);
-                    //StaticBox.Wetness = SmullWeight.Text;
-                    //StaticBox.Name = SmullWeight.Text;
-                    //StaticBox.IsOpenedBox = (SmullWeight.Text == "разложен") ? true : false;
-                    ////Situation = s_situation.Text,
-                    //StaticBox.IsOpenedDoor = (SmullWeight.Text == "открыта") ? true : false;
-                    //StaticBox.BatteryPower = SmullWeight.Text;
-
-                    //if (a_situation == "На складе")
-                    //{
-                    //    StaticBox.BoxState = "1";
-                    //}
-                    //else if (a_situation == "На автомобиле")
-                    //{
-                    //    StaticBox.BoxState = "2";
-                    //}
-                    //else if (a_situation == "У заказчика")
-                    //{
-                    //    StaticBox.BoxState = "3";
-                    //}
-
-
-
-
-
-                    var myHttpClient = new HttpClient();
-                    http://localhost:54274/Home/GetData?items[germany]=berlin&items[france]=paris&items[spain]=madrid
-                    var uri = ("http://iot-tmc-cen.1gb.ru/api/container/editbox?id=" + CrossSettings.Current.GetValueOrDefault("id", "") + "&Date=" + DateTime.Now + "&sensors[Вес груза]=" + StaticBox.Sensors["Вес груза"]
-                    + "&sensors[Температура]=" + StaticBox.Sensors["Температура"] + "&sensors[Влажность]=" + StaticBox.Sensors["Влажность"] + "&sensors[Освещенность]=" + StaticBox.Sensors["Освещенность"]
-                    + "&sensors[Уровень заряда аккумулятора]=" + StaticBox.Sensors["Уровень заряда аккумулятора"] + "&sensors[Уровень сигнала]=" + StaticBox.Sensors["Уровень сигнала"] + "&sensors[Состояние дверей]=" + StaticBox.Sensors["Состояние дверей"]
-                    + "&sensors[Сосотояние контейнера]=" + StaticBox.Sensors["Сосотояние контейнера"] + "&sensors[Местоположение контейнера]=" + StaticBox.Sensors["Местоположение контейнера"]);
-                    //var uri2 = ("http://81.177.136.11:8003/sensor?id=" + container.Id + "&IsOpenedBox=" + container.IsOpenedBox + "&Name=" + container.Name + "&IsOpenedDoor=" + container.IsOpenedDoor + "&Weight=" + container.Weight + "&Light=" + container.Light + "&Code=" + container.Code + "&Temperature=" + container.Temperature + "&Wetness=" + container.Wetness + "&BatteryPower=" + container.BatteryPower + "&BoxState=" + container.BoxState);
-
-
-                    HttpResponseMessage response = await myHttpClient.PostAsync(uri.ToString(), new StringContent(JsonConvert.SerializeObject(StaticBox.Sensors), Encoding.UTF8, "application/json"));
-                    //HttpResponseMessage responseFromAnotherServer = await myHttpClient.PutAsync(uri2.ToString(), new StringContent(JsonConvert.SerializeObject(container), Encoding.UTF8, "application/json"));
-
-                    AuthApiData<BaseResponseObject> o_data = new AuthApiData<BaseResponseObject>();
-
-                    string s_result;
-                    using (HttpContent responseContent = response.Content)
-                    {
-                        s_result = await responseContent.ReadAsStringAsync();
-                    }
-
-                    //string s_result_from_server;
-                    //using (HttpContent responseContent = responseFromAnotherServer.Content)
-                    //{
-                    //    s_result_from_server = await responseContent.ReadAsStringAsync();
-                    //}
-
-                    o_data = JsonConvert.DeserializeObject<AuthApiData<BaseResponseObject>>(s_result);
-
-                    if (response.StatusCode == HttpStatusCode.OK)
+                    if (o_data.Status == "1")
                     {
                         Toast.MakeText(this, o_data.Message, ToastLength.Long).Show();
+                        GetInfoAboutBox();
                     }
-                    Intent.PutExtra("idAction", "2");
-                    //перезапуск страницы
-
-                    Recreate();
-
-                    Intent authActivity = new Intent(this, typeof(Auth.TakePhoto));
-                    StartActivity(authActivity);
-
+                    else
+                    {
+                        Intent authActivity = new Intent(this, typeof(Auth.TakePhoto));
+                        StartActivity(authActivity);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -447,51 +364,56 @@ namespace GeoGeometry.Activity.Auth
         /// сбор информации о контейнере
         /// </summary>
         /// <param name="dir_path"></param>
-        private async void GetInfoAboutBox(string dir_path)
+        private async void GetInfoAboutBox()
         {
             var myHttpClient = new HttpClient();
-
-
-            var uri = new Uri("http://iot.tmc-centert.ru/api/container/getbox?name=" + CrossSettings.Current.GetValueOrDefault("id", ""));
-
-
-            HttpResponseMessage response = await myHttpClient.GetAsync(uri);
-
-            AuthApiData<ListResponse<BoxDataResponse>> o_data = new AuthApiData<ListResponse<BoxDataResponse>>();
+            var id1 = CrossSettings.Current.GetValueOrDefault("id", "");
+            var uri = new Uri("http://iot.tmc-centert.ru/api/container/getbox?id=" + id1);
+             HttpResponseMessage response = await myHttpClient.GetAsync(uri.ToString());
 
             string s_result;
             using (HttpContent responseContent = response.Content)
             {
                 s_result = await responseContent.ReadAsStringAsync();
             }
+            AuthApiData<ListResponse<BoxDataResponse>> o_data = new AuthApiData<ListResponse<BoxDataResponse>>();
+
+            //string s_result;
+            //using (HttpContent responseContent = response.Content)
+            //{
+            //    s_result = await responseContent.ReadAsStringAsync();
+            //}
 
             o_data.ResponseData = new ListResponse<BoxDataResponse>();
             o_data = JsonConvert.DeserializeObject<AuthApiData<ListResponse<BoxDataResponse>>>(s_result);
-            ListResponse<BoxDataResponse> o_boxes_data = new ListResponse<BoxDataResponse>();
-            o_boxes_data.Objects = o_data.ResponseData.Objects;// !!!
+            if (o_data.Status == "0")
+            {
+                ListResponse<BoxDataResponse> o_boxes_data = new ListResponse<BoxDataResponse>();
+                o_boxes_data.Objects = o_data.ResponseData.Objects;// !!!
 
-            //StaticBox.AddInfoObjects(o_boxes_data);
-            //В статик бокс закомментируй 9 свойств
-            StaticBox.Sensors["Температура"] = o_data.ResponseData.Objects.Where(f => f.SensoreName == "Температура").Select(s => s.Value).FirstOrDefault();
-            StaticBox.Sensors["Влажность"] = o_data.ResponseData.Objects.Where(f => f.SensoreName == "Влажность").Select(s => s.Value).FirstOrDefault();
-            StaticBox.Sensors["Освещенность"] = o_data.ResponseData.Objects.Where(f => f.SensoreName == "Освещенность").Select(s => s.Value).FirstOrDefault();
-            StaticBox.Sensors["Вес груза"] = o_data.ResponseData.Objects.Where(f => f.SensoreName == "Вес груза").Select(s => s.Value).FirstOrDefault();
-            StaticBox.Sensors["Уровень заряда аккумулятора"] = o_data.ResponseData.Objects.Where(f => f.SensoreName == "Уровень заряда аккумулятора").Select(s => s.Value).FirstOrDefault();
-            StaticBox.Sensors["Уровень сигнала"] = o_data.ResponseData.Objects.Where(f => f.SensoreName == "Уровень сигнала").Select(s => s.Value).FirstOrDefault();
-            StaticBox.Sensors["Состояние дверей"] = o_data.ResponseData.Objects.Where(f => f.SensoreName == "Состояние дверей").Select(s => s.Value).FirstOrDefault();
-            StaticBox.Sensors["Сосотояние контейнера"] = o_data.ResponseData.Objects.Where(f => f.SensoreName == "Сосотояние контейнера").Select(s => s.Value).FirstOrDefault();
-            StaticBox.Sensors["Местоположение контейнера"] = o_data.ResponseData.Objects.Where(f => f.SensoreName == "Местоположение контейнера").Select(s => s.Value).FirstOrDefault();
-            //try
-            //{
-            //    ContainerResponse container = new ContainerResponse();
+                //StaticBox.AddInfoObjects(o_boxes_data);
+                //В статик бокс закомментируй 9 свойств
+                StaticBox.Sensors["Температура"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Температура").Select(s => s.Value).FirstOrDefault();
+                StaticBox.Sensors["Влажность"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Влажность").Select(s => s.Value).FirstOrDefault();
+                StaticBox.Sensors["Освещенность"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Освещенность").Select(s => s.Value).FirstOrDefault();
+                StaticBox.Sensors["Вес груза"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Вес груза").Select(s => s.Value).FirstOrDefault();
+                StaticBox.Sensors["Уровень заряда аккумулятора"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Уровень заряда аккумулятора").Select(s => s.Value).FirstOrDefault();
+                StaticBox.Sensors["Уровень сигнала"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Уровень сигнала").Select(s => s.Value).FirstOrDefault();
+                StaticBox.Sensors["Состояние дверей"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Состояние дверей").Select(s => s.Value).FirstOrDefault();
+                StaticBox.Sensors["Состояние контейнера"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Состояние контейнера").Select(s => s.Value).FirstOrDefault();
+                StaticBox.Sensors["Местоположение контейнера"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Местоположение контейнера").Select(s => s.Value).FirstOrDefault();
+            }
+                //Заполняй остальные параметры как в этом примере
 
-            //    //извлечение данных контейнера из файла
-            //    //using (FileStream fs = new FileStream(dir_path + "box_data.txt", FileMode.OpenOrCreate))
-            //    //{
-            //    //    container = await System.Text.Json.JsonSerializer.DeserializeAsync<ContainerResponse>(fs);
-            //    //}
+                s_weight.Progress = Convert.ToInt32(StaticBox.Sensors["Вес груза"]);
+            s_temperature.Progress = Convert.ToInt32(StaticBox.Sensors["Температура"]);
+            s_signal_strength_1.Progress = Convert.ToInt32(StaticBox.Sensors["Уровень сигнала"]);
+            s_light.Progress = Convert.ToInt32(StaticBox.Sensors["Освещенность"]);
+            s_humidity.Progress = Convert.ToInt32(StaticBox.Sensors["Влажность"]);
+            s_battery.Progress = Convert.ToInt32(StaticBox.Sensors["Уровень заряда аккумулятора"]);
 
-            //    //пример чтения данных с файла
+
+            //пример чтения данных с файла
             //    string file_data_remember;
             //    using (FileStream file = new FileStream(dir_path + "box_data.txt", FileMode.Open, FileAccess.Read))
             //    {
@@ -503,79 +425,6 @@ namespace GeoGeometry.Activity.Auth
             //        file_data_remember = Encoding.Default.GetString(array);
             //        file.Close();
             //    }
-
-            //    container = JsonConvert.DeserializeObject<ContainerResponse>(file_data_remember);
-
-            //    var myHttpClient = new HttpClient();
-
-            //    var uri = new Uri("http://iot.tmc-centert.ru/api/container/getbox?id=" + container.SmartBoxId);
-            //    HttpResponseMessage response = await myHttpClient.GetAsync(uri);
-
-            //    AuthApiData<BoxDataResponse> o_data = new AuthApiData<BoxDataResponse>();
-
-            //    string s_result;
-            //    using (HttpContent responseContent = response.Content)
-            //    {
-            //        s_result = await responseContent.ReadAsStringAsync();
-            //    }
-
-            //    o_data = JsonConvert.DeserializeObject<AuthApiData<BoxDataResponse>>(s_result);// вылетает после регистрации 
-            //    //контейнера
-            //    if (response.StatusCode == HttpStatusCode.OK)
-            //    {
-            //        if (o_data.Status == "0")
-            //        {
-            //            Toast.MakeText(this, o_data.Message, ToastLength.Long).Show();
-            //            BoxDataResponse exported_data = new BoxDataResponse();
-            //            exported_data = o_data.ResponseData;
-
-            //            StaticBox.AddInfoBox(exported_data);
-            //            //добавляем инфу о найденном контейнере
-            //            container_name.Text = container.Name;
-            //            s_open_close_container.Text = (exported_data.IsOpenedBox == false) ? "закрыт" : "раскрыт";
-            //            s_weight.Progress = Convert.ToInt32(exported_data.Weight);
-            //            s_lock_unlock_door.Text = (exported_data.IsOpenedDoor == false) ? "заблокирована" : "разблокирована";
-
-            //            var boxState = s_open_close_container.Text;
-            //            var doorState = s_lock_unlock_door.Text;
-
-            //            if (exported_data.BoxState == "1")
-            //            {
-            //                a_situation = "На складе";
-            //            }
-            //            else if (exported_data.BoxState == "2")
-            //            {                           
-            //                a_situation = "На автомобиле";
-            //            }
-            //            else if (exported_data.BoxState == "3")
-            //            {
-            //                a_situation = "У заказчика";
-            //            }
-            //            //else if (exported_data.BoxState == "4")
-            //            //{                         
-            //            //    a_situation = "После разгрузки у грузополучателя";
-            //            //}                       
-
-            //            s_temperature.Progress = Convert.ToInt32(exported_data.Temperature);
-
-            //            s_light.Progress = Convert.ToInt32(exported_data.Light);
-
-            //            //s_pin_access_code.Text = (exported_data.Code == null) ? "0000" : exported_data.Code;
-            //            s_humidity.Progress = Convert.ToInt32(exported_data.Wetness);
-            //            s_battery.Progress = Convert.ToInt32(exported_data.BatteryPower);
-            //            btn_lock_unlock_door.Text = "Закрыть/Открыть";
-            //            s_signal_strength.Progress = 0;
-            //        }
-            //        else
-            //        {
-            //            Toast.MakeText(this, o_data.Message, ToastLength.Long).Show();
-            //        }
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    Toast.MakeText(this, "" + ex.Message, ToastLength.Long).Show();
-            //}
 
         }
 
