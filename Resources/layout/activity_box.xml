@@ -458,8 +458,7 @@
                  android:layout_marginLeft="1dp"
                  android:layout_marginRight = "45dp">
                  
-            
-                <SeekBar
+                 <SeekBar
                     android:id="@+id/s_signal_strength_1"
                     android:layout_below = "@+id/SmullNetworkSignal"
                     android:layout_marginTop="-25dp"
@@ -467,8 +466,8 @@
                     android:layout_height="wrap_content"
                     android:padding="8dp"
                     android:min="-110"
-                    android:max = "1"
-                    android:progress = "100"
+                    android:max = "0"
+                    android:progress = "-100"
                  />
                  
             <TextView

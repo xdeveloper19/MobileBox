@@ -74,6 +74,8 @@ namespace GeoGeometry.Activity.Auth
         //private ProgressBar preloader;
         private RelativeLayout box_container;
 
+        private TextView TextNameBox;
+
         private TextView SmullWeight;
 
         private TextView SmullTemperature;
@@ -116,6 +118,7 @@ namespace GeoGeometry.Activity.Auth
             SmullTemperature = FindViewById<TextView>(Resource.Id.SmullTemperature);
             SmullLight = FindViewById<TextView>(Resource.Id.SmullLight);
             SmullHumidity = FindViewById<TextView>(Resource.Id.SmullHumidity);
+            TextNameBox = FindViewById<TextView>(Resource.Id.TextNameBox);
             SmullBattery = FindViewById<TextView>(Resource.Id.SmullBattery);
             SmullNetworkSignal = FindViewById<TextView>(Resource.Id.SmullNetworkSignal);
             s_weight = FindViewById<SeekBar>(Resource.Id.s_weight);
@@ -127,10 +130,25 @@ namespace GeoGeometry.Activity.Auth
 
             s_weight.ProgressChanged += (object sender, SeekBar.ProgressChangedEventArgs e) =>
             {
-                if (e.FromUser)
+                if(StaticBox.Sensors["Состояние контейнера"] == "0")
                 {
-                    SmullWeight.Text = string.Format("{0}", e.Progress);
+                    StaticBox.Sensors["Вес груза"] = "0";
+                    Android.App.AlertDialog.Builder alert = new Android.App.AlertDialog.Builder(this);
+                    alert.SetTitle("Внимание !");
+                    alert.SetMessage("Невозможно изменить вес контейнера.(Состояние контейнера: сложен) ");
+                    alert.SetPositiveButton("Закрыть", (senderAlert, args) => {
+                        Toast.MakeText(this, "Предупреждение было закрыто!", ToastLength.Short).Show();
+                    });
+                    Dialog dialog = alert.Create();
+                    dialog.Show();
                 }
+                else
+                {
+                    if (e.FromUser)
+                    {
+                        SmullWeight.Text = string.Format("{0}", e.Progress);
+                    }
+                }               
             };
             s_temperature.ProgressChanged += (object sender, SeekBar.ProgressChangedEventArgs e) =>
             {
@@ -348,14 +366,6 @@ namespace GeoGeometry.Activity.Auth
                     }
                     else
                     {
-                        Android.App.AlertDialog.Builder alert = new Android.App.AlertDialog.Builder(this);
-                        alert.SetTitle("Оповещение");
-                        alert.SetMessage("Изменение данных датчиков было успешно произведено.");
-                        alert.SetPositiveButton("Закрыть", (senderAlert, args) => {
-                            Toast.MakeText(this, "Оповещение было закрыто!", ToastLength.Short).Show();
-                        });
-                        Dialog dialog = alert.Create();
-                        dialog.Show();
                         Intent authActivity = new Intent(this, typeof(Auth.TakePhoto));
                         StartActivity(authActivity);
                     }
@@ -402,13 +412,18 @@ namespace GeoGeometry.Activity.Auth
                 //В статик бокс закомментируй 9 свойств
                 StaticBox.Sensors["Температура"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Температура").Select(s => s.Value).FirstOrDefault();
                 StaticBox.Sensors["Влажность"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Влажность").Select(s => s.Value).FirstOrDefault();
-                StaticBox.Sensors["Освещенность"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Освещенность").Select(s => s.Value).FirstOrDefault();
-                StaticBox.Sensors["Вес груза"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Вес груза").Select(s => s.Value).FirstOrDefault();
+                StaticBox.Sensors["Освещенность"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Освещенность").Select(s => s.Value).FirstOrDefault();                
                 StaticBox.Sensors["Уровень заряда аккумулятора"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Уровень заряда аккумулятора").Select(s => s.Value).FirstOrDefault();
                 StaticBox.Sensors["Уровень сигнала"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Уровень сигнала").Select(s => s.Value).FirstOrDefault();
                 StaticBox.Sensors["Состояние дверей"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Состояние дверей").Select(s => s.Value).FirstOrDefault();
                 StaticBox.Sensors["Состояние контейнера"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Состояние контейнера").Select(s => s.Value).FirstOrDefault();
                 StaticBox.Sensors["Местоположение контейнера"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Местоположение контейнера").Select(s => s.Value).FirstOrDefault();
+
+                if(StaticBox.Sensors["Состояние контейнера"] == "0")
+                    StaticBox.Sensors["Вес груза"] = "0";                    
+                else
+                    StaticBox.Sensors["Вес груза"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Вес груза").Select(s => s.Value).FirstOrDefault();
+            
             }
                 //Заполняй остальные параметры как в этом примере
             s_weight.Progress = Convert.ToInt32(StaticBox.Sensors["Вес груза"]);
@@ -418,25 +433,27 @@ namespace GeoGeometry.Activity.Auth
             s_humidity.Progress = Convert.ToInt32(StaticBox.Sensors["Влажность"]);
             s_battery.Progress = Convert.ToInt32(StaticBox.Sensors["Уровень заряда аккумулятора"]);
             
+            
             SmullWeight.Text = StaticBox.Sensors["Вес груза"];
             SmullTemperature.Text = StaticBox.Sensors["Температура"];
             SmullLight.Text = StaticBox.Sensors["Освещенность"];
             SmullHumidity.Text = StaticBox.Sensors["Влажность"];
             SmullBattery.Text = StaticBox.Sensors["Уровень заряда аккумулятора"];
             SmullNetworkSignal.Text = StaticBox.Sensors["Уровень сигнала"];
+            TextNameBox.Text = "(" + CrossSettings.Current.GetValueOrDefault("namebox", "") + ")";
 
-        //пример чтения данных с файла
-        //    string file_data_remember;
-        //    using (FileStream file = new FileStream(dir_path + "box_data.txt", FileMode.Open, FileAccess.Read))
-        //    {
-        //        // преобразуем строку в байты
-        //        byte[] array = new byte[file.Length];
-        //        // считываем данные
-        //        file.Read(array, 0, array.Length);
-        //        // декодируем байты в строку
-        //        file_data_remember = Encoding.Default.GetString(array);
-        //        file.Close();
-        //    }
+            //пример чтения данных с файла
+            //    string file_data_remember;
+            //    using (FileStream file = new FileStream(dir_path + "box_data.txt", FileMode.Open, FileAccess.Read))
+            //    {
+            //        // преобразуем строку в байты
+            //        byte[] array = new byte[file.Length];
+            //        // считываем данные
+            //        file.Read(array, 0, array.Length);
+            //        // декодируем байты в строку
+            //        file_data_remember = Encoding.Default.GetString(array);
+            //        file.Close();
+            //    }
 
         }
 

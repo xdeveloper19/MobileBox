@@ -62,6 +62,7 @@ namespace GeoGeometry.Activity
                 Dexter.WithActivity(this).WithPermissions(permissions).WithListener(new CompositeMultiplePermissionsListener(new SamplePermissionListener(this))).Check();
 
                 string c = CrossSettings.Current.GetValueOrDefault("id", "");
+                string n = CrossSettings.Current.GetValueOrDefault("namebox", "");
 
                 if (CrossSettings.Current.GetValueOrDefault("id", "") == "")
                 {
@@ -69,7 +70,10 @@ namespace GeoGeometry.Activity
                     {
                         var box = GetRandomBox();
                         if (box.Result.Status == "0")
+                        {
                             CrossSettings.Current.AddOrUpdateValue("id", box.Result.ResponseData.BoxId);
+                            CrossSettings.Current.AddOrUpdateValue("namebox", box.Result.ResponseData.Name);
+                        }
                         else
                             Toast.MakeText(this, "" + box.Result.Message, ToastLength.Long).Show();
                     }
@@ -106,7 +110,7 @@ namespace GeoGeometry.Activity
                 string dir_path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
                 var myHttpClient = new HttpClient();
 
-                var uri = new Uri("http://iot.tmc-centert.ru/api/container/getrandombox");
+                var uri = new Uri("http://iot-tmc-cen.1gb.ru/api/container/getrandombox");
 
                 HttpResponseMessage response = await myHttpClient.GetAsync(uri.ToString());// !!!
 

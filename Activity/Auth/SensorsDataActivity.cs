@@ -42,6 +42,8 @@ namespace GeoGeometry.Activity.Auth
         private TextView s_latitude_1;
 
         private TextView s_date_time_1;
+
+        private ImageView photobox;
         //public List<Box> mItems;
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -63,7 +65,8 @@ namespace GeoGeometry.Activity.Auth
             s_longitude_1 = FindViewById<TextView>(Resource.Id.s_longitude_1);
             s_latitude_1 = FindViewById<TextView>(Resource.Id.s_latitude_1);
             s_date_time_1 = FindViewById<TextView>(Resource.Id.s_date_time_1);
-            /////////////////
+            photobox = FindViewById<ImageView>(Resource.Id.photobox);
+
             s_weight_1.Text = StaticBox.Sensors["Вес груза"] + " кг";
             s_temperature_1.Text = StaticBox.Sensors["Температура"] + " °C";
             s_humidity_1.Text = StaticBox.Sensors["Влажность"] + " %";
@@ -71,12 +74,11 @@ namespace GeoGeometry.Activity.Auth
             s_battery_1.Text = StaticBox.Sensors["Уровень заряда аккумулятора"] + " В";
             s_signal_strength_2.Text = StaticBox.Sensors["Уровень сигнала"];
             s_situation_1.Text = StaticBox.Sensors["Местоположение контейнера"];
-            s_open_close_container_1.Text = StaticBox.Sensors["Состояние контейнера"];
-            s_lock_unlock_door_1.Text = StaticBox.Sensors["Состояние дверей"];
+            s_open_close_container_1.Text = (StaticBox.Sensors["Состояние контейнера"] == "0")?"сложен":"разложен";
+            s_lock_unlock_door_1.Text = (StaticBox.Sensors["Состояние дверей"] == "0")?"закрыта":"открыта";
             s_longitude_1.Text = StaticBox.Longitude.ToString();
             s_latitude_1.Text = StaticBox.Latitude.ToString();
             s_date_time_1.Text = StaticBox.CreatedAtSensors.ToString();
-            /////////////////
 
 
             //BindData();

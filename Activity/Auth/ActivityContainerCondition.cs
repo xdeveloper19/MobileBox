@@ -62,11 +62,10 @@ namespace GeoGeometry.Activity.Auth
             s_lock_unlock_door.Focusable = false;
             s_lock_unlock_door.LongClickable = false;
 
-
+            GetInfoAboutBox();
             s_situation_container.ItemSelected += new EventHandler<AdapterView.ItemSelectedEventArgs>(Spinner_ItemSelected);
             var adapter = ArrayAdapter.CreateFromResource(this, Resource.Array.a_situation_loaded_container, Android.Resource.Layout.SimpleSpinnerItem);
 
-            GetInfoAboutBox();
             adapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
             s_situation_container.Adapter = adapter;
 
@@ -204,18 +203,39 @@ namespace GeoGeometry.Activity.Auth
                 StaticBox.Sensors["Температура"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Температура").Select(s => s.Value).FirstOrDefault();
                 StaticBox.Sensors["Влажность"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Влажность").Select(s => s.Value).FirstOrDefault();
                 StaticBox.Sensors["Освещенность"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Освещенность").Select(s => s.Value).FirstOrDefault();
-                StaticBox.Sensors["Вес груза"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Вес груза").Select(s => s.Value).FirstOrDefault();
                 StaticBox.Sensors["Уровень заряда аккумулятора"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Уровень заряда аккумулятора").Select(s => s.Value).FirstOrDefault();
                 StaticBox.Sensors["Уровень сигнала"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Уровень сигнала").Select(s => s.Value).FirstOrDefault();
                 StaticBox.Sensors["Состояние дверей"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Состояние дверей").Select(s => s.Value).FirstOrDefault();
                 StaticBox.Sensors["Состояние контейнера"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Состояние контейнера").Select(s => s.Value).FirstOrDefault();
                 StaticBox.Sensors["Местоположение контейнера"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Местоположение контейнера").Select(s => s.Value).FirstOrDefault();
+
+                if (StaticBox.Sensors["Состояние контейнера"] == "0")
+                    StaticBox.Sensors["Вес груза"] = "0";
+                else
+                    StaticBox.Sensors["Вес груза"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Вес груза").Select(s => s.Value).FirstOrDefault();
             }
             //Заполняй остальные параметры как в этом примере
 
             s_open_close_container.Text = (StaticBox.Sensors["Состояние контейнера"] == "0")?"сложен":"разложен";
-            //поменять картинку
+            if (s_open_close_container.Text == "сложен")
+            {
+                box_lay_fold.SetImageResource(Resource.Drawable.close_box);
+            }
+
+            else
+            {
+                s_open_close_container.Text = "разложен";
+            }
             s_lock_unlock_door.Text = (StaticBox.Sensors["Состояние дверей"] == "0")?"закрыта":"открыта";
+            if (s_lock_unlock_door.Text == "закрыта")
+            {
+                box_lay_fold.SetImageResource(Resource.Drawable.close_door);
+            }
+
+            else
+            {
+                box_lay_fold.SetImageResource(Resource.Drawable.open_door);
+            }
             a_situation = StaticBox.Sensors["Местоположение контейнера"];
         }
         private void Spinner_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)

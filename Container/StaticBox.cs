@@ -81,7 +81,7 @@ namespace GeoGeometry.Container
         public static double Longitude { get; set; }
         public static double Latitude { get; set; }
         public static DateTime CreatedAtSensors { get; set; }
-        public static DateTime CreatedAtConditions { get; set; }
+        
         static StaticBox()
         {
             Sensors = new Dictionary<string, string>()
