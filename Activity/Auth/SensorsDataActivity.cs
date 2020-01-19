@@ -10,6 +10,7 @@ using Android.Runtime;
 using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
+using GeoGeometry.Container;
 
 namespace GeoGeometry.Activity.Auth
 {
@@ -17,6 +18,30 @@ namespace GeoGeometry.Activity.Auth
     public class SensorsDataActivity: AppCompatActivity
     {
         private TableLayout tablelayout;
+
+        private TextView s_weight_1;
+
+        private TextView s_temperature_1;
+
+        private TextView s_humidity_1;
+
+        private TextView s_light_1;
+
+        private TextView s_battery_1;
+
+        private TextView s_signal_strength_2;
+
+        private TextView s_situation_1;
+
+        private TextView s_open_close_container_1;
+
+        private TextView s_lock_unlock_door_1;
+
+        private TextView s_longitude_1;
+
+        private TextView s_latitude_1;
+
+        private TextView s_date_time_1;
         //public List<Box> mItems;
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -26,9 +51,35 @@ namespace GeoGeometry.Activity.Auth
 
             //List<UserCartModel> mItems = await GetData();
             tablelayout = FindViewById<TableLayout>(Resource.Id.sensors_data);
-            //BindData();
+            s_weight_1 = FindViewById<TextView>(Resource.Id.s_weight_1);
+            s_temperature_1 = FindViewById<TextView>(Resource.Id.s_temperature_1);
+            s_humidity_1 = FindViewById<TextView>(Resource.Id.s_humidity_1);
+            s_light_1 = FindViewById<TextView>(Resource.Id.s_light_1);
+            s_battery_1 = FindViewById<TextView>(Resource.Id.s_battery_1);
+            s_signal_strength_2 = FindViewById<TextView>(Resource.Id.s_signal_strength_2);
+            s_situation_1 = FindViewById<TextView>(Resource.Id.s_situation_1);
+            s_open_close_container_1 = FindViewById<TextView>(Resource.Id.s_open_close_container_1);
+            s_lock_unlock_door_1 = FindViewById<TextView>(Resource.Id.s_lock_unlock_door_1);
+            s_longitude_1 = FindViewById<TextView>(Resource.Id.s_longitude_1);
+            s_latitude_1 = FindViewById<TextView>(Resource.Id.s_latitude_1);
+            s_date_time_1 = FindViewById<TextView>(Resource.Id.s_date_time_1);
+            /////////////////
+            s_weight_1.Text = StaticBox.Sensors["Вес груза"] + " кг";
+            s_temperature_1.Text = StaticBox.Sensors["Температура"] + " °C";
+            s_humidity_1.Text = StaticBox.Sensors["Влажность"] + " %";
+            s_light_1.Text = StaticBox.Sensors["Освещенность"] + " лм";
+            s_battery_1.Text = StaticBox.Sensors["Уровень заряда аккумулятора"] + " В";
+            s_signal_strength_2.Text = StaticBox.Sensors["Уровень сигнала"];
+            s_situation_1.Text = StaticBox.Sensors["Местоположение контейнера"];
+            s_open_close_container_1.Text = StaticBox.Sensors["Состояние контейнера"];
+            s_lock_unlock_door_1.Text = StaticBox.Sensors["Состояние дверей"];
+            s_longitude_1.Text = StaticBox.Longitude.ToString();
+            s_latitude_1.Text = StaticBox.Latitude.ToString();
+            s_date_time_1.Text = StaticBox.CreatedAtSensors.ToString();
+            /////////////////
 
-           
+
+            //BindData();
         }
 
 
@@ -50,14 +101,14 @@ namespace GeoGeometry.Activity.Auth
         //    return mItems;
         //}
 
-        public void BindData()
-        {
-            try
-            {
+        //public void BindData()
+        //{
+        //    try
+        //    {
         //        TableRow tableRow = new TableRow(this);
         //        TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(
-        //ViewGroup.LayoutParams.MatchParent,
-        //ViewGroup.LayoutParams.MatchParent);
+        //        ViewGroup.LayoutParams.MatchParent,
+        //        ViewGroup.LayoutParams.MatchParent);
 
         //        foreach (var r in mItems)
         //        {
@@ -75,11 +126,11 @@ namespace GeoGeometry.Activity.Auth
 
         //            tablelayout.AddView(tableRow, 0);
         //        }
-            }
-            catch (Exception exx)
-            {
-                Console.WriteLine("Error During Bind Table Layout All Order Restaurent" + exx.Message);
-            }
-        }
+        //    }
+        //    catch (Exception exx)
+        //    {
+        //        Console.WriteLine("Error During Bind Table Layout All Order Restaurent" + exx.Message);
+        //    }
+        //}
     }
 }

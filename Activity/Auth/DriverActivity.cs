@@ -332,7 +332,6 @@ namespace GeoGeometry.Activity.Auth
             {
                 try
                 {
-
                     StaticBox.Sensors["Вес груза"] = s_weight.Progress.ToString();
                     StaticBox.Sensors["Температура"] = s_temperature.Progress.ToString();
                     StaticBox.Sensors["Влажность"] = s_humidity.Progress.ToString();
@@ -349,6 +348,14 @@ namespace GeoGeometry.Activity.Auth
                     }
                     else
                     {
+                        Android.App.AlertDialog.Builder alert = new Android.App.AlertDialog.Builder(this);
+                        alert.SetTitle("Оповещение");
+                        alert.SetMessage("Изменение данных датчиков было успешно произведено.");
+                        alert.SetPositiveButton("Закрыть", (senderAlert, args) => {
+                            Toast.MakeText(this, "Оповещение было закрыто!", ToastLength.Short).Show();
+                        });
+                        Dialog dialog = alert.Create();
+                        dialog.Show();
                         Intent authActivity = new Intent(this, typeof(Auth.TakePhoto));
                         StartActivity(authActivity);
                     }
@@ -404,27 +411,32 @@ namespace GeoGeometry.Activity.Auth
                 StaticBox.Sensors["Местоположение контейнера"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Местоположение контейнера").Select(s => s.Value).FirstOrDefault();
             }
                 //Заполняй остальные параметры как в этом примере
-
-                s_weight.Progress = Convert.ToInt32(StaticBox.Sensors["Вес груза"]);
+            s_weight.Progress = Convert.ToInt32(StaticBox.Sensors["Вес груза"]);
             s_temperature.Progress = Convert.ToInt32(StaticBox.Sensors["Температура"]);
             s_signal_strength_1.Progress = Convert.ToInt32(StaticBox.Sensors["Уровень сигнала"]);
             s_light.Progress = Convert.ToInt32(StaticBox.Sensors["Освещенность"]);
             s_humidity.Progress = Convert.ToInt32(StaticBox.Sensors["Влажность"]);
             s_battery.Progress = Convert.ToInt32(StaticBox.Sensors["Уровень заряда аккумулятора"]);
+            
+            SmullWeight.Text = StaticBox.Sensors["Вес груза"];
+            SmullTemperature.Text = StaticBox.Sensors["Температура"];
+            SmullLight.Text = StaticBox.Sensors["Освещенность"];
+            SmullHumidity.Text = StaticBox.Sensors["Влажность"];
+            SmullBattery.Text = StaticBox.Sensors["Уровень заряда аккумулятора"];
+            SmullNetworkSignal.Text = StaticBox.Sensors["Уровень сигнала"];
 
-
-            //пример чтения данных с файла
-            //    string file_data_remember;
-            //    using (FileStream file = new FileStream(dir_path + "box_data.txt", FileMode.Open, FileAccess.Read))
-            //    {
-            //        // преобразуем строку в байты
-            //        byte[] array = new byte[file.Length];
-            //        // считываем данные
-            //        file.Read(array, 0, array.Length);
-            //        // декодируем байты в строку
-            //        file_data_remember = Encoding.Default.GetString(array);
-            //        file.Close();
-            //    }
+        //пример чтения данных с файла
+        //    string file_data_remember;
+        //    using (FileStream file = new FileStream(dir_path + "box_data.txt", FileMode.Open, FileAccess.Read))
+        //    {
+        //        // преобразуем строку в байты
+        //        byte[] array = new byte[file.Length];
+        //        // считываем данные
+        //        file.Read(array, 0, array.Length);
+        //        // декодируем байты в строку
+        //        file_data_remember = Encoding.Default.GetString(array);
+        //        file.Close();
+        //    }
 
         }
 
@@ -519,7 +531,7 @@ namespace GeoGeometry.Activity.Auth
         //            var uri = new Uri("http://iot-tmc-cen.1gb.ru/api/container/setcontainerlocation?id=" + gpsLocation.id + "&lat1=" + gpsLocation.lat1 + "&lon1=" + gpsLocation.lon1 + "&signal=" + gpsLocation.signal + "&date=" + gpsLocation.date);
         //            var uri2 = new Uri("http://81.177.136.11:8003/geo?id=" + gpsLocation.id + "&lat1=" + gpsLocation.lat1 + "&lon1=" + gpsLocation.lon1 + "&signal=" + gpsLocation.signal + "&date=" + gpsLocation.date);
         //            //json структура.
-        //            var formContent = new FormUrlEncodedContent(new Dictionary<string, string>
+        //var formContent = new FormUrlEncodedContent(new Dictionary<string, string>
         //    {
         //        { "Id", gpsLocation.id },
         //        { "Lon1", gpsLocation.lon1.ToString()},

@@ -43,7 +43,7 @@ namespace GeoGeometry.Activity.Auth
 
             SetContentView(Resource.Layout.activity_GPS);
 
-            if (StaticBox.Sensors["Местположение контейнера"] == "2");
+
             GPS = FindViewById<RelativeLayout>(Resource.Id.GPS);
             s_longitude = FindViewById<EditText>(Resource.Id.s_longitude);
             s_latitude = FindViewById<EditText>(Resource.Id.s_latitude);
@@ -57,24 +57,40 @@ namespace GeoGeometry.Activity.Auth
             s_longitude.LongClickable = false;
             s_date_time.Focusable = false;
             s_date_time.LongClickable = false;
+            //StaticBox.Sensors["Местоположение контейнера"] = "1";
+            if (StaticBox.Sensors["Местоположение контейнера"] == "1" || StaticBox.Sensors["Местоположение контейнера"] == "3")
+            {
+                Android.App.AlertDialog.Builder alert = new Android.App.AlertDialog.Builder(this);
+                alert.SetTitle("Внимание !");
+                alert.SetMessage("Контейнер находится на складе или у заказчика. Его местоположение не отслеживается.");
+                alert.SetPositiveButton("Закрыть", (senderAlert, args) =>
+                {
+                    Toast.MakeText(this, "Предупреждение было закрыто!", ToastLength.Short).Show();
+                });
+                Dialog dialog = alert.Create();
+                dialog.Show();
+
+            }
+            else
+            {
+                BuildLocationRequest();
+                BuildLocationCallBack();
+
+                fusedLocationProviderClient = LocationServices.GetFusedLocationProviderClient(this);
 
 
-            BuildLocationRequest();
-            BuildLocationCallBack();
+                fusedLocationProviderClient.RequestLocationUpdates(locationRequest,
+                    locationCallback, Looper.MyLooper());
+            }
 
-            fusedLocationProviderClient = LocationServices.GetFusedLocationProviderClient(this);
-
-            
-            fusedLocationProviderClient.RequestLocationUpdates(locationRequest,
-                locationCallback, Looper.MyLooper());
         }
 
         public void OnMapReady(GoogleMap googleMap)
         {
             _googleMap = googleMap;////11111
 
-            double latitude = Convert.ToDouble(s_latitude.Text);
-            double longitude = Convert.ToDouble(s_longitude.Text);
+            double latitude = StaticBox.Latitude;
+            double longitude = StaticBox.Longitude;
 
             MarkerOptions markerOptions = new MarkerOptions();
             LatLng location = new LatLng(latitude, longitude);
@@ -130,6 +146,9 @@ namespace GeoGeometry.Activity.Auth
 
                 try
                 {
+                    StaticBox.Latitude = result.LastLocation.Latitude;
+                    StaticBox.Longitude = result.LastLocation.Longitude;
+
                     s_longitude.Text = result.LastLocation.Latitude.ToString();
                     s_latitude.Text = result.LastLocation.Longitude.ToString();
                     s_date_time.Text = DateTime.Now.ToString();

@@ -72,7 +72,9 @@ namespace GeoGeometry.Container
                 var myHttpClient = new HttpClient();
                 
                 var date = DateTime.Now;
-                var uri = new Uri(Url + "editsensors?id=" + CrossSettings.Current.GetValueOrDefault("id", "") + "&date=" + date + "&sensors[Вес груза]=" + StaticBox.Sensors["Вес груза"]
+                StaticBox.CreatedAtSensors = date;
+
+                var uri = new Uri("http://iot.tmc-centert.ru/api/container/editsensors?date=" + date + "&id=" + CrossSettings.Current.GetValueOrDefault("id", "") + "&sensors[Вес груза]=" + StaticBox.Sensors["Вес груза"]
                 + "&sensors[Температура]=" + StaticBox.Sensors["Температура"] + "&sensors[Влажность]=" + StaticBox.Sensors["Влажность"] + "&sensors[Освещенность]=" + StaticBox.Sensors["Освещенность"]
                 + "&sensors[Уровень заряда аккумулятора]=" + StaticBox.Sensors["Уровень заряда аккумулятора"] + "&sensors[Уровень сигнала]=" + StaticBox.Sensors["Уровень сигнала"] + "&sensors[Состояние дверей]=" + StaticBox.Sensors["Состояние дверей"]
                 + "&sensors[Состояние контейнера]=" + StaticBox.Sensors["Состояние контейнера"] + "&sensors[Местоположение контейнера]=" + StaticBox.Sensors["Местоположение контейнера"]);
@@ -80,25 +82,41 @@ namespace GeoGeometry.Container
                 //var uri = new Uri("http://iot.tmc-centert.ru/api/container/editsensors?id=66fbf65c-a9e1-45bb-96df-b63ca7519ce4&date=2020-01-18 19:48:22&sensors[Вес груза]=3455&sensors[Температура]=23&sensors[Влажность]=23&sensors[Освещенность]=123&sensors[Уровень заряда аккумулятора]=34&sensors[Уровень сигнала]=-29&sensors[Местоположение контейнера]=2&sensors[Состояние дверей]=1&sensors[Состояние контейнера]=1);
                 //var uri2 = ("http://81.177.136.11:8003/sensor?id=" + container.Id + "&IsOpenedBox=" + container.IsOpenedBox + "&Name=" + container.Name + "&IsOpenedDoor=" + container.IsOpenedDoor + "&Weight=" + container.Weight + "&Light=" + container.Light + "&Code=" + container.Code + "&Temperature=" + container.Temperature + "&Wetness=" + container.Wetness + "&BatteryPower=" + container.BatteryPower + "&BoxState=" + container.BoxState);
 
-                EditBoxViewModel box = new EditBoxViewModel
-                {
-                    id = CrossSettings.Current.GetValueOrDefault("id", ""),
-                    date = date,
-                    Sensors = new Dictionary<string, string>
-                    {
-                        {"Температура",StaticBox.Sensors["Температура"] },
-                        {"Влажность",StaticBox.Sensors["Влажность"] },
-                        {"Освещенность",StaticBox.Sensors["Освещенность"] },
-                        {"Вес груза",StaticBox.Sensors["Вес груза"] },
-                        {"Уровень заряда аккумулятора",StaticBox.Sensors["Уровень заряда аккумулятора"]},
-                        {"Уровень сигнала",StaticBox.Sensors["Уровень сигнала"]},
-                        {"Состояние дверей",StaticBox.Sensors["Состояние дверей"]},
-                        {"Состояние контейнера",StaticBox.Sensors["Состояние контейнера"]},
-                        {"Местоположение контейнера",StaticBox.Sensors["Местоположение контейнера"]}
-                    }
-                };
-                var data = new StringContent(JsonConvert.SerializeObject(box));
-                HttpResponseMessage response = await myHttpClient.PostAsync(uri.ToString(), new StringContent(JsonConvert.SerializeObject(box), Encoding.UTF8, "application/json"));
+                var formContent = new FormUrlEncodedContent(new Dictionary<string, string>
+            {
+                { "id", CrossSettings.Current.GetValueOrDefault("id", "") },
+                { "date", date.ToString()},
+                { "sensors[Вес груза]", StaticBox.Sensors["Вес груза"]},
+                { "sensors[Температура]", StaticBox.Sensors["Температура"]},
+                { "sensors[Влажность]", StaticBox.Sensors["Влажность"]},
+                { "sensors[Освещенность]", StaticBox.Sensors["Освещенность"]},
+                { "sensors[Уровень заряда аккумулятора]", StaticBox.Sensors["Уровень заряда аккумулятора"]},
+                { "sensors[Уровень сигнала]", StaticBox.Sensors["Уровень сигнала"]},
+                { "sensors[Состояние дверей]", StaticBox.Sensors["Состояние дверей"]},
+                { "sensors[Состояние контейнера]", StaticBox.Sensors["Состояние контейнера"]},
+                { "sensors[Местоположение контейнера]", StaticBox.Sensors["Местоположение контейнера"]}
+            });
+
+                //EditBoxViewModel box = new EditBoxViewModel
+                //{
+                //    id = CrossSettings.Current.GetValueOrDefault("id", ""),
+                //    date = date,
+                //    Sensors = new Dictionary<string, string>
+                //    {
+                //        {"Температура",StaticBox.Sensors["Температура"] },
+                //        {"Влажность",StaticBox.Sensors["Влажность"] },
+                //        {"Освещенность",StaticBox.Sensors["Освещенность"] },
+                //        {"Вес груза",StaticBox.Sensors["Вес груза"] },
+                //        {"Уровень заряда аккумулятора",StaticBox.Sensors["Уровень заряда аккумулятора"]},
+                //        {"Уровень сигнала",StaticBox.Sensors["Уровень сигнала"]},
+                //        {"Состояние дверей",StaticBox.Sensors["Состояние дверей"]},
+                //        {"Состояние контейнера",StaticBox.Sensors["Состояние контейнера"]},
+                //        {"Местоположение контейнера",StaticBox.Sensors["Местоположение контейнера"]}
+                //    }
+                //};
+
+                //var data = new StringContent(JsonConvert.SerializeObject(box));
+                HttpResponseMessage response = await myHttpClient.PostAsync(uri.ToString(), formContent);
                 //HttpResponseMessage responseFromAnotherServer = await myHttpClient.PutAsync(uri2.ToString(), new StringContent(JsonConvert.SerializeObject(container), Encoding.UTF8, "application/json"));
 
                 AuthApiData<BaseResponseObject> o_data = new AuthApiData<BaseResponseObject>();

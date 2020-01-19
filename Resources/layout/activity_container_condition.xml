@@ -167,6 +167,18 @@
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="30dp"
                 />
+
+                <Button
+                    android:id="@+id/btn_save_parameters"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"                    
+                    android:layout_alignParentRight = "true"
+                    android:layout_below="@id/btn_lock_unlock_door"
+                    android:text="Сохранить"
+                    android:textSize="8sp"
+                    android:layout_marginTop="60dp"
+                    android:background="@drawable/button_stili"
+                    android:padding = "5dp"/>
      
             </RelativeLayout>
 
