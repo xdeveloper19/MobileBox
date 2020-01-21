@@ -72,7 +72,7 @@ namespace GeoGeometry.Container
                 var myHttpClient = new HttpClient();
                 
                 var date = DateTime.Now;
-                StaticBox.CreatedAtSensors = date;
+                //StaticBox.CreatedAtSensors = date;
 
                 var uri = new Uri("http://iot.tmc-centert.ru/api/container/editsensors?date=" + date + "&id=" + CrossSettings.Current.GetValueOrDefault("id", "") + "&sensors[Вес груза]=" + StaticBox.Sensors["Вес груза"]
                 + "&sensors[Температура]=" + StaticBox.Sensors["Температура"] + "&sensors[Влажность]=" + StaticBox.Sensors["Влажность"] + "&sensors[Освещенность]=" + StaticBox.Sensors["Освещенность"]

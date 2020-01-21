@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Android.Graphics;
 using System.Linq;
 using System.Text;
 
@@ -77,6 +78,7 @@ namespace GeoGeometry.Container
         // static public string Signal { get; set; }
 
         // static public DateTime Date { get; set; }
+        public static Bitmap ImageData { get; set; } 
         public static Dictionary<string, string> Sensors { get; set; }
         public static double Longitude { get; set; }
         public static double Latitude { get; set; }

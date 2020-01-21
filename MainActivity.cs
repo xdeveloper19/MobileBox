@@ -60,10 +60,9 @@ namespace GeoGeometry.Activity
                 string[] permissions = { Manifest.Permission.AccessFineLocation, Manifest.Permission.WriteExternalStorage, Manifest.Permission.Camera };
                 //ActivityCompat.RequestPermissions(this, new String[] { Manifest.Permission.Camera }, MY_PERMISSIONS_REQUEST_CAMERA);
                 Dexter.WithActivity(this).WithPermissions(permissions).WithListener(new CompositeMultiplePermissionsListener(new SamplePermissionListener(this))).Check();
-
-                string c = CrossSettings.Current.GetValueOrDefault("id", "");
-                string n = CrossSettings.Current.GetValueOrDefault("namebox", "");
-
+                //CrossSettings.Current.AddOrUpdateValue("id", "");
+                //CrossSettings.Current.AddOrUpdateValue("namebox", "box3");
+                //"aa2278fd-5757-490c-9467-5f54c272aeb8"
                 if (CrossSettings.Current.GetValueOrDefault("id", "") == "")
                 {
                     try
@@ -108,19 +107,35 @@ namespace GeoGeometry.Activity
         {
            
                 string dir_path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+
                 var myHttpClient = new HttpClient();
-
-                var uri = new Uri("http://iot-tmc-cen.1gb.ru/api/container/getrandombox");
-
-                HttpResponseMessage response = await myHttpClient.GetAsync(uri.ToString());// !!!
-
-                string s_result;
-                using (HttpContent responseContent = response.Content)
+            WebRequest request = WebRequest.Create("http://iot-tmc-cen.1gb.ru/api/container/getrandombox");
+            WebResponse response = request.GetResponse();
+            // HttpWebRequest
+            var uri = new Uri("http://iot-tmc-cen.1gb.ru/api/container/getrandombox");
+            string s_result = "";
+            using (Stream stream = response.GetResponseStream())
+            {
+                using (StreamReader reader = new StreamReader(stream))
                 {
-                    s_result = await responseContent.ReadAsStringAsync();
+                    string line = "";
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        s_result += line;
+                    }
                 }
+            }
+            response.Close();
 
-                AuthApiData<GetBoxIdResponse> o_data = JsonConvert.DeserializeObject<AuthApiData<GetBoxIdResponse>>(s_result);
+            //HttpResponseMessage response = await myHttpClient.GetAsync(uri.ToString());// !!!
+
+            //string s_result;
+            //using (HttpContent responseContent = response.Content)
+            //{
+            //    s_result = await responseContent.ReadAsStringAsync();
+            //}
+
+            AuthApiData<GetBoxIdResponse> o_data = JsonConvert.DeserializeObject<AuthApiData<GetBoxIdResponse>>(s_result);
             //ClearField();
 
             return o_data;

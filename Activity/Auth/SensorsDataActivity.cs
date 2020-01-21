@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 
@@ -79,8 +80,9 @@ namespace GeoGeometry.Activity.Auth
             s_longitude_1.Text = StaticBox.Longitude.ToString();
             s_latitude_1.Text = StaticBox.Latitude.ToString();
             s_date_time_1.Text = StaticBox.CreatedAtSensors.ToString();
-
-
+            //MediaStore.Images.Media.InsertImage(ContentResolver, bitmap, "screen", "shot");
+            
+            photobox.SetImageBitmap(StaticBox.ImageData);
             //BindData();
         }
 

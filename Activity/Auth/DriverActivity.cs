@@ -98,7 +98,7 @@ namespace GeoGeometry.Activity.Auth
 
         private SeekBar s_battery;
 
-        private static SeekBar s_signal_strength_1;
+        private SeekBar s_signal_strength_1;
 
         private Button btn_save_parameters;
 
@@ -141,6 +141,7 @@ namespace GeoGeometry.Activity.Auth
                     });
                     Dialog dialog = alert.Create();
                     dialog.Show();
+                    s_weight.Progress = 0;
                 }
                 else
                 {
@@ -150,11 +151,12 @@ namespace GeoGeometry.Activity.Auth
                     }
                 }               
             };
+            
             s_temperature.ProgressChanged += (object sender, SeekBar.ProgressChangedEventArgs e) =>
             {
                 if (e.FromUser)
-                {
-                    SmullTemperature.Text = string.Format("{0}", e.Progress);
+                {                  
+                    SmullTemperature.Text = (e.Progress - 40).ToString();
                 }
             };
             s_light.ProgressChanged += (object sender, SeekBar.ProgressChangedEventArgs e) =>
@@ -178,11 +180,12 @@ namespace GeoGeometry.Activity.Auth
                     SmullBattery.Text = string.Format("{0}", e.Progress);
                 }
             };
+            
             s_signal_strength_1.ProgressChanged += (object sender, SeekBar.ProgressChangedEventArgs e) =>
             {
                 if (e.FromUser)
                 {
-                    SmullNetworkSignal.Text = string.Format("{0}", e.Progress);
+                    SmullNetworkSignal.Text = (e.Progress - 110).ToString();
                 }
             };
 
@@ -350,6 +353,7 @@ namespace GeoGeometry.Activity.Auth
             {
                 try
                 {
+
                     StaticBox.Sensors["Вес груза"] = s_weight.Progress.ToString();
                     StaticBox.Sensors["Температура"] = s_temperature.Progress.ToString();
                     StaticBox.Sensors["Влажность"] = s_humidity.Progress.ToString();
@@ -423,7 +427,8 @@ namespace GeoGeometry.Activity.Auth
                     StaticBox.Sensors["Вес груза"] = "0";                    
                 else
                     StaticBox.Sensors["Вес груза"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Вес груза").Select(s => s.Value).FirstOrDefault();
-            
+
+                StaticBox.CreatedAtSensors = (DateTime)o_data.ResponseData.Objects[0].CreatedAt;
             }
                 //Заполняй остальные параметры как в этом примере
             s_weight.Progress = Convert.ToInt32(StaticBox.Sensors["Вес груза"]);

@@ -17,7 +17,7 @@
   <string-array name="a_situation_loaded_container">
     <item>На складе</item>
     <item>На автомобиле</item>
-    <item>У заказчика</item>
+    <item>У заказчика</item>    
   </string-array>
 
   <string-array name="array_cargo_characteristic">

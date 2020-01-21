@@ -21,7 +21,7 @@ namespace GeoGeometry.Model.Box
 
         public string Value { get; set; }
 
-        public string CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; }
         //public string Name { get; set; }
         //public string Id { get; set; }
         //public bool IsOpenedBox { get; set; }

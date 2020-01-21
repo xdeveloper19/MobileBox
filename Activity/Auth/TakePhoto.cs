@@ -6,7 +6,7 @@ using Android.Support.V4.App;
 using System;
 using Android.Support.Design.Widget;
 using Android.Views;
-
+using System.IO;
 using Android.Support.V4.Content;
 using Android.Util;
 using Android.Support.V7.App;
@@ -17,6 +17,8 @@ using Android.Runtime;
 using Android.Content;
 using Android.App;
 using GeoGeometry.Activity.Cameraa;
+using Java.IO;
+using GeoGeometry.Container;
 
 namespace GeoGeometry.Activity.Auth
 {
@@ -108,6 +110,7 @@ namespace GeoGeometry.Activity.Auth
         {
             base.OnActivityResult(requestCode, resultCode, data);
             Bitmap bitmap = null;
+
             //If user did not take a photeo , he will get result of bitmap, it is null
             try
             {
@@ -125,7 +128,9 @@ namespace GeoGeometry.Activity.Auth
                 MediaStore.Images.Media.InsertImage(ContentResolver, bitmap, "screen", "shot");
                 photobox.SetImageBitmap(bitmap);
 
-                Intent authActivity = new Intent(this, typeof(Auth.TakePhoto));
+                Intent authActivity = new Intent(this, typeof(Auth.SensorsDataActivity));
+                StaticBox.ImageData = bitmap;
+                //authActivity.PutExtra("MyPhoto", bitmap);
                 StartActivity(authActivity);
             }
             else

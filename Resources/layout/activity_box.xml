@@ -41,7 +41,7 @@
                 android:layout_marginTop="-15dp"
                 android:textColor = "#6A5ACD"
                 android:layout_centerHorizontal = "true"
-                android:text="(box12)"
+                android:text=""
                 android:textSize="15sp"
                   />
 
@@ -83,7 +83,7 @@
                     android:padding="8dp"
                     android:min="0"
                     android:max = "5000"
-                    android:progress = "5000"
+                    android:progress = "0"
                  />
                 <TextView
                     android:layout_width="wrap_content"
@@ -164,9 +164,9 @@
                 android:layout_width="204.5dp"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
-                android:min="-40"
-                android:max = "85"
-                android:progress = "85"
+                android:min="0"
+                android:max = "125"
+                android:progress = "0"
                  />
             <TextView
                 android:layout_width="wrap_content"
@@ -242,7 +242,7 @@
                 android:layout_height="wrap_content"
                 android:min="0"
                 android:max = "1000"
-                android:progress = "1000"
+                android:progress = "0"
                 android:padding="8dp"
                  />
             <TextView
@@ -316,7 +316,7 @@
                 android:padding="8dp"
                 android:min="0"
                 android:max = "100"
-                android:progress = "100"
+                android:progress = "0"
                  />
             <TextView
                 android:layout_width="wrap_content"
@@ -392,7 +392,7 @@
                     android:padding="8dp"
                     android:min="0"
                     android:max = "16"
-                    android:progress = "16"
+                    android:progress = "0"
                  />
                 <TextView
                     android:layout_width="wrap_content"
@@ -465,9 +465,8 @@
                     android:layout_width="171.0dp"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
-                    android:min="-110"
-                    android:max = "0"
-                    android:progress = "-100"
+                    android:min="0"
+                    android:max = "110"
                  />
                  
             <TextView

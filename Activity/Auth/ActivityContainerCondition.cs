@@ -17,6 +17,7 @@ using GeoGeometry.Model.Auth;
 using GeoGeometry.Model.Box;
 using Newtonsoft.Json;
 using Plugin.Settings;
+using Xamarin.Forms.Internals;
 
 namespace GeoGeometry.Activity.Auth
 {
@@ -68,6 +69,7 @@ namespace GeoGeometry.Activity.Auth
 
             adapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
             s_situation_container.Adapter = adapter;
+            
 
 
             btn_save_status_container.Click += async delegate
@@ -197,7 +199,7 @@ namespace GeoGeometry.Activity.Auth
             {
                 ListResponse<BoxDataResponse> o_boxes_data = new ListResponse<BoxDataResponse>();
                 o_boxes_data.Objects = o_data.ResponseData.Objects;// !!!
-
+                
                 //StaticBox.AddInfoObjects(o_boxes_data);
                 //В статик бокс закомментируй 9 свойств
                 StaticBox.Sensors["Температура"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Температура").Select(s => s.Value).FirstOrDefault();
@@ -208,7 +210,7 @@ namespace GeoGeometry.Activity.Auth
                 StaticBox.Sensors["Состояние дверей"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Состояние дверей").Select(s => s.Value).FirstOrDefault();
                 StaticBox.Sensors["Состояние контейнера"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Состояние контейнера").Select(s => s.Value).FirstOrDefault();
                 StaticBox.Sensors["Местоположение контейнера"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Местоположение контейнера").Select(s => s.Value).FirstOrDefault();
-
+                StaticBox.CreatedAtSensors = o_data.ResponseData.Objects[0].CreatedAt;
                 if (StaticBox.Sensors["Состояние контейнера"] == "0")
                     StaticBox.Sensors["Вес груза"] = "0";
                 else
@@ -216,27 +218,24 @@ namespace GeoGeometry.Activity.Auth
             }
             //Заполняй остальные параметры как в этом примере
 
+
             s_open_close_container.Text = (StaticBox.Sensors["Состояние контейнера"] == "0")?"сложен":"разложен";
             if (s_open_close_container.Text == "сложен")
             {
                 box_lay_fold.SetImageResource(Resource.Drawable.close_box);
             }
-
-            else
-            {
-                s_open_close_container.Text = "разложен";
-            }
             s_lock_unlock_door.Text = (StaticBox.Sensors["Состояние дверей"] == "0")?"закрыта":"открыта";
-            if (s_lock_unlock_door.Text == "закрыта")
+            if (s_lock_unlock_door.Text == "закрыта" && s_open_close_container.Text == "разложен")
             {
                 box_lay_fold.SetImageResource(Resource.Drawable.close_door);
             }
-
-            else
+            else if(s_lock_unlock_door.Text == "открыта" && s_open_close_container.Text == "разложен")
             {
                 box_lay_fold.SetImageResource(Resource.Drawable.open_door);
             }
             a_situation = StaticBox.Sensors["Местоположение контейнера"];
+            
+            s_situation_container.SetSelection(Resources.GetStringArray(Resource.Array.a_situation_loaded_container).IndexOf(x => x == a_situation));
         }
         private void Spinner_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {

@@ -58,7 +58,7 @@ namespace GeoGeometry.Activity.Auth
             s_date_time.Focusable = false;
             s_date_time.LongClickable = false;
             //StaticBox.Sensors["Местоположение контейнера"] = "1";
-            if (StaticBox.Sensors["Местоположение контейнера"] == "1" || StaticBox.Sensors["Местоположение контейнера"] == "3")
+            if (StaticBox.Sensors["Местоположение контейнера"] == "На складе" || StaticBox.Sensors["Местоположение контейнера"] == "У заказчика")
             {
                 Android.App.AlertDialog.Builder alert = new Android.App.AlertDialog.Builder(this);
                 alert.SetTitle("Внимание !");
