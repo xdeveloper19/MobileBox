@@ -96,23 +96,7 @@ namespace GeoGeometry.Activity.Auth {
             
 
 
-            //        if (file_data_remember.Substring(0, 1) == "1")
-            //        {
-            //preloader.Visibility = Android.Views.ViewStates.Visible;
-            //file_data_remember = file_data_remember.Remove(0, 1);
-            //            AuthResponseData o_data = JsonConvert.DeserializeObject<AuthResponseData>(file_data_remember);
-
-            //            StaticUser.AddInfoAuth(o_data);
-
-            //preloader.Visibility = Android.Views.ViewStates.Gone;
-
-            //// Переход на главную страницу.
-            //Intent homeActivity = new Intent(this, typeof(Home.HomeActivity));
-            //            StartActivity(homeActivity);
-            //            //this.Finish();
-            //        }
-            //        else
-            //        {
+           
             // Переход к форме регистрации.
             btn_register.Click += (s, e) =>
             {
@@ -141,14 +125,7 @@ namespace GeoGeometry.Activity.Auth {
                     myHttpClient.DefaultRequestHeaders.Authorization = _authHeader;
 
                     var uri = new Uri("http://iot.tmc-centert.ru/api/auth/login?email=" + auth.Email + "&password=" + auth.Password);
-                        /*
-                        //json структура.
-                        var formContent = new FormUrlEncodedContent(new Dictionary<string, string>
-                        {
-                            { "Email", auth.Email },
-                            { "Password", auth.Password }
-                        });
-                        */
+                      
                         // Поучаю ответ об авторизации [успех или нет]
                         HttpResponseMessage response = await myHttpClient.PostAsync(uri.ToString(), new StringContent(JsonConvert.SerializeObject(auth), Encoding.UTF8, "application/json"));
 
@@ -161,7 +138,7 @@ namespace GeoGeometry.Activity.Auth {
                     AuthApiData<AuthResponseData> o_data = JsonConvert.DeserializeObject<AuthApiData<AuthResponseData>>(s_result);
 
                     
-                        //ClearField();
+
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
                         if (o_data.Status == "0")
@@ -185,12 +162,7 @@ namespace GeoGeometry.Activity.Auth {
                             StaticUser.Email = s_login.Text;
                             StaticUser.AddInfoAuth(o_user_data);
 
-                                //пример ContainerSelection
-
-                                //using (FileStream fs = new FileStream(dir_path + "user_data.txt", FileMode.OpenOrCreate))
-                                //{
-                                //    await System.Text.Json.JsonSerializer.SerializeAsync<AuthResponseData>(fs, o_user_data);
-                                //}
+                               
 
                             using (FileStream file = new FileStream(dir_path + "user_data.txt", FileMode.OpenOrCreate, FileAccess.Write))
                             {
@@ -204,19 +176,8 @@ namespace GeoGeometry.Activity.Auth {
                                 //Начинаю собирать информацию о клиенте
                                 preloader.Visibility = Android.Views.ViewStates.Invisible;
                                 // Переход на страницу водителя.
-                            //if (o_data.ResponseData.Role == "driver")
-                            //{
-                            //    Intent Driver = new Intent(this, typeof(Auth.DriverActivity));
-                            //    StartActivity(Driver);
-                            //    this.Finish();
-                            //}
-                            //else if (o_data.ResponseData.Role == "user")
-                            //{
-                            //    Intent UserActivity = new Intent(this, typeof(Auth.ActivityUserBox));
-                            //    StartActivity(UserActivity);
-                            //    this.Finish();
-                            //}
-                            Intent Driver = new Intent(this, typeof(Auth.DriverActivity));
+                       
+                            Intent Driver = new Intent(this, typeof(Auth.SensorParameters));
                             StartActivity(Driver);
                             this.Finish();
                         }
@@ -233,52 +194,7 @@ namespace GeoGeometry.Activity.Auth {
             };
         }
 
-        //private async void GetInfoAboutUser(string dir_path, string file_data_remember)
-        //{
-        //    if (File.Exists(@"" + dir_path + "user_data.txt"))
-        //    {
-        //        using (FileStream file = new FileStream(dir_path + "user_data.txt", FileMode.Open, FileAccess.Read))
-        //        {
-        //            // преобразуем строку в байты
-        //            byte[] array = new byte[file.Length];
-        //            // считываем данные
-        //            file.Read(array, 0, array.Length);
-        //            // декодируем байты в строку
-        //            file_data_remember = Encoding.Default.GetString(array);
-        //            file.Close();
-        //        }
-        //        AuthResponseData user = JsonConvert.DeserializeObject<AuthResponseData>(file_data_remember);
-
-        //        var myHttpClient = new HttpClient();
-        //        var uri = new Uri("http://iot.tmc-centert.ru/api/container/getbox?id=" + user.UserId);
-        //        HttpResponseMessage response = await myHttpClient.GetAsync(uri);
-
-        //        AuthApiData<AuthResponseData> o_data = new AuthApiData<AuthResponseData>();
-
-        //        string s_result;
-        //        using (HttpContent responseContent = response.Content)
-        //        {
-        //            s_result = await responseContent.ReadAsStringAsync();
-        //        }
-
-        //        o_data = JsonConvert.DeserializeObject<AuthApiData<AuthResponseData>>(s_result);
-        //        if (response.StatusCode == HttpStatusCode.OK)
-        //        {
-        //            if (o_data.Status == "0")
-        //            {
-        //                Toast.MakeText(this, o_data.Message, ToastLength.Long).Show();
-        //                AuthResponseData exported_data = new AuthResponseData();
-        //                exported_data = o_data.ResponseData;
-        //                if (user.Check == "1")
-        //                {
-        //                    s_login.Text = exported_data.
-        //                }
-
-        //            } 
-        //        }
-                
-        //    }
-        //}
+       
         /// <summary>
         /// Removes activity from history after navigating to new activity.
         /// </summary>

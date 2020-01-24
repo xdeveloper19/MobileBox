@@ -79,34 +79,6 @@ namespace GeoGeometry.Activity.Auth
                 Finish();
             };
 
-            //btn_i.Click += (s, e) =>
-            //{
-            //    //Intent I = new Intent(this, typeof(Reg.RegisterIndividual));
-            //    //StartActivity(I);
-            //    //this.Finish();
-            //};
-
-            //btn_e.Click += (s, e) =>
-            //{
-            //    //Intent E = new Intent(this, typeof(Reg.RegisterEntity));
-            //    //StartActivity(E);
-            //    //this.Finish();
-            //};
-
-            //btn_ri.Click += (s, e) =>
-            //{
-            //    //Intent I = new Intent(this, typeof(Reg.CustomerRecipientIndividual));
-            //    //StartActivity(I);
-            //    //this.Finish();
-            //};
-
-            //btn_re.Click += (s, e) =>
-            //{
-            //    //Intent E = new Intent(this, typeof(Reg.CustomerRecipientEntity));
-            //    //StartActivity(E);
-            //    //this.Finish();
-            //};
-
             string dir_path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
 
             btn_register.Click += async delegate
@@ -126,20 +98,9 @@ namespace GeoGeometry.Activity.Auth
                     };
                     
                     var myHttpClient = new HttpClient();
-                    var uri = new Uri(" http://iot-tmc-cen.1gb.ru/api/auth/register?email=" + register.Email + "&firstname=" + register.FirstName + "&lastname=" + register.LastName + "&password=" + register.Password + "&passwordconfirm=" + register.PasswordConfirm + "&rolename=" + register.RoleName);
-                    //var uri = "../register?email="+register.Email+"&firstname="+register.FirstName+"&lastname="+register.LastName+"&password="+register.Password+"&passwordconfirm=" + register.PasswordConfirm +"&rolename=" + register.RoleName;
+                    var uri = new Uri(" http://iot-tmc-cen.1gb.ru/api/auth/register?email=" + register.Email + "&firstname=" + register.FirstName + "&lastname=" + register.LastName + "&password=" + register.Password + "&passwordconfirm=" + register.PasswordConfirm + "&rolename=" + register.RoleName);                  
                     var _authHeader = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes(string.Format("{0}:{1}", register.FirstName, register.LastName, register.Password, register.PasswordConfirm, register.Email, register.RoleName))));
-                /*
-                //json структура.
-                var formContent = new FormUrlEncodedContent(new Dictionary<string, string>
-                {
-                    { "FirstName", register.FirstName },
-                    { "LastName", register.LastName },
-                    { "Email", register.Email },
-                    { "Password", register.Password },
-                    { "PasswordConfirm", register.PasswordConfirm }
-                });
-                */
+
 
                 HttpResponseMessage response = await myHttpClient.PostAsync(uri.ToString(), new StringContent(JsonConvert.SerializeObject(register), Encoding.UTF8, "application/json"));
 
@@ -171,15 +132,11 @@ namespace GeoGeometry.Activity.Auth
                         }
 
                         
-                            Intent Driver = new Intent(this, typeof(Auth.DriverActivity));
+                            Intent Driver = new Intent(this, typeof(Auth.SensorParameters));
                             StartActivity(Driver);
                             this.Finish();
 
                             preloader.Visibility = Android.Views.ViewStates.Invisible;
-                        // Переход на страницу выбора контейнера.
-                        //Intent ContainerSelectionActivity = new Intent(this, typeof(Auth.ContainerSelection));
-                        //StartActivity(ContainerSelectionActivity);
-                        //this.Finish();
                     }
                     else
                     {
@@ -194,17 +151,5 @@ namespace GeoGeometry.Activity.Auth
             };
 
         }  
-        /// <summary>
-        /// Метод очистки полей.
-        /// </summary>
-        /*void ClearField()
-        {
-            s_first_name.Text = "";
-            s_last_name.Text = "";
-            s_email.Text = "";
-            s_pass.Text = "";
-            s_pass_check.Text = "";
-        }
-        */
     }
 }

@@ -73,7 +73,7 @@
     <Compile Include="Activity\Auth\ContainerSelection.cs" />
     <Compile Include="Activity\Auth\RegisterActivity.cs" />
     <Compile Include="Activity\Auth\RegisterBoxActivity.cs" />
-    <Compile Include="Activity\Auth\DriverActivity.cs" />
+    <Compile Include="Activity\Auth\SensorParameters.cs" />
     <Compile Include="Activity\Auth\SensorsDataActivity.cs" />
     <Compile Include="Activity\Auth\TakePhoto.cs" />
     <Compile Include="Activity\Cameraa\CameraActivity.cs" />

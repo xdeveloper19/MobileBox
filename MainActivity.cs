@@ -58,11 +58,9 @@ namespace GeoGeometry.Activity
                 btn_reg_form = FindViewById<Button>(Resource.Id.btn_reg_form);
 
                 string[] permissions = { Manifest.Permission.AccessFineLocation, Manifest.Permission.WriteExternalStorage, Manifest.Permission.Camera };
-                //ActivityCompat.RequestPermissions(this, new String[] { Manifest.Permission.Camera }, MY_PERMISSIONS_REQUEST_CAMERA);
+                
                 Dexter.WithActivity(this).WithPermissions(permissions).WithListener(new CompositeMultiplePermissionsListener(new SamplePermissionListener(this))).Check();
-                //CrossSettings.Current.AddOrUpdateValue("id", "");
-                //CrossSettings.Current.AddOrUpdateValue("namebox", "box3");
-                //"aa2278fd-5757-490c-9467-5f54c272aeb8"
+
                 if (CrossSettings.Current.GetValueOrDefault("id", "") == "")
                 {
                     try
@@ -127,14 +125,6 @@ namespace GeoGeometry.Activity
             }
             response.Close();
 
-            //HttpResponseMessage response = await myHttpClient.GetAsync(uri.ToString());// !!!
-
-            //string s_result;
-            //using (HttpContent responseContent = response.Content)
-            //{
-            //    s_result = await responseContent.ReadAsStringAsync();
-            //}
-
             AuthApiData<GetBoxIdResponse> o_data = JsonConvert.DeserializeObject<AuthApiData<GetBoxIdResponse>>(s_result);
             //ClearField();
 
@@ -159,11 +149,6 @@ namespace GeoGeometry.Activity
                 //Snackbar.Make(activity.main_form, "Permission Granted", Snackbar.LengthShort).Show();
             }
 
-            //public void OnPermissionRationaleShouldBeShown(PermissionRequest p0, IPermissionToken token)
-            //{
-            //    activity.ShowRequestPermissionRationale(token);
-            //}
-
             public void OnPermissionRationaleShouldBeShown(IList<PermissionRequest> p0, IPermissionToken p1)
             {
                 p1.ContinuePermissionRequest();
@@ -177,7 +162,6 @@ namespace GeoGeometry.Activity
                     
                 }
 
-                // check for permanent denial of any permission
                 if (p0.IsAnyPermissionPermanentlyDenied)
                 {
                     // show alert dialog navigating to Settings
@@ -185,22 +169,6 @@ namespace GeoGeometry.Activity
                 }
             }
         }
-
-        //private void ShowRequestPermissionRationale(IPermissionToken token)
-        //{
-        //    new Android.Support.V7.App.AlertDialog.Builder(this)
-        //        .SetTitle("Разрешения GPS")
-        //        .SetMessage("Необходимо разрешить использовать ваши gps данные")
-        //        .SetNegativeButton("Отмена", delegate
-        //        {
-        //            token.ContinuePermissionRequest();
-        //        })
-        //        .SetPositiveButton("Ok", delegate
-        //        {
-        //            token.ContinuePermissionRequest();
-        //        })
-        //        .SetOnDismissListener(new MyDismissListener(token)).Show();
-        //}
     }
 
     internal class MyDismissListener : Java.Lang.Object, IDialogInterfaceOnDismissListener

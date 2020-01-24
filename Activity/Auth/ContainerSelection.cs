@@ -293,7 +293,7 @@ namespace GeoGeometry.Activity.Auth
                 //    UserBox.PutExtra("idMethod", "2");// через объект идёт обращение к . 
                 //    StartActivity(UserBox);
                 //}
-                Intent Driver = new Intent(this, typeof(Auth.DriverActivity));
+                Intent Driver = new Intent(this, typeof(Auth.SensorParameters));
                 Driver.PutExtra("idAction", "2");// через объект идёт обращение к . 
                 StartActivity(Driver);
 
@@ -311,7 +311,7 @@ namespace GeoGeometry.Activity.Auth
 
             btn_back_a.Click += async delegate
             {
-                Intent Driver = new Intent(this, typeof(Auth.DriverActivity));
+                Intent Driver = new Intent(this, typeof(Auth.SensorParameters));
                 Driver.PutExtra("idAction", "2");// через объект идёт обращение к . 
                 StartActivity(Driver);
             };

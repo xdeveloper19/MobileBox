@@ -72,7 +72,7 @@
                 android:id = "@+id/RelativeWeight"
                 android:layout_toEndOf="@+id/TextWeight"
                 android:layout_toRightOf="@+id/TextWeight"
-                android:layout_marginLeft="31dp"
+                android:layout_marginLeft="35dp"
                 android:layout_marginRight = "45dp">
                 <SeekBar
                     android:id="@+id/s_weight"
@@ -154,8 +154,9 @@
                  android:id = "@+id/RelativeTemperature"
                  android:layout_toEndOf="@+id/Temperature"
                  android:layout_toRightOf="@+id/Temperature"
-                android:layout_below="@+id/TextWeight"
-                    android:layout_marginRight = "45dp">
+                 android:layout_below="@+id/TextWeight"
+                 android:layout_marginLeft="8dp"
+                 android:layout_marginRight = "45dp">
                  
             <SeekBar
                 android:id="@+id/TemperatureEdit"
@@ -231,8 +232,8 @@
                  android:layout_toEndOf="@+id/TextLight"
                  android:layout_toRightOf="@+id/TextLight"
                  android:layout_below="@+id/Temperature"
-                 android:layout_marginLeft="-5dp"
-                     android:layout_marginRight = "45dp">
+                 android:layout_marginLeft="3dp"
+                 android:layout_marginRight = "45dp">
                  
             <SeekBar
                 android:id="@+id/s_light"
@@ -304,7 +305,7 @@
                  android:layout_toEndOf="@+id/Vlazhnost"
                  android:layout_toRightOf="@+id/Vlazhnost"
                  android:layout_below="@+id/TextLight"
-                 android:layout_marginLeft="15dp"
+                 android:layout_marginLeft="22dp"
                     android:layout_marginRight = "45dp">
                  
             <SeekBar
@@ -370,7 +371,7 @@
                     android:padding="10dp"
                     android:layout_marginTop="8dp"
                     android:gravity="left"
-                    android:text="Уровень батареи:"
+                    android:text="Заряд батареи:"
                     android:textSize="16sp"
                     />
             <RelativeLayout
@@ -380,14 +381,14 @@
                 android:layout_toEndOf="@+id/TextBattery"
                 android:layout_toRightOf="@+id/TextBattery"
                 android:layout_below="@+id/Vlazhnost"
-                android:layout_marginLeft="5dp"
-                    android:layout_marginRight = "45dp">
+                android:layout_marginLeft="-5dp"
+                android:layout_marginRight = "45dp">
 
                 <SeekBar
                     android:id="@+id/s_battery"
                     android:layout_below = "@+id/SmullBattery"
                     android:layout_marginTop="-25dp"
-                    android:layout_width="171.0dp"
+                    android:layout_width="204.5dp"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
                     android:min="0"
@@ -445,7 +446,7 @@
                     android:padding="10dp"
                     android:layout_marginTop="8dp"
                     android:gravity="left"
-                    android:text="Уровень сигнала сети:"
+                    android:text="Сигнал сети:"
                     android:textSize="16sp"
                     />
             <RelativeLayout
@@ -455,14 +456,14 @@
                  android:layout_toEndOf="@+id/TextNetworkSignal"
                  android:layout_toRightOf="@+id/TextNetworkSignal"
                  android:layout_below="@+id/TextBattery"
-                 android:layout_marginLeft="1dp"
+                 android:layout_marginLeft="14.5dp"
                  android:layout_marginRight = "45dp">
                  
                  <SeekBar
                     android:id="@+id/s_signal_strength_1"
                     android:layout_below = "@+id/SmullNetworkSignal"
                     android:layout_marginTop="-25dp"
-                    android:layout_width="171.0dp"
+                    android:layout_width="204.5dp"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
                     android:min="0"

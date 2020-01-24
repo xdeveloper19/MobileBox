@@ -1,23 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
-
+using System.Threading.Tasks;
+using Android;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
+using Android.Graphics;
+using Android.Media;
 using Android.OS;
+using Android.Provider;
 using Android.Runtime;
+using Android.Support.V4.App;
+using Android.Support.V4.Content;
 using Android.Support.V7.App;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
+using GeoGeometry.Activity.Cameraa;
 using GeoGeometry.Container;
+//using Java.IO;
+using Java.Lang;
+using Plugin.Media;
+using Plugin.Media.Abstractions;
+using Xamarin.Forms;
+using XLabs.Platform.Services.Media;
+using static Android.Content.ClipData;
+using static Android.Provider.MediaStore;
 
 namespace GeoGeometry.Activity.Auth
 {
     [Activity(Label = "SensorsDataActivity")]
-    public class SensorsDataActivity: AppCompatActivity
+    public class SensorsDataActivity: AppCompatActivity, ActivityCompat.IOnRequestPermissionsResultCallback
     {
+        static readonly int REQUEST_CAMERA_WriteExternalStorage = 0;
+
+        static string filepath = "/storage/emulated/0/Pictures/";
+
         private TableLayout tablelayout;
 
         private TextView s_weight_1;
@@ -45,6 +67,7 @@ namespace GeoGeometry.Activity.Auth
         private TextView s_date_time_1;
 
         private ImageView photobox;
+
         //public List<Box> mItems;
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -80,61 +103,261 @@ namespace GeoGeometry.Activity.Auth
             s_longitude_1.Text = StaticBox.Longitude.ToString();
             s_latitude_1.Text = StaticBox.Latitude.ToString();
             s_date_time_1.Text = StaticBox.CreatedAtSensors.ToString();
-            //MediaStore.Images.Media.InsertImage(ContentResolver, bitmap, "screen", "shot");
+
+            if(StaticBox.CameraOpenOrNo == 1)
+            {
+                CheckPermission();
+            }
+
+        }
+
+        
+
+        Android.Graphics.Bitmap loadAndResizeBitmap(string filePath)
+        {
+            BitmapFactory.Options options = new BitmapFactory.Options { InJustDecodeBounds = true };
+            BitmapFactory.DecodeFile(filePath, options);
             
-            photobox.SetImageBitmap(StaticBox.ImageData);
-            //BindData();
+            int REQUIRED_SIZE = 100;
+            int width_tmp = options.OutWidth, height_tmp = options.OutHeight;
+            int scale = 4;
+            while (true)
+            {
+                if (width_tmp / 2 < REQUIRED_SIZE || height_tmp / 2 < REQUIRED_SIZE)
+                    break;
+                width_tmp /= 2;
+                height_tmp /= 2;
+                scale++;
+            }
+
+            options.InSampleSize = scale;
+            options.InJustDecodeBounds = false;
+            //failed
+            Android.Graphics.Bitmap resizedBitmap = BitmapFactory.DecodeFile(filePath, options);
+
+            ExifInterface exif = null;
+            try
+            {
+                //failed
+                exif = new ExifInterface(filePath);
+                string orientation = exif.GetAttribute(ExifInterface.TagOrientation);
+
+                Matrix matrix = new Matrix();
+                switch (orientation)
+                {
+                    case "1": // landscape
+                        break;
+                    case "3":
+                        matrix.PreRotate(180);
+                        resizedBitmap = Android.Graphics.Bitmap.CreateBitmap(resizedBitmap, 0, 0, resizedBitmap.Width, resizedBitmap.Height, matrix, false);
+                        matrix.Dispose();
+                        matrix = null;
+                        break;
+                    case "4":
+                        matrix.PreRotate(180);
+                        resizedBitmap = Android.Graphics.Bitmap.CreateBitmap(resizedBitmap, 0, 0, resizedBitmap.Width, resizedBitmap.Height, matrix, false);
+                        matrix.Dispose();
+                        matrix = null;
+                        break;
+                    case "5":
+                        matrix.PreRotate(90);
+                        resizedBitmap = Android.Graphics.Bitmap.CreateBitmap(resizedBitmap, 0, 0, resizedBitmap.Width, resizedBitmap.Height, matrix, false);
+                        matrix.Dispose();
+                        matrix = null;
+                        break;
+                    case "6": // portrait
+                        matrix.PreRotate(90);
+                        resizedBitmap = Android.Graphics.Bitmap.CreateBitmap(resizedBitmap, 0, 0, resizedBitmap.Width, resizedBitmap.Height, matrix, false);
+                        matrix.Dispose();
+                        matrix = null;
+                        break;
+                    case "7":
+                        matrix.PreRotate(-90);
+                        resizedBitmap = Android.Graphics.Bitmap.CreateBitmap(resizedBitmap, 0, 0, resizedBitmap.Width, resizedBitmap.Height, matrix, false);
+                        matrix.Dispose();
+                        matrix = null;
+                        break;
+                    case "8":
+                        matrix.PreRotate(-90);
+                        resizedBitmap = Android.Graphics.Bitmap.CreateBitmap(resizedBitmap, 0, 0, resizedBitmap.Width, resizedBitmap.Height, matrix, false);
+                        matrix.Dispose();
+                        matrix = null;
+                        break;
+                }
+
+                return resizedBitmap;
+            }
+
+            catch (IOException ex)
+            {
+                Console.WriteLine("An exception was thrown when reading exif from media file...:" + ex.Message);
+                return null;
+            }
+        }
+
+        public void CheckPermission()
+        {
+            if ((ContextCompat.CheckSelfPermission(this, Manifest.Permission.Camera) == (int)Permission.Granted) && (ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) == (int)Permission.Granted))
+            {
+                // Camera and store permission has  been granted
+                takePicture();
+            }
+            else
+            {
+                // Camera and store permission has not been granted
+                RequestPermission();
+
+            }
+
+
+        }
+
+        private void RequestPermission()
+        {
+
+            ActivityCompat.RequestPermissions(this, new System.String[] { Manifest.Permission.Camera, Manifest.Permission.WriteExternalStorage }, REQUEST_CAMERA_WriteExternalStorage);
+
         }
 
 
-        //public async Task<List<UserCartModel>> GetData()
+        //get result of persmissions
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
+        {
+            if (requestCode == REQUEST_CAMERA_WriteExternalStorage)
+            {
+
+
+                if (PermissionUtil.VerifyPermissions(grantResults))
+                {
+                    // All required permissions have been granted, display Camera.
+
+                    takePicture();
+
+                }
+                else
+                {
+                    // permissions did not grant, push up a snackbar to notificate USERS
+                    //Snackbar.Make(layout,"Permissions were not granted", Snackbar.LengthShort).Show();
+                }
+
+            }
+            else
+            {
+                base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            }
+        }
+
+        //private void ShowCamera()
         //{
-        //    HttpClient client = new HttpClient();
-        //    string ac = Common.Url;
-        //    string url = ac + "RestaurentOderList?id=" + sessionid;
+        //    Intent picker = new Intent(MediaStore.ActionImageCapture);
+        //    DateTime now = DateTime.Now;
 
-        //    var request = HttpWebRequest.Create(url);
-        //    request.Method = "GET";
-
-        //    var response = await client.GetAsync(url);
-        //    if (response.IsSuccessStatusCode)
+        //    var intent = picker.(new StoreCameraMediaOptions
         //    {
-        //        var content = await response.Content.ReadAsStringAsync();
-        //        mItems = JsonConvert.DeserializeObject<List<UserCartModel>>(content);
-        //    }
-        //    return mItems;
+        //        Name = "picture_" + now.Day + "_" + now.Month + "_" + now.Year + ".jpg",
+        //        Directory = null
+        //    });
+        //    StartActivityForResult(intent, 0);
+
         //}
+        void takePicture()
+        {
+            //MediaPicker picker = new MediaPicker();
+            //DateTime now = DateTime.Now;
 
-        //public void BindData()
+            //var intent = picker.TakePhotoAsync(new /*StoreCameraMediaOptions*/ CameraMediaStorageOptions
+            //{
+            //    Name = "picture_" + now.Day + "_" + now.Month + "_" + now.Year + ".jpg",
+            //    Directory = null
+
+            //});
+            Intent intent = new Intent(MediaStore.ActionImageCapture);
+            StartActivityForResult(intent, 1);
+        }
+
+        //protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         //{
-        //    try
+        //    base.OnActivityResult(requestCode, resultCode, data);
+
+        //    if (requestCode == 1)
         //    {
-        //        TableRow tableRow = new TableRow(this);
-        //        TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(
-        //        ViewGroup.LayoutParams.MatchParent,
-        //        ViewGroup.LayoutParams.MatchParent);
-
-        //        foreach (var r in mItems)
+        //        if (resultCode == Result.Ok)
         //        {
+        //            data.GetMediaFileExtraAsync(this).ContinueWith(t =>
+        //            {
+        //                using (Android.Graphics.Bitmap bmp = loadAndResizeBitmap(t.Result.Path))
+        //                {
+        //                    StaticBox.CameraOpenOrNo = 0;
+        //                    if (bmp != null)
+        //                        photobox.SetImageBitmap(bmp);
+        //                }
 
-        //            productname = new TextView(this);
-        //            productname.Text = r.ProductName;
-        //            productname.LayoutParameters = layoutParams;
-
-        //            price = new TextView(this);
-        //            price.Text = Convert.ToString(r.Price);
-        //            price.LayoutParameters = layoutParams;
-
-        //            tableRow.AddView(price, 0);
-        //            tableRow.AddView(price, 1);
-
-        //            tablelayout.AddView(tableRow, 0);
+        //            }, TaskScheduler.FromCurrentSynchronizationContext());
         //        }
         //    }
-        //    catch (Exception exx)
-        //    {
-        //        Console.WriteLine("Error During Bind Table Layout All Order Restaurent" + exx.Message);
-        //    }
         //}
+        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+            Android.Graphics.Bitmap bitmap = null;
+            StaticBox.CameraOpenOrNo = 0;
+            //If user did not take a photeo , he will get result of bitmap, it is null
+            try
+            {
+                bitmap = (Android.Graphics.Bitmap)data.Extras.Get("data");
+                                
+            }
+            catch (System.Exception e)
+            {
+                Log.Error("TakePhotoDemo1", e.Message);
+                Toast.MakeText(this, "Не удалось загрузить фото", ToastLength.Short).Show();
+            }
+
+            if (bitmap != null)
+            {
+                var basePath = Android.App.Application.Context.GetExternalFilesDir(null).AbsolutePath;
+                var path = MediaStore.Images.Media.InsertImage(ContentResolver, bitmap, "screen", "shot");
+                if(path != null)
+                {
+                    var uriPath = Android.Net.Uri.Parse(path);
+                    var realPath = GetRealPathFromURI(uriPath);
+                    bitmap = loadAndResizeBitmap(realPath);
+                    photobox.SetImageBitmap(bitmap);
+                }
+                else
+                {
+                    Toast.MakeText(this, "Не удалось загрузить фото. Скорее всего, нет разрешеия на доступ к галерее", ToastLength.Short).Show();
+                }
+               
+            }
+            else
+            {
+                Toast.MakeText(this, "Не удалось загрузить фото", ToastLength.Short).Show();
+            }
+
+        }
+        private string GetRealPathFromURI(Android.Net.Uri uri)
+        {
+            string doc_id = "";
+            using (var c1 = ContentResolver.Query(uri, null, null, null, null))
+            {
+                c1.MoveToFirst();
+                string document_id = c1.GetString(0);
+                doc_id = document_id.Substring(document_id.LastIndexOf(":") + 1);
+            }
+
+            string path = null;
+
+            // The projection contains the columns we want to return in our query.
+            string selection = Android.Provider.MediaStore.Images.Media.InterfaceConsts.Id + " =? ";
+            using (var cursor = ContentResolver.Query(Android.Provider.MediaStore.Images.Media.ExternalContentUri, null, selection, new string[] { doc_id }, null))
+            {
+                if (cursor == null) return path;
+                var columnIndex = cursor.GetColumnIndexOrThrow(Android.Provider.MediaStore.Images.Media.InterfaceConsts.Data);
+                cursor.MoveToFirst();
+                path = cursor.GetString(columnIndex);
+            }
+            return path;
+        }
     }
 }

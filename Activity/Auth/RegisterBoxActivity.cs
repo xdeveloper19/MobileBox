@@ -134,7 +134,7 @@ namespace GeoGeometry.Activity.Auth
                             preloader.Visibility = Android.Views.ViewStates.Invisible;
 
                             // Переход на страницу водителя.
-                            Intent Driver = new Intent(this, typeof(Auth.DriverActivity));
+                            Intent Driver = new Intent(this, typeof(Auth.SensorParameters));
                             Driver.PutExtra("idAction", "2");
                             StartActivity(Driver);
                         }

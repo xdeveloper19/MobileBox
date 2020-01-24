@@ -62,26 +62,22 @@ namespace GeoGeometry.Activity.Auth
             {
                 Android.App.AlertDialog.Builder alert = new Android.App.AlertDialog.Builder(this);
                 alert.SetTitle("Внимание !");
-                alert.SetMessage("Контейнер находится на складе или у заказчика. Его местоположение не отслеживается.");
+                alert.SetMessage("Местоположение контейнера не изменяется, так как он находится на складе или у заказчика");
                 alert.SetPositiveButton("Закрыть", (senderAlert, args) =>
                 {
                     Toast.MakeText(this, "Предупреждение было закрыто!", ToastLength.Short).Show();
                 });
                 Dialog dialog = alert.Create();
                 dialog.Show();
-
             }
-            else
-            {
-                BuildLocationRequest();
+                BuildLocationRequest();  
                 BuildLocationCallBack();
 
                 fusedLocationProviderClient = LocationServices.GetFusedLocationProviderClient(this);
 
-
                 fusedLocationProviderClient.RequestLocationUpdates(locationRequest,
                     locationCallback, Looper.MyLooper());
-            }
+            
 
         }
 
@@ -124,9 +120,13 @@ namespace GeoGeometry.Activity.Auth
         {
             locationRequest = new LocationRequest();
             locationRequest.SetPriority(LocationRequest.PriorityBalancedPowerAccuracy);
-            locationRequest.SetInterval(1000);
-            locationRequest.SetFastestInterval(3000);
-            locationRequest.SetSmallestDisplacement(10f);
+            if (StaticBox.Sensors["Местоположение контейнера"] != "На складе" || StaticBox.Sensors["Местоположение контейнера"] != "У заказчика")
+            {
+                locationRequest.SetInterval(1000);
+                locationRequest.SetFastestInterval(3000);
+                locationRequest.SetSmallestDisplacement(10f);
+            }
+             
         }
 
 

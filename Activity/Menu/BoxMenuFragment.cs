@@ -53,7 +53,7 @@ namespace GeoGeometry.Activity.Menu
                 btn_box = main_menu.FindViewById<AppCompatImageButton>(Resource.Id.btn_box);
                 btn_box.Click += (s, e) =>
                 {
-                    Intent squadActivity = new Intent(Activity, typeof(Auth.DriverActivity));
+                    Intent squadActivity = new Intent(Activity, typeof(Auth.SensorParameters));
                     StartActivity(squadActivity);
                 };
             }

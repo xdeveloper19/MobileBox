@@ -91,7 +91,8 @@ namespace GeoGeometry.Activity.Auth
                     else
                     {
                         GetInfoAboutBox();
-                        Intent authActivity = new Intent(this, typeof(Auth.TakePhoto));
+                        StaticBox.CameraOpenOrNo = 1;
+                        Intent authActivity = new Intent(this, typeof(Auth.SensorsDataActivity));
                         StartActivity(authActivity);
                     }
 
@@ -111,13 +112,14 @@ namespace GeoGeometry.Activity.Auth
                     if (s_open_close_container.Text == "сложен")
                     {
                         s_open_close_container.Text = "разложен";
-                        box_lay_fold.SetImageResource(Resource.Drawable.close_door);
+                        s_lock_unlock_door.Text = "открыта";
+                        box_lay_fold.SetImageResource(Resource.Drawable.open_door);
                     }
 
                     else
                     {
                         s_open_close_container.Text = "сложен";
-                        s_lock_unlock_door.Text = "закрыта";
+                        s_lock_unlock_door.Text = "открыта";
                         box_lay_fold.SetImageResource(Resource.Drawable.close_box);
                     }
                 }
@@ -132,22 +134,32 @@ namespace GeoGeometry.Activity.Auth
             {
                 try
                 {
-                    if (s_lock_unlock_door.Text == "закрыта" && s_open_close_container.Text != "сложен")
+                    if (s_lock_unlock_door.Text == "закрыта")
                     {
                         s_lock_unlock_door.Text = "открыта";
                         box_lay_fold.SetImageResource(Resource.Drawable.open_door);
                     }
-
-                    else if (s_open_close_container.Text != "сложен")
+                    else if(s_lock_unlock_door.Text == "открыта" && s_open_close_container.Text == "разложен")
                     {
                         s_lock_unlock_door.Text = "закрыта";
                         box_lay_fold.SetImageResource(Resource.Drawable.close_door);
+                    }
+                    else if (s_open_close_container.Text == "сложен" && s_lock_unlock_door.Text == "открыта" )
+                    {
+                        Android.App.AlertDialog.Builder alert = new Android.App.AlertDialog.Builder(this);
+                        alert.SetTitle("Внимание !");
+                        alert.SetMessage("Невозможно изменить состояние дверей.");
+                        alert.SetPositiveButton("Закрыть", (senderAlert, args) => {
+                            Toast.MakeText(this, "Предупреждение было закрыто!", ToastLength.Short).Show();
+                        });
+                        Dialog dialog = alert.Create();
+                        dialog.Show();
                     }
                     else if (s_open_close_container.Text == null && s_lock_unlock_door.Text == null)
                     {
                         Android.App.AlertDialog.Builder alert = new Android.App.AlertDialog.Builder(this);
                         alert.SetTitle("Внимание !");
-                        alert.SetMessage("Невозможно изменить состояние дверей.");
+                        alert.SetMessage("Невозможно изменить состояние дверей и контейнера.");
                         alert.SetPositiveButton("Закрыть", (senderAlert, args) => {
                             Toast.MakeText(this, "Предупреждение было закрыто!", ToastLength.Short).Show();
                         });
@@ -222,16 +234,20 @@ namespace GeoGeometry.Activity.Auth
             s_open_close_container.Text = (StaticBox.Sensors["Состояние контейнера"] == "0")?"сложен":"разложен";
             if (s_open_close_container.Text == "сложен")
             {
+                s_lock_unlock_door.Text = "открыта";
                 box_lay_fold.SetImageResource(Resource.Drawable.close_box);
             }
-            s_lock_unlock_door.Text = (StaticBox.Sensors["Состояние дверей"] == "0")?"закрыта":"открыта";
-            if (s_lock_unlock_door.Text == "закрыта" && s_open_close_container.Text == "разложен")
+            else
             {
-                box_lay_fold.SetImageResource(Resource.Drawable.close_door);
-            }
-            else if(s_lock_unlock_door.Text == "открыта" && s_open_close_container.Text == "разложен")
-            {
-                box_lay_fold.SetImageResource(Resource.Drawable.open_door);
+                s_lock_unlock_door.Text = (StaticBox.Sensors["Состояние дверей"] == "0") ? "закрыта" : "открыта";
+                if (s_lock_unlock_door.Text == "закрыта" && s_open_close_container.Text == "разложен")
+                {
+                    box_lay_fold.SetImageResource(Resource.Drawable.close_door);
+                }
+                else if (s_lock_unlock_door.Text == "открыта" && s_open_close_container.Text == "разложен")
+                {
+                    box_lay_fold.SetImageResource(Resource.Drawable.open_door);
+                }
             }
             a_situation = StaticBox.Sensors["Местоположение контейнера"];
             
