@@ -166,7 +166,7 @@ namespace GeoGeometry.Activity.Auth
 
                     var myHttpClient = new HttpClient();
                     var uri = new Uri("http://iot-tmc-cen.1gb.ru/api/container/setcontainerlocation?id=" + gpsLocation.id + "&lat1=" + gpsLocation.lat1 + "&lon1=" + gpsLocation.lon1 + "&date=" + gpsLocation.date);
-                    var uri2 = new Uri("http://81.177.136.11:8003/geo?id=" + gpsLocation.id + "&lat1=" + gpsLocation.lat1 + "&lon1=" + gpsLocation.lon1 + "&date=" + gpsLocation.date);
+                    var uri2 = new Uri("http://smartboxcity.ru:8003/geo?id=" + gpsLocation.id + "&lat1=" + gpsLocation.lat1 + "&lon1=" + gpsLocation.lon1 + "&date=" + gpsLocation.date);
                     //json структура.
                     var formContent = new FormUrlEncodedContent(new Dictionary<string, string>
                     {
