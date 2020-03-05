@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Android;
@@ -22,10 +24,13 @@ using Android.Views;
 using Android.Widget;
 using GeoGeometry.Activity.Cameraa;
 using GeoGeometry.Container;
+using GeoGeometry.Model.Box;
 //using Java.IO;
 using Java.Lang;
+using Newtonsoft.Json;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
+using Plugin.Settings;
 using Xamarin.Forms;
 using XLabs.Platform.Services.Media;
 using static Android.Content.ClipData;
@@ -262,15 +267,7 @@ namespace GeoGeometry.Activity.Auth
         //}
         void takePicture()
         {
-            //MediaPicker picker = new MediaPicker();
-            //DateTime now = DateTime.Now;
-
-            //var intent = picker.TakePhotoAsync(new /*StoreCameraMediaOptions*/ CameraMediaStorageOptions
-            //{
-            //    Name = "picture_" + now.Day + "_" + now.Month + "_" + now.Year + ".jpg",
-            //    Directory = null
-
-            //});
+           
             Intent intent = new Intent(MediaStore.ActionImageCapture);
             StartActivityForResult(intent, 1);
         }
@@ -296,7 +293,7 @@ namespace GeoGeometry.Activity.Auth
         //        }
         //    }
         //}
-        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        protected override async void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
             Android.Graphics.Bitmap bitmap = null;
@@ -315,6 +312,35 @@ namespace GeoGeometry.Activity.Auth
 
             if (bitmap != null)
             {
+                byte[] bitmapData;
+                var stream = new MemoryStream();
+                bitmap.Compress(Android.Graphics.Bitmap.CompressFormat.Png, 0, stream);
+                bitmapData = stream.ToArray();
+                var fileContent = new ByteArrayContent(bitmapData);
+                fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("application/octet-stream");
+                fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                {
+                    Name = "file",
+                    FileName = "my_uploaded_image.jpg"
+                };
+                string boundary = "---8d0f01e6b3b5dafaaadaad";
+                MultipartFormDataContent multipartContent = new MultipartFormDataContent(boundary);
+                multipartContent.Add(fileContent);
+                HttpClient httpClient = new HttpClient();
+                var uri = new Uri("http://smartboxcity.ru:8003/media?file=" + bitmap);
+                HttpResponseMessage response = await httpClient.PostAsync(uri.ToString(), multipartContent);
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                }
+                //var myHttpClient = new HttpClient();
+                //
+                //HttpResponseMessage responseFromAnotherServer = await myHttpClient.PostAsync(uri.ToString(), bitmap);
+                //string s_result_from_another_server;
+                //using (HttpContent responseContent = responseFromAnotherServer.Content)
+                //{
+                //    s_result_from_another_server = await responseContent.ReadAsStringAsync();
+                //}
                 var basePath = Android.App.Application.Context.GetExternalFilesDir(null).AbsolutePath;
                 var path = MediaStore.Images.Media.InsertImage(ContentResolver, bitmap, "screen", "shot");
                 if(path != null)

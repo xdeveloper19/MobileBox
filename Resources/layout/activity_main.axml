@@ -7,18 +7,14 @@
 	android:layout_height="fill_parent"
 	android:orientation="vertical"
 	android:id="@+id/main_container"
-	>   
-  
-    
-
+	>        
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id = "@+id/scrollView1"
         android:minHeight = "25px"
         android:minWidth = "25px"
-        >
-        
+        >        
           <RelativeLayout
       
 		android:layout_width="fill_parent"
@@ -83,8 +79,6 @@
       
 	</RelativeLayout>
     </RelativeLayout>
-        </ScrollView>
-
-  
+        </ScrollView>  
 </RelativeLayout>
 

@@ -466,8 +466,9 @@
                     android:layout_width="204.5dp"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
-                    android:min="0"
+                    android:min= "0"
                     android:max = "110"
+                    android:progress = "0"
                  />
                  
             <TextView
@@ -497,9 +498,21 @@
                     android:padding="10dp"
                     android:textSize="12sp"
                     android:text="-110"/>
+               
             </RelativeLayout> 
-            
-
+             <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id = "@+id/TextDezebel"
+                    android:layout_below="@+id/RelativeBattery"
+                    android:layout_marginLeft="-60dp"
+                    android:padding="10dp"
+                    android:textSize="12sp"
+                    android:layout_toEndOf="@+id/RelativeNetworkSignal"
+                    android:layout_toRightOf="@+id/RelativeNetworkSignal"
+                    android:text="дБ"
+                    android:layout_marginTop="-8dp"
+                    />
                 
 
                 <Button

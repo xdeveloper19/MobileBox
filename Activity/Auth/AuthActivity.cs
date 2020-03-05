@@ -116,18 +116,15 @@ namespace GeoGeometry.Activity.Auth {
                         Email = s_login.Text,
                         Password = s_pass.Text,
                     };
-
-
-
                     var myHttpClient = new HttpClient();
-                    var _authHeader = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes(string.Format("{0}:{1}", auth.Email, auth.Password))));
-
+                    var _authHeader = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String
+                        (Encoding.ASCII.GetBytes(string.Format("{0}:{1}", auth.Email, auth.Password))));
                     myHttpClient.DefaultRequestHeaders.Authorization = _authHeader;
 
                     var uri = new Uri("http://iot.tmc-centert.ru/api/auth/login?email=" + auth.Email + "&password=" + auth.Password);
                       
                         // Поучаю ответ об авторизации [успех или нет]
-                        HttpResponseMessage response = await myHttpClient.PostAsync(uri.ToString(), new StringContent(JsonConvert.SerializeObject(auth), Encoding.UTF8, "application/json"));
+                    HttpResponseMessage response = await myHttpClient.PostAsync(uri.ToString(), new StringContent(JsonConvert.SerializeObject(auth), Encoding.UTF8, "application/json"));
 
                     string s_result;
                     using (HttpContent responseContent = response.Content)

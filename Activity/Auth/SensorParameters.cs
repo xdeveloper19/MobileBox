@@ -37,10 +37,7 @@ namespace GeoGeometry.Activity.Auth
 
 
     public class SensorParameters : AppCompatActivity
-    {
-        
-
-        private RelativeLayout box_container;
+    {       
 
         private TextView TextNameBox;
 
@@ -79,8 +76,6 @@ namespace GeoGeometry.Activity.Auth
             SetContentView(Resource.Layout.activity_box);
             StaticMenu.id_page = 1;
 
-
-            box_container = FindViewById<RelativeLayout>(Resource.Id.box_container);
             btn_save_parameters = FindViewById<Button>(Resource.Id.btn_save_parameters);
             SmullWeight = FindViewById<TextView>(Resource.Id.SmullWeight);
             SmullTemperature = FindViewById<TextView>(Resource.Id.SmullTemperature);
@@ -231,14 +226,16 @@ namespace GeoGeometry.Activity.Auth
                 StaticBox.CreatedAtSensors = (DateTime)o_data.ResponseData.Objects[0].CreatedAt;
             }
             //Заполняй остальные параметры как в этом примере
+            int a = 0, b = 0;
             s_weight.Progress = Convert.ToInt32(StaticBox.Sensors["Вес груза"]);
-            s_temperature.Progress = Convert.ToInt32(StaticBox.Sensors["Температура"]);
-            s_signal_strength_1.Progress = Convert.ToInt32(StaticBox.Sensors["Уровень сигнала"]);
+            a = Convert.ToInt32(StaticBox.Sensors["Температура"]);
+            b = Convert.ToInt32(StaticBox.Sensors["Уровень сигнала"]);
             s_light.Progress = Convert.ToInt32(StaticBox.Sensors["Освещенность"]);
             s_humidity.Progress = Convert.ToInt32(StaticBox.Sensors["Влажность"]);
             s_battery.Progress = Convert.ToInt32(StaticBox.Sensors["Уровень заряда аккумулятора"]);
-            s_temperature.Progress += 40;
-            s_signal_strength_1.Progress += 110;
+
+            s_temperature.Progress = a + 40;
+            s_signal_strength_1.Progress = b + 110;
 
 
 
