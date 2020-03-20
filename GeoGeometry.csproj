@@ -386,6 +386,9 @@
     </AndroidResource>
     <AndroidResource Include="Resources\drawable\open_door.jpg" />
     <AndroidResource Include="Resources\drawable\close_box.jpg" />
+    <AndroidResource Include="Resources\drawable\spacer_medium.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <Content Include="Resources\layout\1aaa.axml" />
     <AndroidResource Include="Resources\layout\activity_lol.axml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>

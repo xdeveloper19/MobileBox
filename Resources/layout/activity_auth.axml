@@ -10,7 +10,7 @@
 	android:id="@+id/main_container">
 	
 	<ImageButton
-		android:src="@drawable/btnBack"
+		android:src="@drawable/btnback"
 		android:layout_width="50dp" 
         android:layout_height="50dp" 
 		android:layout_marginTop="10dp"

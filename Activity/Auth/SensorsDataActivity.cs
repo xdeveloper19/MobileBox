@@ -101,7 +101,7 @@ namespace GeoGeometry.Activity.Auth
             s_humidity_1.Text = StaticBox.Sensors["Влажность"] + " %";
             s_light_1.Text = StaticBox.Sensors["Освещенность"] + " лм";
             s_battery_1.Text = StaticBox.Sensors["Уровень заряда аккумулятора"] + " В";
-            s_signal_strength_2.Text = StaticBox.Sensors["Уровень сигнала"];
+            s_signal_strength_2.Text = StaticBox.Sensors["Уровень сигнала"] + " дБ";
             s_situation_1.Text = StaticBox.Sensors["Местоположение контейнера"];
             s_open_close_container_1.Text = (StaticBox.Sensors["Состояние контейнера"] == "0")?"сложен":"разложен";
             s_lock_unlock_door_1.Text = (StaticBox.Sensors["Состояние дверей"] == "0")?"закрыта":"открыта";

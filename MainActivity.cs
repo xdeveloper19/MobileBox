@@ -37,10 +37,6 @@ namespace GeoGeometry.Activity
         /// </summary>
         private Button btn_auth_form;
 
-        /// <summary>
-        /// Конпка прехода на форму регистрации.
-        /// </summary>
-        private Button btn_reg_form;
 
         private int MY_PERMISSIONS_REQUEST_CAMERA = 100;
 
@@ -55,7 +51,6 @@ namespace GeoGeometry.Activity
                 string file_data_remember;
 
                 btn_auth_form = FindViewById<Button>(Resource.Id.btn_auth_form);
-                btn_reg_form = FindViewById<Button>(Resource.Id.btn_reg_form);
 
                 string[] permissions = { Manifest.Permission.AccessFineLocation, Manifest.Permission.WriteExternalStorage, Manifest.Permission.Camera };
                 
@@ -79,13 +74,6 @@ namespace GeoGeometry.Activity
                         Toast.MakeText(this, "" + ex.Message, ToastLength.Long).Show();
                     }
                 }
-
-                // Переход к форме регистрации.
-                btn_reg_form.Click += (s, e) =>
-                {
-                    Intent registerActivity = new Intent(this, typeof(Auth.RegisterActivity));
-                    StartActivity(registerActivity);
-                };
 
                 // Переход к форме авторизация
                 btn_auth_form.Click += (s, e) =>

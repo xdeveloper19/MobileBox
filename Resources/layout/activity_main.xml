@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -7,36 +6,38 @@
 	android:layout_height="fill_parent"
 	android:orientation="vertical"
 	android:id="@+id/main_container"
-	>   
-  
-    
-
+	>        
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id = "@+id/scrollView1"
         android:minHeight = "25px"
         android:minWidth = "25px"
-        >
-        
-          <RelativeLayout
-      
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
-		android:orientation="vertical">
-            <TextView
+        >        
+          <RelativeLayout      
+				android:layout_width="fill_parent"
+				android:layout_height="fill_parent"
+				android:orientation="vertical"
+				android:paddingLeft = "5dp"
+				android:paddingRight = "5dp"
+				android:paddingBottom = "5dp"
+				android:paddingTop = "5dp">
+          <TextView
                  android:layout_width="match_parent"
                  android:layout_height="match_parent"
 			     android:id = "@+id/TextCenter"
 				 android:textSize = "30sp"
 			     android:padding = "10dp"
 				 android:gravity="center"
-				android:layout_marginTop = "200dp"
+				 android:layout_marginTop = "200dp"
 				 android:textColor = "#20B2AA"
 				 android:text = "SmartBoxCity"/>
 	
 			<RelativeLayout
-      
+				android:paddingLeft = "10dp"
+				android:paddingRight = "10dp"
+				android:paddingBottom = "10dp"
+				android:paddingTop = "10dp"
 				android:layout_width="fill_parent"
 				android:layout_height="fill_parent"
 				android:orientation="vertical"
@@ -47,19 +48,17 @@
 				android:id="@+id/main_form"
 				>
 
-		     <TextView
-                 android:layout_width="wrap_content"
+		    <TextView
+                 android:layout_width="match_parent"
                  android:layout_height="wrap_content"
+					android:textColor ="#868887"
 				 android:id = "@+id/Text"
 				 android:textSize = "18sp"
 			     android:padding = "10dp"
 				 android:gravity="center"
-				 android:textStyle="bold"
-					
-				 android:background = "@drawable/edittext_stili"
+				 android:textStyle="bold"					
 				 android:text = "Имитатор движения контейнера-трансформера"
 				/>
-
 
 			<Button
 				android:text="Войти"
@@ -70,21 +69,10 @@
 				android:textAppearance="?android:attr/textAppearanceMedium"
 				android:background="@drawable/button_stili"
 				android:id="@+id/btn_auth_form" />
-			<Button
-				android:text="Зарегистрироваться"
-				android:layout_width="fill_parent"
-				android:layout_height="45dp"
-				android:layout_marginTop="20dp"
-				android:textAppearance="?android:attr/textAppearanceMedium"
-				android:background="@drawable/button_stili"
-				android:layout_below="@+id/btn_auth_form"
-				android:id="@+id/btn_reg_form" />
         
       
 	</RelativeLayout>
     </RelativeLayout>
-        </ScrollView>
-
-  
+        </ScrollView>  
 </RelativeLayout>
 

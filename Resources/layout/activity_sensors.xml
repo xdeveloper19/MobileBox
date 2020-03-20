@@ -1,5 +1,4 @@
-﻿ 
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+﻿ <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="16dp"
@@ -26,7 +25,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            >
+            android:stretchColumns="*">
+            
     <TextView
 		android:text="Фотофиксация"
 		android:textAppearance="?android:attr/textAppearanceLarge"
@@ -43,30 +43,31 @@
 	
 
     <TableRow 
-        android:background="#AFEEEE"
+        android:background = "#AFEEEE"
          android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-        >
+         android:layout_height="wrap_content">
+        
 
         <TextView
             android:text="№ п/п"
             android:padding="3dip"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity = "center"
             android:id="@+id/number"/>
         
         <TextView
             android:text="Значение датчика"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:gravity = "center"
             android:id="@+id/timeChange"
             android:padding="3dip" />
         <TextView
             android:text="Датчик"
+            android:gravity = "center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="right"
             android:id="@+id/sensor_name"
             android:padding="3dip" />
     </TableRow>
@@ -81,6 +82,7 @@
          android:layout_height="wrap_content">
         <TextView
             android:text="1"
+            android:gravity="center"
             android:padding="3dip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -95,7 +97,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Вес груза"
-            android:gravity="right"
+            android:gravity="center"
             android:padding="3dip" />
     </TableRow>
 
@@ -105,6 +107,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="2"
             android:padding="3dip" />
         
@@ -119,7 +122,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Температура"
-            android:gravity="right"
+            android:gravity="center"
             android:padding="3dip" />
     </TableRow>
 
@@ -129,20 +132,21 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="3"
             android:padding="3dip" />
         
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-                    android:id="@+id/s_humidity_1"
+            android:id="@+id/s_humidity_1"
             android:gravity="center"
             android:padding="3dip" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Влажость"
-            android:gravity="right"
+            android:gravity="center"
             android:padding="3dip" />
     </TableRow>
 
@@ -153,19 +157,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="4"
+            android:gravity="center"        
             android:padding="3dip" />
         
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-                    android:id="@+id/s_light_1"
+            android:id="@+id/s_light_1"
             android:gravity="center"
             android:padding="3dip" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Свет"
-            android:gravity="right"
+            android:gravity="center"
             android:padding="3dip" />
     </TableRow>
 <TableRow
@@ -174,20 +179,21 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="5"
             android:padding="3dip" />
         
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-                    android:id="@+id/s_battery_1"
+            android:id="@+id/s_battery_1"
             android:gravity="center"
             android:padding="3dip" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Уровень батареи"
-            android:gravity="right"
+            android:gravity="center"
             android:padding="3dip" />
     </TableRow>
 <TableRow
@@ -197,19 +203,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="6"
+            android:gravity="center"
             android:padding="3dip" />
         
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-                    android:id="@+id/s_signal_strength_2"
+            android:id="@+id/s_signal_strength_2"
             android:gravity="center"
             android:padding="3dip" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Сигнал сети"
-            android:gravity="right"
+            android:gravity="center"
             android:padding="3dip" />
     </TableRow>
     <TableRow
@@ -218,6 +225,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="7"
             android:padding="3dip" />
         
@@ -231,7 +239,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Положение"
-            android:gravity="right"
+            android:gravity="center"
             android:padding="3dip" />
     </TableRow>
     <TableRow
@@ -241,19 +249,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="8"
+            android:gravity="center"
             android:padding="3dip" />
         
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-                    android:id="@+id/s_open_close_container_1"
+            android:id="@+id/s_open_close_container_1"
             android:gravity="center"
             android:padding="3dip" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Контейнер"
-            android:gravity="right"
+            android:gravity="center"
             android:padding="3dip" />
     </TableRow>
     <TableRow
@@ -263,19 +272,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="9"
+            android:gravity="center"
             android:padding="3dip" />
         
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-                    android:id="@+id/s_lock_unlock_door_1"
+            android:id="@+id/s_lock_unlock_door_1"
             android:gravity="center"
             android:padding="3dip" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Дверь"
-            android:gravity="right"
+            android:gravity="center"
             android:padding="3dip" />
     </TableRow>
     <TableRow
@@ -285,19 +295,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="10"
+            android:gravity="center"
             android:padding="3dip" />
         
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-                    android:id="@+id/s_longitude_1"
+            android:id="@+id/s_longitude_1"
             android:gravity="center"
             android:padding="3dip" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Долгота"
-            android:gravity="right"
+            android:gravity="center"
             android:padding="3dip" />
     </TableRow>
     <TableRow
@@ -307,19 +318,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="11"
+            android:gravity="center"
             android:padding="3dp" />
         
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-                    android:id="@+id/s_latitude_1"
+            android:id="@+id/s_latitude_1"
             android:gravity="center"
             android:padding="3dip" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Широта"
-            android:gravity="right"
+            android:gravity="center"
             android:padding="3dip" />
     </TableRow>
     <TableRow
@@ -330,19 +342,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="12"
+            android:gravity="center"
             android:padding="3dip" />
         
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-                    android:id="@+id/s_date_time_1"
+            android:id="@+id/s_date_time_1"
             android:gravity="center"
             android:padding="3dip" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Дата/Время"
-            android:gravity="right"
+            android:gravity="center"
             android:padding="3dip" />
     </TableRow>
     <ImageView
