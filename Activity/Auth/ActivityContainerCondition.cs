@@ -187,71 +187,96 @@ namespace GeoGeometry.Activity.Auth
 
         private async void GetInfoAboutBox()
         {
-            var myHttpClient = new HttpClient();
-            var id1 = CrossSettings.Current.GetValueOrDefault("id", "");
-            var uri = new Uri("http://iot.tmc-centert.ru/api/container/getbox?id=" + id1);
-            HttpResponseMessage response = await myHttpClient.GetAsync(uri.ToString());
-
-            string s_result;
-            using (HttpContent responseContent = response.Content)
+            try
             {
-                s_result = await responseContent.ReadAsStringAsync();
-            }
-            AuthApiData<ListResponse<BoxDataResponse>> o_data = new AuthApiData<ListResponse<BoxDataResponse>>();
+                CreateBoxModel model = new CreateBoxModel
+                {
+                    id = StaticBox.DeviceId
+                };
 
-            //string s_result;
-            //using (HttpContent responseContent = response.Content)
-            //{
-            //    s_result = await responseContent.ReadAsStringAsync();
-            //}
+                var myHttpClient = new HttpClient();
+                var id1 = CrossSettings.Current.GetValueOrDefault("id", "");
+                var uri = new Uri("http://iot.tmc-centert.ru/api/container/getbox?id=" + id1);
+                var uri2 = new Uri("http://smartboxcity.ru:8003/imitator/status?id=" + StaticBox.DeviceId);
+                HttpResponseMessage response = await myHttpClient.GetAsync(uri2.ToString());
 
-            o_data.ResponseData = new ListResponse<BoxDataResponse>();
-            o_data = JsonConvert.DeserializeObject<AuthApiData<ListResponse<BoxDataResponse>>>(s_result);
-            if (o_data.Status == "0")
-            {
-                ListResponse<BoxDataResponse> o_boxes_data = new ListResponse<BoxDataResponse>();
-                o_boxes_data.Objects = o_data.ResponseData.Objects;// !!!
-                
-                //StaticBox.AddInfoObjects(o_boxes_data);
-                //В статик бокс закомментируй 9 свойств
-                StaticBox.Sensors["Температура"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Температура").Select(s => s.Value).FirstOrDefault();
-                StaticBox.Sensors["Влажность"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Влажность").Select(s => s.Value).FirstOrDefault();
-                StaticBox.Sensors["Освещенность"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Освещенность").Select(s => s.Value).FirstOrDefault();
-                StaticBox.Sensors["Уровень заряда аккумулятора"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Уровень заряда аккумулятора").Select(s => s.Value).FirstOrDefault();
-                StaticBox.Sensors["Уровень сигнала"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Уровень сигнала").Select(s => s.Value).FirstOrDefault();
-                StaticBox.Sensors["Состояние дверей"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Состояние дверей").Select(s => s.Value).FirstOrDefault();
-                StaticBox.Sensors["Состояние контейнера"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Состояние контейнера").Select(s => s.Value).FirstOrDefault();
-                StaticBox.Sensors["Местоположение контейнера"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Местоположение контейнера").Select(s => s.Value).FirstOrDefault();
-                StaticBox.CreatedAtSensors = o_data.ResponseData.Objects[0].CreatedAt;
-                if (StaticBox.Sensors["Состояние контейнера"] == "0")
-                    StaticBox.Sensors["Вес груза"] = "0";
+                string s_result;
+                using (HttpContent responseContent = response.Content)
+                {
+                    s_result = await responseContent.ReadAsStringAsync();
+                }
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Status o_data = new Status();
+
+                    o_data = JsonConvert.DeserializeObject<Status>(s_result);
+
+                    //string s_result;
+                    //using (HttpContent responseContent = response.Content)
+                    //{
+                    //    s_result = await responseContent.ReadAsStringAsync();
+                    //}
+
+
+
+
+                    //StaticBox.AddInfoObjects(o_boxes_data);
+                    //В статик бокс закомментируй 9 свойств
+                    StaticBox.Sensors["Температура"] = o_data.status.Sensors["Температура"];
+                    StaticBox.Sensors["Влажность"] = o_data.status.Sensors["Влажность"];
+                    StaticBox.Sensors["Освещенность"] = o_data.status.Sensors["Освещенность"];
+                    StaticBox.Sensors["Уровень заряда аккумулятора"] = o_data.status.Sensors["Уровень заряда аккумулятора"];
+                    StaticBox.Sensors["Уровень сигнала"] = o_data.status.Sensors["Уровень сигнала"];
+                    StaticBox.Sensors["Состояние дверей"] = o_data.status.Sensors["Состояние дверей"];
+                    StaticBox.Sensors["Состояние контейнера"] = o_data.status.Sensors["Состояние контейнера"];
+                    StaticBox.Sensors["Местоположение контейнера"] = o_data.status.Sensors["Местоположение контейнера"];
+                    //StaticBox.CreatedAtSensors = o_data.ResponseData.Objects[0].CreatedAt;
+                        if (StaticBox.Sensors["Состояние контейнера"] == "0")
+                            StaticBox.Sensors["Вес груза"] = "0";
+                        else
+                            StaticBox.Sensors["Вес груза"] = o_data.status.Sensors["Вес груза"];
+                    
+                    //Заполняй остальные параметры как в этом примере
+
+
+                    s_open_close_container.Text = (StaticBox.Sensors["Состояние контейнера"] == "0") ? "сложен" : "разложен";
+                    if (s_open_close_container.Text == "сложен")
+                    {
+                        s_lock_unlock_door.Text = "открыта";
+                        box_lay_fold.SetImageResource(Resource.Drawable.close_box);
+                    }
+                    else
+                    {
+                        s_lock_unlock_door.Text = (StaticBox.Sensors["Состояние дверей"] == "0") ? "закрыта" : "открыта";
+                        if (s_lock_unlock_door.Text == "закрыта" && s_open_close_container.Text == "разложен")
+                        {
+                            box_lay_fold.SetImageResource(Resource.Drawable.close_door);
+                        }
+                        else if (s_lock_unlock_door.Text == "открыта" && s_open_close_container.Text == "разложен")
+                        {
+                            box_lay_fold.SetImageResource(Resource.Drawable.open_door);
+                        }
+                    }
+                    a_situation = StaticBox.Sensors["Местоположение контейнера"];
+
+                    s_situation_container.SetSelection(Resources.GetStringArray(Resource.Array.a_situation_loaded_container).IndexOf(x => x == a_situation));
+
+                    Toast.MakeText(this, "Успешно!", ToastLength.Long).Show();
+                }
                 else
-                    StaticBox.Sensors["Вес груза"] = o_data.ResponseData.Objects.Where(f => f.SensorName == "Вес груза").Select(s => s.Value).FirstOrDefault();
-            }
-            //Заполняй остальные параметры как в этом примере
-
-
-            s_open_close_container.Text = (StaticBox.Sensors["Состояние контейнера"] == "0")?"сложен":"разложен";
-            if (s_open_close_container.Text == "сложен")
-            {
-                s_lock_unlock_door.Text = "открыта";
-                box_lay_fold.SetImageResource(Resource.Drawable.close_box);
-            }
-            else
-            {
-                s_lock_unlock_door.Text = (StaticBox.Sensors["Состояние дверей"] == "0") ? "закрыта" : "открыта";
-                if (s_lock_unlock_door.Text == "закрыта" && s_open_close_container.Text == "разложен")
                 {
-                    box_lay_fold.SetImageResource(Resource.Drawable.close_door);
+                    ErrorResponseObject error = new ErrorResponseObject();
+                    error = JsonConvert.DeserializeObject<ErrorResponseObject>(s_result);
+                    Toast.MakeText(this, error.Errors[0], ToastLength.Long).Show();
                 }
-                else if (s_lock_unlock_door.Text == "открыта" && s_open_close_container.Text == "разложен")
-                {
-                    box_lay_fold.SetImageResource(Resource.Drawable.open_door);
-                }
+                
             }
-            a_situation = StaticBox.Sensors["Местоположение контейнера"];
-            
-            s_situation_container.SetSelection(Resources.GetStringArray(Resource.Array.a_situation_loaded_container).IndexOf(x => x == a_situation));
+            catch (Exception ex)
+            {
+                Toast.MakeText(this, ex.Message, ToastLength.Long).Show();
+            }
+           
         }
         private void Spinner_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {

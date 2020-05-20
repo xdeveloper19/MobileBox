@@ -80,25 +80,8 @@ namespace GeoGeometry.Activity.Menu
                 btn_camera = main_menu.FindViewById<AppCompatImageButton>(Resource.Id.btn_camera);
                 btn_camera.Click += (s, e) =>
                 {
-                    
-                    //if (CrossMedia.Current.IsCameraAvailable)   // камера готова к работе
-                    //{
-                      //  const string permission = Manifest.Permission.Camera;
-                       // if (Context.CheckSelfPermission(permission) == (int)Permission.Granted)
-                        //{
-                            
-                            Intent cameraActivity = new Intent(Activity, typeof(Camera.CameraActivity));
-                            StartActivity(cameraActivity);
-                        //}//
-                        //else
-                        //{
-                          //  string[] PermissionsCamera = { Manifest.Permission.Camera };
-                           // int RequestCameraId = 0;
-
-                           // Snackbar.Make(btn_camera, "Для работы приложения необходимо разрешение на использование камеры", Snackbar.LengthIndefinite)
-                         //           .SetAction("OK", v => RequestPermissions(PermissionsCamera, RequestCameraId)).Show();
-                        //}//
-                    //};
+                    Intent cameraActivity = new Intent(Activity, typeof(Camera.CameraActivity));
+                    StartActivity(cameraActivity);
                 };
 
                 if (StaticMenu.id_page != 4)

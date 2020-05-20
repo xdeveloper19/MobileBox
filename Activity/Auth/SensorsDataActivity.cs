@@ -24,8 +24,8 @@ using Android.Views;
 using Android.Widget;
 using GeoGeometry.Activity.Cameraa;
 using GeoGeometry.Container;
+using GeoGeometry.Model.Auth;
 using GeoGeometry.Model.Box;
-//using Java.IO;
 using Java.Lang;
 using Newtonsoft.Json;
 using Plugin.Media;
@@ -321,18 +321,31 @@ namespace GeoGeometry.Activity.Auth
                 fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
                 {
                     Name = "file",
-                    FileName = "my_uploaded_image.jpg"
+                    FileName = StaticBox.DeviceId + "." + DateTime.Now + ".jpg"
                 };
                 string boundary = "---8d0f01e6b3b5dafaaadaad";
                 MultipartFormDataContent multipartContent = new MultipartFormDataContent(boundary);
                 multipartContent.Add(fileContent);
-                HttpClient httpClient = new HttpClient();
-                var uri = new Uri("http://smartboxcity.ru:8003/media?file=" + bitmap);
-                HttpResponseMessage response = await httpClient.PostAsync(uri.ToString(), multipartContent);
-                if (response.IsSuccessStatusCode)
+
+                try
                 {
-                    string content = await response.Content.ReadAsStringAsync();
+                    HttpClient httpClient = new HttpClient();
+                    var uri = new Uri("http://smartboxcity.ru:8003/imitator/media?file=" + bitmap);
+                    HttpResponseMessage response = await httpClient.PostAsync(uri.ToString(), multipartContent);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string content = await response.Content.ReadAsStringAsync();
+                        AuthApiData<BaseResponseObject> result = new AuthApiData<BaseResponseObject>();
+                        result = JsonConvert.DeserializeObject<AuthApiData<BaseResponseObject>>(content);
+                        Toast.MakeText(this, result.Message, ToastLength.Short).Show();
+
+                    }
                 }
+                catch (System.Exception e)
+                {
+                    Toast.MakeText(this, "Не удалось загрузить фото на сервер. " + e.Message, ToastLength.Short).Show();
+                }
+
                 //var myHttpClient = new HttpClient();
                 //
                 //HttpResponseMessage responseFromAnotherServer = await myHttpClient.PostAsync(uri.ToString(), bitmap);

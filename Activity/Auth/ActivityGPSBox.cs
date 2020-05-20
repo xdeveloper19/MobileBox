@@ -1,25 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
-
 using Android.App;
-using Android.Content;
 using Android.Gms.Location;
 using Android.Gms.Maps;
 using Android.Gms.Maps.Model;
 using Android.OS;
-using Android.Runtime;
 using Android.Support.V7.App;
-using Android.Views;
 using Android.Widget;
-using GeoGeometry.Activity.Menu;
 using GeoGeometry.Container;
+using GeoGeometry.Model;
 using GeoGeometry.Model.Auth;
 using GeoGeometry.Model.GPSLocation;
 using Newtonsoft.Json;
-using Plugin.Settings;
 
 namespace GeoGeometry.Activity.Auth
 {
@@ -42,7 +35,6 @@ namespace GeoGeometry.Activity.Auth
             base.OnCreate(savedInstanceState);
 
             SetContentView(Resource.Layout.activity_GPS);
-
 
             GPS = FindViewById<RelativeLayout>(Resource.Id.GPS);
             s_longitude = FindViewById<EditText>(Resource.Id.s_longitude);
@@ -143,7 +135,6 @@ namespace GeoGeometry.Activity.Auth
             {
                 base.OnLocationResult(result);
 
-
                 try
                 {
                     StaticBox.Latitude = result.LastLocation.Latitude;
@@ -156,35 +147,38 @@ namespace GeoGeometry.Activity.Auth
                     // Получаю информацию о клиенте.
                     BoxLocation gpsLocation = new BoxLocation
                     {
-                        id = CrossSettings.Current.GetValueOrDefault("id", ""),
-                        lat1 = result.LastLocation.Latitude,
-                        lon1 = result.LastLocation.Longitude,
+                        id = StaticBox.DeviceId,
+                        lat1 = result.LastLocation.Latitude.ToString().Replace(",","."),
+                        lon1 = result.LastLocation.Longitude.ToString().Replace(",", "."),
                         date = DateTime.Now,
                     };
 
                     int signal = 0;
 
                     var myHttpClient = new HttpClient();
-                    var uri = new Uri("http://iot-tmc-cen.1gb.ru/api/container/setcontainerlocation?id=" + gpsLocation.id + "&lat1=" + gpsLocation.lat1 + "&lon1=" + gpsLocation.lon1 + "&date=" + gpsLocation.date);
-                    var uri2 = new Uri("http://smartboxcity.ru:8003/geo?id=" + gpsLocation.id + "&lat1=" + gpsLocation.lat1 + "&lon1=" + gpsLocation.lon1 + "&date=" + gpsLocation.date);
+                   // var uri = new Uri("http://iot-tmc-cen.1gb.ru/api/container/setcontainerlocation?id=" + gpsLocation.id + "&lat1=" + gpsLocation.lat1 + "&lon1=" + gpsLocation.lon1 + "&date=" + gpsLocation.date);
+                    var uri2 = new Uri("http://smartboxcity.ru:8003/imitator/geo");
+
+
                     //json структура.
-                    var formContent = new FormUrlEncodedContent(new Dictionary<string, string>
+                    FormUrlEncodedContent formUrlEncodedContent = new FormUrlEncodedContent(new Dictionary<string, string>
                     {
                         { "Id", gpsLocation.id },
                         { "Lon1", gpsLocation.lon1.ToString()},
                         { "Lat1", gpsLocation.lat1.ToString()},
                         { "Date", DateTime.Now.ToString()}
                     });
+                    var formContent = formUrlEncodedContent;
 
-                    HttpResponseMessage response = await myHttpClient.PostAsync(uri.ToString(), formContent);// !!!!
-                    HttpResponseMessage responseFromAnotherServer = await myHttpClient.PostAsync(uri2.ToString(), new StringContent(JsonConvert.SerializeObject(gpsLocation), Encoding.UTF8, "application/json"));
+                   // HttpResponseMessage response = await myHttpClient.PostAsync(uri.ToString(), formContent);// !!!!
+                    HttpResponseMessage responseFromAnotherServer = await myHttpClient.PostAsync(uri2.ToString(), formContent);
                     AuthApiData<BaseResponseObject> o_data = new AuthApiData<BaseResponseObject>();
 
-                    string s_result;
-                    using (HttpContent responseContent = response.Content)
-                    {
-                        s_result = await responseContent.ReadAsStringAsync();
-                    }
+                    //string s_result;
+                    //using (HttpContent responseContent = response.Content)
+                    //{
+                    //    s_result = await responseContent.ReadAsStringAsync();
+                    //}
 
                     string s_result_from_another_server;
                     using (HttpContent responseContent = responseFromAnotherServer.Content)
@@ -192,11 +186,22 @@ namespace GeoGeometry.Activity.Auth
                         s_result_from_another_server = await responseContent.ReadAsStringAsync();
                     }
 
-                    o_data = JsonConvert.DeserializeObject<AuthApiData<BaseResponseObject>>(s_result);
+                    if (responseFromAnotherServer.IsSuccessStatusCode)
+                    {
+                        o_data = JsonConvert.DeserializeObject<AuthApiData<BaseResponseObject>>(s_result_from_another_server);
+                        Toast.MakeText(Application.Context, o_data.Message, ToastLength.Short).Show();
+                    }
+                    else
+                    {
+                        ErrorResponseObject error = new ErrorResponseObject();
+                        error = JsonConvert.DeserializeObject<ErrorResponseObject>(s_result_from_another_server);
+                        Toast.MakeText(Application.Context, error.Errors[0], ToastLength.Short).Show();
+                    }
+
                 }
                 catch (Exception ex)
                 {
-                    throw;
+                    Toast.MakeText(Application.Context, ex.Message, ToastLength.Short).Show();
                 }
             }
         }

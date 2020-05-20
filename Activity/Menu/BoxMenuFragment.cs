@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Text;
-
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -11,6 +10,8 @@ using Android.Runtime;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
+using GeoGeometry.Container;
+using GeoGeometry.Service;
 
 namespace GeoGeometry.Activity.Menu
 {
@@ -99,17 +100,50 @@ namespace GeoGeometry.Activity.Menu
                     StaticMenu.id_page = 5;
                     // Переход к Клиент.
                     btn_exit1 = main_menu.FindViewById<AppCompatImageButton>(Resource.Id.btn_exit_box);
-                    btn_exit1.Click += (s, e) =>
+                    btn_exit1.Click += async (s, e) =>
                     {
-                        //File.Delete(dir_path + "user_data.txt");
-                        //ClearField();
-                        Intent ActivityMain = new Intent(Activity, typeof(MainActivity));
-                        StartActivity(ActivityMain);
+                        await DeleteBox();
                     };
 
                 }
             }
             return main_menu;
+        }
+
+        private async Task DeleteBox()
+        {
+            try
+            {
+                var myHttpClient = new HttpClient();
+                var uri = new Uri("http://smartboxcity.ru:8003/imitator/delete?id=" + StaticBox.DeviceId);
+
+                // Поучаю ответ об авторизации [успех или нет]
+                HttpResponseMessage response = await myHttpClient.GetAsync(uri.ToString());
+
+                string s_result;
+                using (HttpContent responseContent = response.Content)
+                {
+                    s_result = await responseContent.ReadAsStringAsync();
+                }
+
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    //завершение всех задач
+                    StartUp.StopTracking();
+
+                    Intent ActivityMain = new Intent(Activity, typeof(MainActivity));
+                    StartActivity(ActivityMain);
+                }
+                else
+                {
+                    Toast.MakeText(Activity, "" + "Ошибка выхода", ToastLength.Long).Show();
+                }
+                // AuthApiData<AuthResponseData> o_data = JsonConvert.DeserializeObject<AuthApiData<AuthResponseData>>(s_result);
+            }
+            catch (Exception ex)
+            {
+                Toast.MakeText(Activity, "" + ex.Message, ToastLength.Long).Show();
+            }
         }
     }
 }

@@ -21,7 +21,9 @@ namespace GeoGeometry.Container
     {
         public static Bitmap ImageData { get; set; } 
         public static Dictionary<string, string> Sensors { get; set; }
+        public static string IsAvalableRequest { get; set; }
         public static double Longitude { get; set; }
+        public static string DeviceId { get; set; }
         public static double Latitude { get; set; }
         public static DateTime CreatedAtSensors { get; set; }
 

@@ -22,6 +22,7 @@ using GeoGeometry.Model.User;
 using GeoGeometry.Model.Box;
 using GeoGeometry.Container;
 using System.Threading.Tasks;
+using GeoGeometry.Service;
 
 namespace GeoGeometry.Activity
 {
@@ -52,34 +53,54 @@ namespace GeoGeometry.Activity
 
                 btn_auth_form = FindViewById<Button>(Resource.Id.btn_auth_form);
 
-                string[] permissions = { Manifest.Permission.AccessFineLocation, Manifest.Permission.WriteExternalStorage, Manifest.Permission.Camera };
+                string[] permissions = { Manifest.Permission.AccessFineLocation, Manifest.Permission.WriteExternalStorage, Manifest.Permission.Camera, Manifest.Permission.ReadPhoneState, Manifest.Permission.Vibrate };
                 
                 Dexter.WithActivity(this).WithPermissions(permissions).WithListener(new CompositeMultiplePermissionsListener(new SamplePermissionListener(this))).Check();
+                CrossSettings.Current.AddOrUpdateValue("id", "E353DA5A-07C9-4939-97ED-0CD7CF7B2A7A");
 
-                if (CrossSettings.Current.GetValueOrDefault("id", "") == "")
-                {
-                    try
-                    {
-                        var box = GetRandomBox();
-                        if (box.Result.Status == "0")
-                        {
-                            CrossSettings.Current.AddOrUpdateValue("id", box.Result.ResponseData.BoxId);
-                            CrossSettings.Current.AddOrUpdateValue("namebox", box.Result.ResponseData.Name);
-                        }
-                        else
-                            Toast.MakeText(this, "" + box.Result.Message, ToastLength.Long).Show();
-                    }
-                    catch(Exception ex)
-                    {
-                        Toast.MakeText(this, "" + ex.Message, ToastLength.Long).Show();
-                    }
-                }
+
+                //Android ID  
+                //String m_androidId = Android.Provider.Settings.Secure.GetString(ContentResolver, Android.Provider.Settings.Secure.AndroidId);
+
+                //WLAN MAC Address              
+                //Android.Net.Wifi.WifiManager m_wm = (Android.Net.Wifi.WifiManager)GetSystemService(Android.Content.Context.WifiService);
+                //String m_wlanMacAdd = m_wm.ConnectionInfo.MacAddress;
+
+                //Blue-tooth Address  
+                //Android.Bluetooth.BluetoothAdapter m_BluetoothAdapter = Android.Bluetooth.BluetoothAdapter.DefaultAdapter;
+                //String m_bluetoothAdd = m_BluetoothAdapter.Address;
+
+                //if (CrossSettings.Current.GetValueOrDefault("id", "") == "")
+                //{
+                //    try
+                //    {
+                //        var box = GetRandomBox();
+                //        if (box.Result.Status == "0")
+                //        {
+                //            CrossSettings.Current.AddOrUpdateValue("id", box.Result.ResponseData.BoxId);
+                //            CrossSettings.Current.AddOrUpdateValue("namebox", box.Result.ResponseData.Name);
+                //        }
+                //        else
+                //            Toast.MakeText(this, "" + box.Result.Message, ToastLength.Long).Show();
+                //    }
+                //    catch(Exception ex)
+                //    {
+                //        Toast.MakeText(this, "" + ex.Message, ToastLength.Long).Show();
+                //    }
+                //}
 
                 // Переход к форме авторизация
-                btn_auth_form.Click += (s, e) =>
+                btn_auth_form.Click += async (s, e) =>
                 {
-                    Intent authActivity = new Intent(this, typeof(Auth.AuthActivity));
-                    StartActivity(authActivity);
+                    Android.Telephony.TelephonyManager mTelephonyMgr;
+                    //Telephone Number  
+                    mTelephonyMgr = (Android.Telephony.TelephonyManager)GetSystemService(TelephonyService);
+                    var PhoneNumber = mTelephonyMgr.Line1Number;
+
+                    //IMEI number  
+                    StaticBox.DeviceId = mTelephonyMgr.DeviceId;
+                    await RegisterBox();
+                    
                 };
 
             }
@@ -87,6 +108,100 @@ namespace GeoGeometry.Activity
             {
                 Toast.MakeText(this, "" + ex.Message, ToastLength.Long).Show();
             }
+        }
+
+        private async Task RegisterBox()
+        {
+            /*http://smartboxcity.ru:8003/imitator/create POST создает контейнер
+             * http://iot.tmc-centert.ru/api/container/SearchCommandPhoto?name=123
+http://smartboxcity.ru:8003/imitator/delete GET удаляет контейнер*/
+           
+
+            try
+            {
+                #region WebRequest Example
+                //var formContent = new Dictionary<string, string>
+                //    {
+                //        { "Id", StaticBox.DeviceId }
+                //    };
+
+                //string newData = "";
+
+                //foreach (string key in formContent.Keys)
+                //{
+                //    newData += key + "="
+                //          + formContent[key] + "&";
+                //}
+
+                //var postData = newData.Remove(newData.Length - 1, 1);
+
+                //HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://smartboxcity.ru:8003/imitator/create");
+                //request.Method = "POST";
+
+
+                //byte[] data = Encoding.ASCII.GetBytes(postData);
+
+                //request.ContentType = "multipart/form-data";
+                //request.ContentLength = data.Length;
+
+                //Stream requestStream = request.GetRequestStream();
+                //requestStream.Write(data, 0, data.Length);
+                //requestStream.Close();
+                //HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+                //Stream responseStream = response.GetResponseStream();
+
+                //StreamReader myStreamReader = new StreamReader(responseStream, Encoding.Default);
+
+                //string s_result = myStreamReader.ReadToEnd();
+
+                //myStreamReader.Close();
+                //responseStream.Close();
+
+                //response.Close();
+                #endregion
+
+                CreateBoxModel model = new CreateBoxModel
+                {
+                    id = StaticBox.DeviceId
+                };
+
+                var myHttpClient = new HttpClient();
+                var uri = new Uri("http://smartboxcity.ru:8003/imitator/create?id=" + model.id);
+
+
+
+                // Поучаю ответ об авторизации [успех или нет]
+                HttpResponseMessage response = await myHttpClient.GetAsync(uri.ToString() /*new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json")*/);
+
+
+                string s_result;
+                using (HttpContent responseContent = response.Content)
+                {
+                    s_result = await responseContent.ReadAsStringAsync();
+                }
+
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    //запуск задания
+                    StartUp.StartTracking();
+
+                    Intent Driver = new Intent(this, typeof(Auth.SensorParameters));
+                    StartActivity(Driver);
+                    this.Finish();
+                }
+                else
+                {
+                    Toast.MakeText(this, "" + "Ошибка входа", ToastLength.Long).Show();
+                }
+                // AuthApiData<AuthResponseData> o_data = JsonConvert.DeserializeObject<AuthApiData<AuthResponseData>>(s_result);
+            }
+            catch (Exception ex)
+            {
+                Toast.MakeText(this, "" + ex.Message, ToastLength.Long).Show();
+            }
+            
+
         }
 
         private async Task<AuthApiData<GetBoxIdResponse>> GetRandomBox()

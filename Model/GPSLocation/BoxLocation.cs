@@ -21,12 +21,12 @@ namespace GeoGeometry.Model.GPSLocation
         /// <summary>
         /// Долгота
         /// </summary>
-        public double lon1 { get; set; }
+        public string lon1 { get; set; }
 
         /// <summary>
         /// Широта
         /// </summary>
-        public double lat1 { get; set; }
+        public string lat1 { get; set; }
 
         public DateTime date { get; set; }
     }

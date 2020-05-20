@@ -30,13 +30,28 @@ namespace GeoGeometry.Container
         }
         public async void SaveInfoBox()
         {
-            
-                var myHttpClient = GetClient();
-            var id1 = CrossSettings.Current.GetValueOrDefault("id", "");
-            var uri = new Uri("http://iot.tmc-centert.ru/api/container/getbox?id=" + id1);
-            string result = await myHttpClient.GetStringAsync(uri.ToString());
+            CreateBoxModel model = new CreateBoxModel
+            {
+                id = StaticBox.DeviceId
+            };
 
+            var myHttpClient = GetClient();
+            var id1 = StaticBox.DeviceId;
+            //var id1 = CrossSettings.Current.GetValueOrDefault("id", "");
+           // var uri = new Uri("http://iot.tmc-centert.ru/api/container/getbox?id=" + id1);
+            var uri2 = new Uri("http://smartboxcity.ru:8003/imitator/status?id=" + StaticBox.DeviceId);
+            HttpResponseMessage response = await myHttpClient.PostAsync(uri2.ToString(), new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json"));
+
+            string s_result;
+            using (HttpContent responseContent = response.Content)
+            {
+                s_result = await responseContent.ReadAsStringAsync();
+            }
             AuthApiData<ListResponse<BoxDataResponse>> o_data = new AuthApiData<ListResponse<BoxDataResponse>>();
+
+            //string result = await myHttpClient.GetStringAsync(uri.ToString());
+
+            //AuthApiData<ListResponse<BoxDataResponse>> o_data = new AuthApiData<ListResponse<BoxDataResponse>>();
 
             //string s_result;
             //using (HttpContent responseContent = response.Content)
@@ -45,7 +60,7 @@ namespace GeoGeometry.Container
             //}
 
             o_data.ResponseData = new ListResponse<BoxDataResponse>();
-                o_data = JsonConvert.DeserializeObject<AuthApiData<ListResponse<BoxDataResponse>>>(result);
+                o_data = JsonConvert.DeserializeObject<AuthApiData<ListResponse<BoxDataResponse>>>(s_result);
             if (o_data.Status == "0")
             {
                 ListResponse<BoxDataResponse> o_boxes_data = new ListResponse<BoxDataResponse>();
@@ -73,8 +88,8 @@ namespace GeoGeometry.Container
 
                 EditBoxViewModel ForAnotherServer = new EditBoxViewModel
                 {
-                    id = CrossSettings.Current.GetValueOrDefault("id", ""),
-                    date = DateTime.Now,
+                    id = StaticBox.DeviceId,
+                    
                     Sensors = new Dictionary<string, string>{ 
                         ["Вес груза"] = StaticBox.Sensors["Вес груза"],
                         ["Температура"] = StaticBox.Sensors["Температура"],
@@ -90,14 +105,14 @@ namespace GeoGeometry.Container
 
 
                 var date = DateTime.Now;
-                //StaticBox.CreatedAtSensors = date;
+                
 
                 var uri = new Uri("http://iot.tmc-centert.ru/api/container/editsensors?date=" + date + "&id=" + CrossSettings.Current.GetValueOrDefault("id", "") + "&sensors[Вес груза]=" + StaticBox.Sensors["Вес груза"]
                 + "&sensors[Температура]=" + StaticBox.Sensors["Температура"] + "&sensors[Влажность]=" + StaticBox.Sensors["Влажность"] + "&sensors[Освещенность]=" + StaticBox.Sensors["Освещенность"]
                 + "&sensors[Уровень заряда аккумулятора]=" + StaticBox.Sensors["Уровень заряда аккумулятора"] + "&sensors[Уровень сигнала]=" + StaticBox.Sensors["Уровень сигнала"] + "&sensors[Состояние дверей]=" + StaticBox.Sensors["Состояние дверей"]
                 + "&sensors[Состояние контейнера]=" + StaticBox.Sensors["Состояние контейнера"] + "&sensors[Местоположение контейнера]=" + StaticBox.Sensors["Местоположение контейнера"]);
 
-                var uri2 = new Uri("http://smartboxcity.ru:8003/sensor?date=" + date + "&id=" + CrossSettings.Current.GetValueOrDefault("id", "") + "&sensors[Вес груза]=" + StaticBox.Sensors["Вес груза"]
+                var uri2 = new Uri("http://smartboxcity.ru:8003/imitator/sensors?" + "id=" + StaticBox.DeviceId + "&sensors[Вес груза]=" + StaticBox.Sensors["Вес груза"]
                 + "&sensors[Температура]=" + StaticBox.Sensors["Температура"] + "&sensors[Влажность]=" + StaticBox.Sensors["Влажность"] + "&sensors[Освещенность]=" + StaticBox.Sensors["Освещенность"]
                 + "&sensors[Уровень заряда аккумулятора]=" + StaticBox.Sensors["Уровень заряда аккумулятора"] + "&sensors[Уровень сигнала]=" + StaticBox.Sensors["Уровень сигнала"] + "&sensors[Состояние дверей]=" + StaticBox.Sensors["Состояние дверей"]
                 + "&sensors[Состояние контейнера]=" + StaticBox.Sensors["Состояние контейнера"] + "&sensors[Местоположение контейнера]=" + StaticBox.Sensors["Местоположение контейнера"]);
@@ -137,16 +152,16 @@ namespace GeoGeometry.Container
                 //};
 
                 //var data = new StringContent(JsonConvert.SerializeObject(box));
-                HttpResponseMessage response = await myHttpClient.PostAsync(uri.ToString(), formContent);
+                //HttpResponseMessage response = await myHttpClient.PostAsync(uri.ToString(), formContent);
                 HttpResponseMessage responseFromAnotherServer = await myHttpClient.PostAsync(uri2.ToString(), new StringContent(JsonConvert.SerializeObject(ForAnotherServer), Encoding.UTF8, "application/json"));
 
                 AuthApiData<BaseResponseObject> o_data = new AuthApiData<BaseResponseObject>();
 
-                string s_result;
-                using (HttpContent responseContent = response.Content)
-                {
-                    s_result = await responseContent.ReadAsStringAsync();
-                }
+                //string s_result;
+                //using (HttpContent responseContent = response.Content)
+                //{
+                //    s_result = await responseContent.ReadAsStringAsync();
+                //}
 
                 string s_result_from_server;
                 using (HttpContent responseContent = responseFromAnotherServer.Content)
@@ -154,7 +169,19 @@ namespace GeoGeometry.Container
                     s_result_from_server = await responseContent.ReadAsStringAsync();
                 }
 
-                o_data = JsonConvert.DeserializeObject<AuthApiData<BaseResponseObject>>(s_result);
+                if (responseFromAnotherServer.IsSuccessStatusCode)
+                {
+                    StaticBox.CreatedAtSensors = date;
+                    o_data = JsonConvert.DeserializeObject<AuthApiData<BaseResponseObject>>(s_result_from_server);
+                }
+                else
+                {
+                    ErrorResponseObject error = new ErrorResponseObject();
+                    error = JsonConvert.DeserializeObject<ErrorResponseObject>(s_result_from_server);
+                    o_data.Message = error.Errors[0];
+                    o_data.Status = responseFromAnotherServer.StatusCode.ToString();
+                    
+                }
 
                 return o_data;
             }
@@ -165,6 +192,7 @@ namespace GeoGeometry.Container
                 result.Message = ex.Message;
                 return result;
             }
+
         }
     }
 }
