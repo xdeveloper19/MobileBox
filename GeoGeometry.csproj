@@ -115,6 +115,7 @@
     <Compile Include="Model\Box\RegisterBoxModel.cs" />
     <Compile Include="Model\Box\SmartBox.cs" />
     <Compile Include="Model\Box\Status.cs" />
+    <Compile Include="Model\Cause\AlarmResponse.cs" />
     <Compile Include="Model\ErrorResponseObject.cs" />
     <Compile Include="Model\GPSLocation\BoxLocation.cs" />
     <Compile Include="Model\GPSLocation\GPSLocationModel.cs" />
@@ -421,6 +422,7 @@
     </AndroidResource>
     <AndroidResource Include="Resources\layout\activity_GPS.xml" />
     <AndroidResource Include="Resources\layout\activity_container_condition.xml" />
+    <AndroidResource Include="Resources\layout\CauseAlarmCardView.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>

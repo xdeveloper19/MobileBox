@@ -7,17 +7,13 @@
     android:paddingRight="16dp"
     android:paddingBottom="16dp"
     android:id="@+id/box_container">
-
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
-
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
-
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/TextDesignationCenter"
@@ -530,6 +526,17 @@
                     android:background="@drawable/button_stili"
                     android:padding = "5dp"/>
                 </RelativeLayout>
+
+            <Button
+                android:text="Вызвать тревогу"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/activity_stili"
+                android:layout_below="@+id/fio1"
+                android:id="@+id/BtnCauseAlarmBox" />
+
     </RelativeLayout>
     </ScrollView>
 

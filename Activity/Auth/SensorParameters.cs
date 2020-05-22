@@ -29,6 +29,7 @@ using System.Globalization;
 using GeoGeometry.Activity.Menu;
 using Plugin.Settings;
 using Android.Support.V4.App;
+using GeoGeometry.Model.Cause;
 
 namespace GeoGeometry.Activity.Auth
 {
@@ -67,6 +68,8 @@ namespace GeoGeometry.Activity.Auth
 
         private Button btn_save_parameters;
 
+        private Button btn_cause_alarm;
+
         //GoogleMap _googleMap;
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -77,6 +80,7 @@ namespace GeoGeometry.Activity.Auth
             StaticMenu.id_page = 1;
 
             btn_save_parameters = FindViewById<Button>(Resource.Id.btn_save_parameters);
+            btn_cause_alarm = FindViewById<Button>(Resource.Id.BtnCauseAlarmBox);
             SmullWeight = FindViewById<TextView>(Resource.Id.SmullWeight);
             SmullTemperature = FindViewById<TextView>(Resource.Id.SmullTemperature);
             SmullLight = FindViewById<TextView>(Resource.Id.SmullLight);
@@ -89,7 +93,7 @@ namespace GeoGeometry.Activity.Auth
             s_light = FindViewById<SeekBar>(Resource.Id.s_light);
             s_humidity = FindViewById<SeekBar>(Resource.Id.s_humidity);
             s_battery = FindViewById<SeekBar>(Resource.Id.s_battery);
-            s_signal_strength_1 = FindViewById<SeekBar>(Resource.Id.s_signal_strength_1);
+            s_signal_strength_1 = FindViewById<SeekBar>(Resource.Id.s_signal_strength_1);           
 
             GetInfoAboutBox();
 
@@ -147,8 +151,49 @@ namespace GeoGeometry.Activity.Auth
                 }
             };
 
-           
-           
+            btn_cause_alarm.Click += delegate
+            {
+                try
+                {
+                    if(btn_cause_alarm.Text == "Отменить тревогу")
+                    {
+                        CancelAlarm();
+                    }
+                    else
+                    {
+                        Android.App.AlertDialog.Builder alert = new Android.App.AlertDialog.Builder(this);
+                        LayoutInflater layoutInflater = LayoutInflater.From(this);
+                        View dialogView = layoutInflater.Inflate(Resource.Layout.CauseAlarmCardView, null);
+                        alert.SetView(dialogView);
+
+                        var Fluid_Leakage = dialogView.FindViewById<RadioButton>(Resource.Id.BtnFluidLeakage);
+                        var Excess_Weight = dialogView.FindViewById<RadioButton>(Resource.Id.BtnExcessWeight);
+                        var Door_Sensor_Operation = dialogView.FindViewById<RadioButton>(Resource.Id.BtnDoorSensorOperation);
+
+                        alert.SetPositiveButton("Выбрать", (senderAlert, args) =>
+                        {
+                            if (Fluid_Leakage.Checked == true)
+                                CrossSettings.Current.AddOrUpdateValue("AlermId","1");
+                            if (Excess_Weight.Checked == true)
+                                CrossSettings.Current.AddOrUpdateValue("AlermId", "2");
+                            if (Door_Sensor_Operation.Checked == true)
+                                CrossSettings.Current.AddOrUpdateValue("AlermId", "3");
+                            MakeRequestAlarm();
+                        });
+                        alert.SetNegativeButton("Отмена", (senderAlert, args) =>
+                        {
+                        });
+                        Dialog dialog1 = alert.Create();
+                        dialog1.Show();
+                    }                    
+                }
+                catch (Exception ex)
+                {
+                    Toast.MakeText(this, "" + ex.Message, ToastLength.Long).Show();
+                }
+            };
+
+
             //редактирование данных контейнера
             btn_save_parameters.Click += async delegate
             {
@@ -182,7 +227,81 @@ namespace GeoGeometry.Activity.Auth
                 }
             };
 
-        }   
+        }
+
+        private async void CancelAlarm()
+        {
+            var myHttpClient = new HttpClient();
+            var uri = new Uri("http://smartboxcity.ru:8003/imitator/" + StaticBox.DeviceId + "/alarm/" + 
+                CrossSettings.Current.GetValueOrDefault("AlermId","") + "/release");
+            HttpResponseMessage response = await myHttpClient.GetAsync(uri.ToString());
+            string s_result;
+            using (HttpContent responseContent = response.Content)
+            {
+                s_result = await responseContent.ReadAsStringAsync();
+            }
+            if (response.IsSuccessStatusCode)
+            {
+                AlarmResponse o_data = new AlarmResponse();
+                o_data = JsonConvert.DeserializeObject<AlarmResponse>(s_result);
+                if (o_data.Message == "Угроза имитатора изменена")
+                {
+                    CrossSettings.Current.AddOrUpdateValue("AlermId", "0");
+                    btn_cause_alarm.Text = "Вызвать тревогу";
+                }
+                Android.App.AlertDialog.Builder alert = new Android.App.AlertDialog.Builder(this);
+                alert.SetTitle("Тревоги");
+                alert.SetMessage(o_data.Message);
+                alert.SetPositiveButton("Закрыть", (senderAlert1, args1) =>
+                {
+                });
+                Dialog dialog1 = alert.Create();
+                dialog1.Show();
+            }
+            else
+            {
+                ErrorResponseObject error = new ErrorResponseObject();
+                error = JsonConvert.DeserializeObject<ErrorResponseObject>(s_result);
+                Toast.MakeText(this, error.Errors[0], ToastLength.Long).Show();
+            }
+        }
+
+        private async void MakeRequestAlarm()
+        {
+            var myHttpClient = new HttpClient();
+            var uri = new Uri("http://smartboxcity.ru:8003/imitator/" + StaticBox.DeviceId + "/alarm/" + 
+                CrossSettings.Current.GetValueOrDefault("AlermId", "") + "/raise");
+            HttpResponseMessage response = await myHttpClient.GetAsync(uri.ToString());
+            string s_result;
+            using (HttpContent responseContent = response.Content)
+            {
+                s_result = await responseContent.ReadAsStringAsync();
+            }
+            if (response.IsSuccessStatusCode)
+            {
+                AlarmResponse o_data = new AlarmResponse();
+                o_data = JsonConvert.DeserializeObject<AlarmResponse>(s_result);
+                if(o_data.Message == "Угроза имитатора изменена")
+                {
+                    btn_cause_alarm.Text = "Отменить тревогу";
+                }
+                Android.App.AlertDialog.Builder alert = new Android.App.AlertDialog.Builder(this);               
+                alert.SetTitle("Тревоги");
+                alert.SetMessage(o_data.Message);
+                alert.SetPositiveButton("Закрыть", (senderAlert1, args1) =>
+                {
+                });
+                Dialog dialog1 = alert.Create();
+                dialog1.Show();
+            }
+            else
+            {
+                ErrorResponseObject error = new ErrorResponseObject();
+                error = JsonConvert.DeserializeObject<ErrorResponseObject>(s_result);
+                Toast.MakeText(this, error.Errors[0], ToastLength.Long).Show();
+            }
+        }
+
         /// <summary>
         /// сбор информации о контейнере
         /// </summary>

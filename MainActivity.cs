@@ -23,16 +23,13 @@ using GeoGeometry.Model.Box;
 using GeoGeometry.Container;
 using System.Threading.Tasks;
 using GeoGeometry.Service;
+using Java.Util;
 
 namespace GeoGeometry.Activity
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : AppCompatActivity
     {
-        
-        RelativeLayout main_form;
-
-
         /// <summary>
         /// Конпка прехода на форму авторизации.
         /// </summary>
@@ -93,12 +90,26 @@ namespace GeoGeometry.Activity
                 btn_auth_form.Click += async (s, e) =>
                 {
                     Android.Telephony.TelephonyManager mTelephonyMgr;
+                    // Android.Telephony.TelephonyManager mTelephonyMgr = (Android.Telephony.TelephonyManager)GetSystemService(Android.Content.Context.TelephonyService);
                     //Telephone Number  
-                    mTelephonyMgr = (Android.Telephony.TelephonyManager)GetSystemService(TelephonyService);
-                    var PhoneNumber = mTelephonyMgr.Line1Number;
+                    mTelephonyMgr = (Android.Telephony.TelephonyManager)GetSystemService(TelephonyService);                 
+                    /*var PhoneNumber = mTelephonyMgr.Line1Number*/;
+                    
+                    if(mTelephonyMgr.DeviceId != null)
+                    {
+                        //IMEI number 
+                        StaticBox.DeviceId = mTelephonyMgr.DeviceId;
+                    }
+                    else
+                    {
+                        //Android ID 
+                        StaticBox.DeviceId = Android.Provider.Settings.Secure.GetString(ContentResolver, Android.Provider.Settings.Secure.AndroidId);
+                    }
 
-                    //IMEI number  
-                    StaticBox.DeviceId = mTelephonyMgr.DeviceId;
+                    //Blue-tooth Address  
+                    Android.Bluetooth.BluetoothAdapter m_BluetoothAdapter = Android.Bluetooth.BluetoothAdapter.DefaultAdapter;
+                    string m_bluetoothAdd = m_BluetoothAdapter.Address;
+
                     await RegisterBox();
                     
                 };
