@@ -30,6 +30,7 @@ using GeoGeometry.Activity.Menu;
 using Plugin.Settings;
 using Android.Support.V4.App;
 using GeoGeometry.Model.Cause;
+using System.Threading.Tasks;
 
 namespace GeoGeometry.Activity.Auth
 {
@@ -96,6 +97,12 @@ namespace GeoGeometry.Activity.Auth
             s_signal_strength_1 = FindViewById<SeekBar>(Resource.Id.s_signal_strength_1);           
 
             GetInfoAboutBox();
+            var value = CrossSettings.Current.GetValueOrDefault("AlermId", "");
+
+            if (value == "1" || value == "2" || value == "3")
+            {
+                btn_cause_alarm.Text = "Отменить тревогу";
+            }
 
             
             s_weight.ProgressChanged += (object sender, SeekBar.ProgressChangedEventArgs e) =>
@@ -153,9 +160,11 @@ namespace GeoGeometry.Activity.Auth
 
             btn_cause_alarm.Click += delegate
             {
+                var value = CrossSettings.Current.GetValueOrDefault("AlermId", "");
+
                 try
                 {
-                    if(btn_cause_alarm.Text == "Отменить тревогу")
+                    if(value == "1" || value == "2" || value == "3")
                     {
                         CancelAlarm();
                     }
@@ -197,36 +206,43 @@ namespace GeoGeometry.Activity.Auth
             //редактирование данных контейнера
             btn_save_parameters.Click += async delegate
             {
-                try
+                var data = await EditSensors();
+                if (data.Status == "1")
                 {
-
-                    StaticBox.Sensors["Вес груза"] = s_weight.Progress.ToString();
-                    StaticBox.Sensors["Температура"] = SmullTemperature.Text;
-                    StaticBox.Sensors["Влажность"] = s_humidity.Progress.ToString();
-                    StaticBox.Sensors["Освещенность"] = s_light.Progress.ToString();
-                    StaticBox.Sensors["Уровень сигнала"] = SmullNetworkSignal.Text;
-                    StaticBox.Sensors["Уровень заряда аккумулятора"] = s_battery.Progress.ToString();
-                    var o_data = await ContainerService.EditBox();
-
-                    if (o_data.Status == "1")
-                    {
-                        Toast.MakeText(this, o_data.Message, ToastLength.Long).Show();
-                        GetInfoAboutBox();
-                    }
-                    else
-                    {
-                        Toast.MakeText(this, o_data.Message, ToastLength.Long).Show();
-                        StaticBox.CameraOpenOrNo = 1;
-                        Intent authActivity = new Intent(this, typeof(Auth.SensorsDataActivity));
-                        StartActivity(authActivity);
-                    }
+                    Toast.MakeText(this, data.Message, ToastLength.Long).Show();
+                    GetInfoAboutBox();
                 }
-                catch (Exception ex)
+                else
                 {
-                    Toast.MakeText(this, "" + ex.Message, ToastLength.Long).Show();
+                    Toast.MakeText(this, data.Message, ToastLength.Long).Show();
+                    StaticBox.CameraOpenOrNo = 1;
+                    Intent authActivity = new Intent(this, typeof(Auth.SensorsDataActivity));
+                    StartActivity(authActivity);
                 }
             };
 
+        }
+
+        private async Task<AuthApiData<BaseResponseObject>> EditSensors()
+        {
+            try
+            {
+                StaticBox.Sensors["Вес груза"] = s_weight.Progress.ToString();
+                StaticBox.Sensors["Температура"] = SmullTemperature.Text;
+                StaticBox.Sensors["Влажность"] = s_humidity.Progress.ToString();
+                StaticBox.Sensors["Освещенность"] = s_light.Progress.ToString();
+                StaticBox.Sensors["Уровень сигнала"] = SmullNetworkSignal.Text;
+                StaticBox.Sensors["Уровень заряда аккумулятора"] = s_battery.Progress.ToString();
+                var o_data = await ContainerService.EditBox();
+
+                return o_data;
+            }
+            catch (Exception ex)
+            {
+                
+                Toast.MakeText(this, "" + ex.Message, ToastLength.Long).Show();
+                return null;
+            }
         }
 
         private async void CancelAlarm()
@@ -281,6 +297,7 @@ namespace GeoGeometry.Activity.Auth
             {
                 AlarmResponse o_data = new AlarmResponse();
                 o_data = JsonConvert.DeserializeObject<AlarmResponse>(s_result);
+
                 if(o_data.Message == "Угроза имитатора изменена")
                 {
                     btn_cause_alarm.Text = "Отменить тревогу";
@@ -334,7 +351,7 @@ namespace GeoGeometry.Activity.Auth
                 if (response.IsSuccessStatusCode)
                 {
                     Status o_data = new Status();
-                    
+                   
                     o_data = JsonConvert.DeserializeObject<Status>(s_result);
 
                     //В статик бокс закомментируй 9 свойств
@@ -350,7 +367,7 @@ namespace GeoGeometry.Activity.Auth
                     if (StaticBox.Sensors["Состояние контейнера"] == "0")
                         StaticBox.Sensors["Вес груза"] = "0";
                     else
-                        StaticBox.Sensors["Вес груза"] = o_data.status.Sensors["Вес груза"];
+                        StaticBox.Sensors["Вес груза"] = o_data.status.Sensors["Вес груза"].Replace(".",",");
 
                     //StaticBox.CreatedAtSensors = (DateTime)o_data.ResponseData.Objects[0].CreatedAt;
                     //Заполняй остальные параметры как в этом примере
@@ -399,12 +416,29 @@ namespace GeoGeometry.Activity.Auth
                         Dialog dialog = alert.Create();
                         dialog.Show();
                     }
+                    btn_cause_alarm.Enabled = true;
                 }
                 else
                 {
                     ErrorResponseObject error = new ErrorResponseObject();
                     error = JsonConvert.DeserializeObject<ErrorResponseObject>(s_result);
                     Toast.MakeText(this, error.Errors[0], ToastLength.Long).Show();
+                    btn_cause_alarm.Enabled = false;
+
+                    var data = await EditSensors();
+                    if (data.Status == "1")
+                    {
+                        Toast.MakeText(this, data.Message, ToastLength.Long).Show();
+                        GetInfoAboutBox();
+                    }
+                    else
+                    {
+                        Toast.MakeText(this, data.Message, ToastLength.Long).Show();
+                        btn_cause_alarm.Enabled = false;
+                        //StaticBox.CameraOpenOrNo = 1;
+                        //Intent authActivity = new Intent(this, typeof(Auth.SensorsDataActivity));
+                        //StartActivity(authActivity);
+                    }
                 }
                 
             }

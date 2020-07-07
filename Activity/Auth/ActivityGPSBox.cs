@@ -33,7 +33,6 @@ namespace GeoGeometry.Activity.Auth
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
             SetContentView(Resource.Layout.activity_GPS);
 
             GPS = FindViewById<RelativeLayout>(Resource.Id.GPS);
@@ -77,6 +76,19 @@ namespace GeoGeometry.Activity.Auth
         {
             _googleMap = googleMap;////11111
 
+            if (StaticBox.Latitude == 0 || StaticBox.Longitude == 0)
+            {
+                Android.App.AlertDialog.Builder alert = new Android.App.AlertDialog.Builder(this);
+                alert.SetTitle("Внимание !");
+                alert.SetMessage("Местоположение контейнера не изменяется, так как на телефоне отключен GPS.\n Включите, пожалуйста, GPS.");
+                alert.SetPositiveButton("Закрыть", (senderAlert, args) =>
+                {
+                    Toast.MakeText(this, "Предупреждение было закрыто!", ToastLength.Short).Show();
+                });
+                Dialog dialog = alert.Create();
+                dialog.Show();
+                return;
+            }
             double latitude = StaticBox.Latitude;
             double longitude = StaticBox.Longitude;
 
@@ -117,8 +129,7 @@ namespace GeoGeometry.Activity.Auth
                 locationRequest.SetInterval(1000);
                 locationRequest.SetFastestInterval(3000);
                 locationRequest.SetSmallestDisplacement(10f);
-            }
-             
+            } 
         }
 
 
@@ -137,6 +148,10 @@ namespace GeoGeometry.Activity.Auth
 
                 try
                 {
+                    if (result == null)
+                    {
+                        return;
+                    }
                     StaticBox.Latitude = result.LastLocation.Latitude;
                     StaticBox.Longitude = result.LastLocation.Longitude;
 
@@ -164,8 +179,8 @@ namespace GeoGeometry.Activity.Auth
                     FormUrlEncodedContent formUrlEncodedContent = new FormUrlEncodedContent(new Dictionary<string, string>
                     {
                         { "Id", gpsLocation.id },
-                        { "Lon1", gpsLocation.lon1.ToString()},
-                        { "Lat1", gpsLocation.lat1.ToString()},
+                        { "Lon1", gpsLocation.lon1.ToString().Replace(",",".")},
+                        { "Lat1", gpsLocation.lat1.ToString().Replace(",",".")},
                         { "Date", DateTime.Now.ToString()}
                     });
                     var formContent = formUrlEncodedContent;

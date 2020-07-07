@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -217,10 +216,6 @@ namespace GeoGeometry.Activity.Auth
                     //{
                     //    s_result = await responseContent.ReadAsStringAsync();
                     //}
-
-
-
-
                     //StaticBox.AddInfoObjects(o_boxes_data);
                     //В статик бокс закомментируй 9 свойств
                     StaticBox.Sensors["Температура"] = o_data.status.Sensors["Температура"];

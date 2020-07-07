@@ -50,7 +50,8 @@ namespace GeoGeometry.Activity
 
                 btn_auth_form = FindViewById<Button>(Resource.Id.btn_auth_form);
 
-                string[] permissions = { Manifest.Permission.AccessFineLocation, Manifest.Permission.WriteExternalStorage, Manifest.Permission.Camera, Manifest.Permission.ReadPhoneState, Manifest.Permission.Vibrate };
+                string[] permissions = { Manifest.Permission.AccessFineLocation, Manifest.Permission.WriteExternalStorage, Manifest.Permission.Camera, Manifest.Permission.ReadPhoneState, Manifest.Permission.Vibrate, Manifest.Permission.AccessNetworkState,
+                Manifest.Permission.Bluetooth, Manifest.Permission.BluetoothAdmin, Manifest.Permission.Internet};
                 
                 Dexter.WithActivity(this).WithPermissions(permissions).WithListener(new CompositeMultiplePermissionsListener(new SamplePermissionListener(this))).Check();
                 CrossSettings.Current.AddOrUpdateValue("id", "E353DA5A-07C9-4939-97ED-0CD7CF7B2A7A");
@@ -94,22 +95,27 @@ namespace GeoGeometry.Activity
                     //Telephone Number  
                     mTelephonyMgr = (Android.Telephony.TelephonyManager)GetSystemService(TelephonyService);                 
                     /*var PhoneNumber = mTelephonyMgr.Line1Number*/;
-                    
-                    if(mTelephonyMgr.DeviceId != null)
+
+                    if (mTelephonyMgr.DeviceId != null)
                     {
                         //IMEI number 
                         StaticBox.DeviceId = mTelephonyMgr.DeviceId;
                     }
-                    else
+                    else if (Android.Provider.Settings.Secure.GetString(ContentResolver, Android.Provider.Settings.Secure.AndroidId) != null)
                     {
                         //Android ID 
                         StaticBox.DeviceId = Android.Provider.Settings.Secure.GetString(ContentResolver, Android.Provider.Settings.Secure.AndroidId);
                     }
+                    else
+                    {
+                        //Hash code
+                        //StaticBox.DeviceId = "35" + (Build.Board.Length % 10) + (Build.Brand.Length % 10) + (Build.CpuAbi.Length % 10) + (Build.Device.Length % 10) + (Build.Manufacturer.Length % 10) + (Build.Model.Length % 10) + (Build.Product.Length % 10);
 
-                    //Blue-tooth Address  
-                    Android.Bluetooth.BluetoothAdapter m_BluetoothAdapter = Android.Bluetooth.BluetoothAdapter.DefaultAdapter;
-                    string m_bluetoothAdd = m_BluetoothAdapter.Address;
-
+                        //Blue-tooth Address  
+                        Android.Bluetooth.BluetoothAdapter m_BluetoothAdapter = Android.Bluetooth.BluetoothAdapter.DefaultAdapter;
+                        string m_bluetoothAdd = m_BluetoothAdapter.Address;
+                        StaticBox.DeviceId = m_bluetoothAdd;
+                    }
                     await RegisterBox();
                     
                 };
@@ -180,11 +186,8 @@ http://smartboxcity.ru:8003/imitator/delete GET удаляет контейне�
                 var myHttpClient = new HttpClient();
                 var uri = new Uri("http://smartboxcity.ru:8003/imitator/create?id=" + model.id);
 
-
-
                 // Поучаю ответ об авторизации [успех или нет]
                 HttpResponseMessage response = await myHttpClient.GetAsync(uri.ToString() /*new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json")*/);
-
 
                 string s_result;
                 using (HttpContent responseContent = response.Content)
