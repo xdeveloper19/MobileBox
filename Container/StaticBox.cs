@@ -19,7 +19,8 @@ namespace GeoGeometry.Container
 {
     class StaticBox
     {
-        public static Bitmap ImageData { get; set; } 
+        public static Bitmap ImageData { get; set; }
+        public static Dictionary<string, string> Imitators { get; set; }
         public static Dictionary<string, string> Sensors { get; set; }
         public static string IsAvalableRequest { get; set; }
         public static double Longitude { get; set; }
@@ -31,6 +32,12 @@ namespace GeoGeometry.Container
         
         static StaticBox()
         {
+            Imitators = new Dictionary<string, string>()
+            {
+                {"359783086364286","mashtgbr/esp/led2" },
+                {"355973100307031","mashtgbr/esp/led" }
+            };
+
             Sensors = new Dictionary<string, string>()
             {
 

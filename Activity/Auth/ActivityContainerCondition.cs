@@ -277,6 +277,7 @@ namespace GeoGeometry.Activity.Auth
         {
             var spinner = sender as Spinner;
             a_situation = spinner.GetItemAtPosition(e.Position).ToString();
+            StaticBox.Sensors["Местоположение контейнера"] = a_situation;
         }
     }
 }

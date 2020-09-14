@@ -78,8 +78,17 @@ namespace GeoGeometry.Activity.Menu
                 btn_box_state = main_menu.FindViewById<AppCompatImageButton>(Resource.Id.btn_box_state);
                 btn_box_state.Click += (s, e) =>
                 {
-                    Intent userActivity = new Intent(Activity, typeof(Auth.ActivityContainerCondition));
-                    StartActivity(userActivity);
+                    if (StaticBox.DeviceId == "355973100307031" || StaticBox.DeviceId == "359783086364286")
+                    {
+                        Intent userActivity = new Intent(Activity, typeof(Auth.TestContainerCondition));
+                        StartActivity(userActivity);
+                    }
+                    else
+                    {
+                        Intent userActivity = new Intent(Activity, typeof(Auth.ActivityContainerCondition));
+                        StartActivity(userActivity);
+                    }
+                   
                 }; 
 
                 if (StaticMenu.id_page != 4)

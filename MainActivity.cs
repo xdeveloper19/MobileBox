@@ -116,6 +116,7 @@ namespace GeoGeometry.Activity
                         string m_bluetoothAdd = m_BluetoothAdapter.Address;
                         StaticBox.DeviceId = m_bluetoothAdd;
                     }
+
                     await RegisterBox();
                     
                 };
