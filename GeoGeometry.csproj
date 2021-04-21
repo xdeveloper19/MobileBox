@@ -209,7 +209,7 @@
       <Version>0.6.3-beta</Version>
     </PackageReference>
     <PackageReference Include="System.Text.Encodings.Web">
-      <Version>4.6.0</Version>
+      <Version>4.7.2</Version>
     </PackageReference>
     <PackageReference Include="System.Text.Json">
       <Version>4.6.0</Version>
